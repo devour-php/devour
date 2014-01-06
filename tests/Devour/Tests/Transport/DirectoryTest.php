@@ -45,7 +45,7 @@ class DirectoryTest extends DevourTestCase {
     foreach (array('file_2', 'file_1') as $key => $file) {
       $payload = $this->directory->getRawPayload($source);
 
-      $this->assertInstanceOf('\Devour\Payload\File', $payload);
+      $this->assertInstanceOf('\Devour\Payload\FilePayload', $payload);
       $this->assertEquals($payload->getPath(), static::DIRECTORY . '/' . $file);
 
       // Check progress.

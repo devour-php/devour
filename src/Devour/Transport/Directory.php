@@ -7,7 +7,7 @@
 
 namespace Devour\Transport;
 
-use Devour\Payload\File as FilePayload;
+use Devour\Payload\FilePayload;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Util\FileSystem;

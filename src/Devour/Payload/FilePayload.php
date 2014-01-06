@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Devour\Payload\File.
+ * Contains \Devour\Payload\FilePayload.
  */
 
 namespace Devour\Payload;
@@ -10,7 +10,7 @@ namespace Devour\Payload;
 /**
  * @todo After rename, and stream handling.
  */
-class File implements PayloadInterface {
+class FilePayload implements PayloadInterface {
 
   protected $filename;
 
