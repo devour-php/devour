@@ -61,7 +61,7 @@ class Pdo extends ProcessorBase {
       $item[$this->map($field)] = $value;
     }
 
-    $this->preSave($item);
+    $this->prepare($item);
 
     $this->save($item);
   }
@@ -70,7 +70,7 @@ class Pdo extends ProcessorBase {
     return $field;
   }
 
-  protected function preSave(array &$item) {
+  protected function prepare(array &$item) {
     $item += $this->defaults;
   }
 
