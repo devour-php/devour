@@ -7,7 +7,9 @@
 
 namespace Devour\Table;
 
-class CsvTable extends Table {
+use Devour\Row\DynamicRow;
+
+class CsvTable implements TableInterface {
 
   /**
    * The list of header names.
@@ -15,6 +17,8 @@ class CsvTable extends Table {
    * @var array
    */
   protected $header;
+
+  protected $rows = array();
 
   /**
    * Sets the header.
@@ -34,7 +38,38 @@ class CsvTable extends Table {
       $row = array_combine($this->header, $row);
     }
 
-    parent::addRow($row);
+    $this->rows[] = $row;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function shiftRow() {
+    if ($this->rows) {
+      return new DynamicRow(array_shift($this->rows));
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function popRow() {
+    if ($this->rows) {
+      return new DynamicRow(array_pop($this->rows));
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRows() {
+    return array_map(function($row) {
+      return new DynamicRow($row);
+    }, $this->rows);
   }
 
 }

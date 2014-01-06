@@ -3,7 +3,7 @@
 namespace Devour\Tests\Processor;
 
 use Devour\Processor\Pdo as PdoProcessor;
-use Devour\Row\Row;
+use Devour\Row\DynamicRow;
 use Devour\Tests\DevourTestCase;
 
 /**
@@ -55,9 +55,9 @@ class PdoTest extends DevourTestCase {
     $payload->expects($this->any())
       ->method('shiftRow')
       ->will($this->onConsecutiveCalls(
-        new Row($this->pdoData[0]),
-        new Row($this->pdoData[1]),
-        new Row($this->pdoData[2])
+        new DynamicRow($this->pdoData[0]),
+        new DynamicRow($this->pdoData[1]),
+        new DynamicRow($this->pdoData[2])
       ));
 
     return $payload;

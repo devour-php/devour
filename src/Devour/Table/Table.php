@@ -7,10 +7,10 @@
 
 namespace Devour\Table;
 
-use Devour\Row\Row;
+use Devour\Row\RowInterface;
 
 /**
- * @todo After rename.
+ * A simple table implementation.
  */
 class Table implements TableInterface {
 
@@ -19,26 +19,29 @@ class Table implements TableInterface {
   /**
    * Adds a row.
    */
-  public function addRow(array $row) {
+  public function addRow(RowInterface $row) {
     $this->rows[] = $row;
-  }
-
-  /**
-   * Gets all rows.
-   */
-  public function getRows() {
-    return $this->rows;
   }
 
   /**
    * {@inheritdoc}
    */
   public function shiftRow() {
-    if ($this->rows) {
-      return new Row(array_shift($this->rows));
-    }
+    return array_shift($this->rows);
+  }
 
-    return FALSE;
+  /**
+   * {@inheritdoc}
+   */
+  public function popRow() {
+    return array_pop($this->rows);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRows() {
+    return $this->rows;
   }
 
 }

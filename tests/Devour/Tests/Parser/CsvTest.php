@@ -64,7 +64,7 @@ class CsvTest extends DevourTestCase {
     $rows = $result->getRows();
     $this->assertEquals(count($this->csvData), count($rows));
     foreach ($this->csvData as $key => $data) {
-      $this->assertEquals($data, $rows[$key]);
+      $this->assertEquals($data, $rows[$key]->getArrayCopy());
     }
 
     $this->assertEquals(ProgressInterface::COMPLETE, $this->csv->progress());
@@ -92,7 +92,7 @@ class CsvTest extends DevourTestCase {
 
     $this->assertEquals(count($this->csvData), count($rows));
     foreach ($this->csvData as $key => $row) {
-      $this->assertEquals(array_combine($header, $row), $rows[$key]);
+      $this->assertEquals(array_combine($header, $row), $rows[$key]->getArrayCopy());
     }
 
     $this->assertEquals(ProgressInterface::COMPLETE, $this->csv->progress());
