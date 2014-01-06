@@ -68,8 +68,8 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
 
     $item = array();
 
-    foreach ($row as $field => $value) {
-      $item[$this->map($field)] = $value;
+    foreach ($this->columns as $field) {
+      $item[$field] = $row->get($field);
     }
 
     $this->prepare($item);

@@ -7,9 +7,13 @@
 
 namespace Devour\Table;
 
-class SimplePieTable extends Table {
+use Devour\Row\RowInterface;
+
+class SimplePieTable implements TableInterface {
 
   protected $title;
+
+  protected $rows = array();
 
   /**
    * Sets the title.
@@ -19,6 +23,20 @@ class SimplePieTable extends Table {
    */
   public function setTitle($title) {
     $this->title = $title;
+  }
+
+  /**
+   * Adds a row.
+   */
+  public function addRow(RowInterface $row) {
+    $this->rows[] = $row;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function shiftRow() {
+    return array_shift($this->rows);
   }
 
 }
