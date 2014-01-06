@@ -9,6 +9,7 @@ namespace Import\Transport;
 
 use Import\Payload\File as FilePayload;
 use Import\Source\SourceInterface;
+use Import\Util\FileSystem;
 
 /**
  * A transport that fetches a payload via a local file.
@@ -21,15 +22,11 @@ class File implements TransportInterface {
   public function getRawPayload(SourceInterface $source) {
     $filepath = $source->getSource();
 
-    if ($this->checkFile($filepath)) {
+    if (FileSystem::checkFile($filepath)) {
       return new FilePayload($filepath);
     }
 
-    throw new \RuntimeException();
-  }
-
-  protected function checkFile($filepath) {
-    return is_file($filepath) && is_readable($filepath);
+    throw new \RuntimeException('Nothing more to process.');
   }
 
 }

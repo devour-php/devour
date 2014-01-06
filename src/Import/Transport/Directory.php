@@ -10,11 +10,12 @@ namespace Import\Transport;
 use Import\Payload\File as FilePayload;
 use Import\ProgressInterface;
 use Import\Source\SourceInterface;
+use Import\Util\FileSystem;
 
 /**
  * A transport that fetches a payload via a local directory.
  */
-class Directory extends File implements ProgressInterface {
+class Directory implements ProgressInterface {
 
   /**
    * The list of files in the directory.
@@ -71,28 +72,15 @@ class Directory extends File implements ProgressInterface {
    *   Thrown if the directory does not exist, or is not readable.
    */
   protected function listFiles($directory) {
-    if (!$this->checkDirectory($directory)) {
+    if (!FileSystem::checkDirectory($directory)) {
       throw new \RuntimeException('The directory does not exist, or is not readable.');
     }
 
     $files = array_diff(scandir($directory), array('.', '..'));
 
-    return array_filter($files, function($file) use($directory) {
-      return $this->checkFile("$directory/$file");
+    return array_filter($files, function($file) use ($directory) {
+      return FileSystem::checkFile("$directory/$file");
     });
-  }
-
-  /**
-   * Checks that a path is a directory and readable.
-   *
-   * @param string $directory
-   *   A path to a directory.
-   *
-   * @return bool
-   *   True if the path is a directory and readable, false if not.
-   */
-  protected function checkDirectory($directory) {
-    return is_dir($directory) && is_readable($directory);
   }
 
 }
