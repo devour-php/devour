@@ -3,6 +3,7 @@
 namespace Import\Tests\Transport;
 
 use Import\ProgressInterface;
+use Import\Source\Source;
 use Import\Source\SourceInterface;
 use Import\Tests\ImportTestCase;
 use Import\Transport\Directory;
@@ -30,22 +31,12 @@ class DirectoryTest extends ImportTestCase {
     rmdir(static::DIRECTORY);
   }
 
-  protected function getMockSource($filepath) {
-    $source = $this->getMock('\Import\Source\SourceInterface');
-
-    $source->expects($this->any())
-      ->method('getSource')
-      ->will($this->returnValue($filepath));
-
-    return $source;
-  }
-
   /**
    * @expectedException \RuntimeException
    * @expectedExceptionMessage There are no more files left to process.
    */
   public function testGetRawPayload() {
-    $source = $this->getMockSource(static::DIRECTORY);
+    $source = new Source(static::DIRECTORY);
 
     // We haven't read any directories yet.
     $this->assertEquals($this->directory->progress(), ProgressInterface::COMPLETE);
@@ -73,7 +64,7 @@ class DirectoryTest extends ImportTestCase {
    * @expectedExceptionMessage The directory does not exist, or is not readable.
    */
   public function testGetRawPayloadDirectoryNotExists() {
-    $source = $this->getMockSource(static::DIRECTORY_NOT_EXISTS);
+    $source = new Source(static::DIRECTORY_NOT_EXISTS);
     $this->directory->getRawPayload($source);
   }
 

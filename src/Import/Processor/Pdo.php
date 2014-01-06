@@ -7,12 +7,13 @@
 
 namespace Import\Processor;
 
+use Import\ConfigurableInterface;
 use Import\Row\RowInterface;
 
 /**
  * A simple PDO database processor.
  */
-class Pdo extends ProcessorBase {
+class Pdo extends ProcessorBase implements ConfigurableInterface {
 
   /**
    * The database connection.
@@ -48,6 +49,16 @@ class Pdo extends ProcessorBase {
 
     $this->statement = $this->prepareStatement();
     $this->defaults = array_fill_keys($this->columns, NULL);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function fromConfiguration(array $configuration) {
+    $configuration += array('username' => NULL, 'password' => NULL);
+    $connection = new \PDO($configuration['dsn'], $configuration['username'], $configuration['password']);
+
+    return new static($connection, $configuration['table']);
   }
 
   /**
@@ -107,6 +118,30 @@ class Pdo extends ProcessorBase {
   }
 
   protected function getColumns() {
+    switch ($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
+      case 'sqlite':
+        return $this->getSqliteColumns();
+
+      default:
+        return $this->getMysqlColumns();
+        break;
+    }
+  }
+
+  protected function getMysqlColumns() {
+    $result = $this->connection->query('DESCRIBE ' . $this->table);
+    $result->setFetchMode(\PDO::FETCH_ASSOC);
+
+    $meta = array();
+
+    foreach ($result as $row) {
+      $meta[] = $row['Field'];
+    }
+
+    return $meta;
+  }
+
+  protected function getSqliteColumns() {
     // Stupid sqlite.
     $result = $this->connection->query("PRAGMA table_info(" . $this->table . ")");
     $result->setFetchMode(\PDO::FETCH_ASSOC);
@@ -118,7 +153,6 @@ class Pdo extends ProcessorBase {
     }
 
     return $meta;
-
   }
 
 }
