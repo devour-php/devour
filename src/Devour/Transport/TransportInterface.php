@@ -23,7 +23,7 @@ interface TransportInterface {
    * @param \Devour\Source\SourceInterface $source
    *   A source object.
    *
-   * @return \Devour\Payload\RawPayloadInterface
+   * @return \Devour\Payload\PayloadInterface
    *   A raw payload object.
    *
    * @throws \RuntimeException

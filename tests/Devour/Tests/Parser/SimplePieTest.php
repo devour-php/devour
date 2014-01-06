@@ -20,7 +20,7 @@ class SimplePieTest extends DevourTestCase {
   }
 
   protected function getMockRawPayload($content) {
-    $source = $this->getMock('\Devour\Payload\RawPayloadInterface');
+    $source = $this->getMock('\Devour\Payload\PayloadInterface');
 
     $source->expects($this->once())
       ->method('getContents')

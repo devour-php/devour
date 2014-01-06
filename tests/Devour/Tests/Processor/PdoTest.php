@@ -50,7 +50,7 @@ class PdoTest extends DevourTestCase {
   }
 
   protected function getMockPayload() {
-    $payload = $this->getMock('\Devour\Payload\ParsedPayloadInterface');
+    $payload = $this->getMock('\Devour\Table\TableInterface');
 
     $payload->expects($this->any())
       ->method('shiftRow')

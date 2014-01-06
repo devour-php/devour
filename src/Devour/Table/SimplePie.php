@@ -2,12 +2,12 @@
 
 /**
  * @file
- * Contains \Devour\Payload\SimplePie.
+ * Contains \Devour\Table\SimplePie.
  */
 
-namespace Devour\Payload;
+namespace Devour\Table;
 
-class SimplePie extends ParsedPayload {
+class SimplePie extends Table {
 
   protected $title;
 

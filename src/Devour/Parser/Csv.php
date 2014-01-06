@@ -8,8 +8,8 @@
 namespace Devour\Parser;
 
 use Devour\ConfigurableInterface;
-use Devour\Payload\Csv as CsvPayload;
-use Devour\Payload\RawPayloadInterface;
+use Devour\Table\Csv as CsvTable;
+use Devour\Payload\PayloadInterface;
 use Devour\ProgressInterface;
 
 /**
@@ -63,7 +63,7 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
    *
    * @todo Handle encoding.
    */
-  public function parse(RawPayloadInterface $payload) {
+  public function parse(PayloadInterface $payload) {
     $filepath = $payload->getPath();
 
     $handle = $this->openHandle($filepath);
@@ -77,7 +77,7 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
       }
     }
 
-    $result = new CsvPayload();
+    $result = new CsvTable();
 
     if ($this->hasHeader) {
       $result->setHeader($this->header);

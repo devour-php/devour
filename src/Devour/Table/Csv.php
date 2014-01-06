@@ -2,14 +2,12 @@
 
 /**
  * @file
- * Contains \Devour\Payload\Csv.
+ * Contains \Devour\Table\Csv.
  */
 
-namespace Devour\Payload;
+namespace Devour\Table;
 
-use Devour\Row\Row;
-
-class Csv extends ParsedPayload {
+class Csv extends Table {
 
   /**
    * The list of header names.

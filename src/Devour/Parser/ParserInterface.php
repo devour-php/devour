@@ -7,7 +7,7 @@
 
 namespace Devour\Parser;
 
-use Devour\Payload\RawPayloadInterface;
+use Devour\Payload\PayloadInterface;
 
 /**
  * The interface all parsers must implement.
@@ -17,12 +17,12 @@ interface ParserInterface {
   /**
    * Parses a raw payload.
    *
-   * @param \Devour\Payload\RawPayloadInterface $payload
+   * @param \Devour\Payload\PayloadInterface $payload
    *   The raw payload.
    *
-   * @return \Devour\Payload\ParsedPayloadInterface
+   * @return \Devour\Table\TableInterface
    *   A parsed payload.
    */
-  public function parse(RawPayloadInterface $payload);
+  public function parse(PayloadInterface $payload);
 
 }

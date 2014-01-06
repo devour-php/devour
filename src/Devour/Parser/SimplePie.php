@@ -7,8 +7,8 @@
 
 namespace Devour\Parser;
 
-use Devour\Payload\RawPayloadInterface;
-use Devour\Payload\SimplePie as SimplePiePayload;
+use Devour\Payload\PayloadInterface;
+use Devour\Table\SimplePie as SimplePieTable;
 
 /**
  * Wraps SimplePie to parse RSS/Atom feeds.
@@ -18,10 +18,10 @@ class SimplePie implements ParserInterface {
   /**
    * {@inheritdoc}
    */
-  public function parse(RawPayloadInterface $payload) {
+  public function parse(PayloadInterface $payload) {
     $feed = new \SimplePie();
 
-    $result = new SimplePiePayload();
+    $result = new SimplePieTable();
 
     // @todo Use file directly.
     $feed->set_raw_data($payload->getContents());

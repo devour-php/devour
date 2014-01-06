@@ -2,17 +2,17 @@
 
 /**
  * @file
- * Contains \Devour\Payload\ParsedPayload.
+ * Contains \Devour\Table\Table.
  */
 
-namespace Devour\Payload;
+namespace Devour\Table;
 
 use Devour\Row\Row;
 
 /**
  * @todo After rename.
  */
-class ParsedPayload implements ParsedPayloadInterface {
+class Table implements TableInterface {
 
   protected $rows = array();
 

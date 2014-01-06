@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Devour\Payload\RawPayloadInterface.
+ * Contains \Devour\Payload\PayloadInterface.
  */
 
 namespace Devour\Payload;
@@ -10,7 +10,7 @@ namespace Devour\Payload;
 /**
  * A raw payload is a wrapper around a resource that gets passed to a parser.
  */
-interface RawPayloadInterface {
+interface PayloadInterface {
 
   /**
    * Returns the path to the payload.

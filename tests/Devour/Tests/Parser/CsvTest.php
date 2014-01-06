@@ -43,7 +43,7 @@ class CsvTest extends DevourTestCase {
   }
 
   protected function getMockRawPayload($filepath) {
-    $source = $this->getMock('\Devour\Payload\RawPayloadInterface');
+    $source = $this->getMock('\Devour\Payload\PayloadInterface');
 
     $source->expects($this->once())
       ->method('getPath')
@@ -58,7 +58,7 @@ class CsvTest extends DevourTestCase {
 
     $payload = $this->getMockRawPayload(static::FILE_1);
     $result = $this->csv->parse($payload);
-    $this->assertInstanceOf('\Devour\Payload\Csv', $result);
+    $this->assertInstanceOf('\Devour\Table\Csv', $result);
 
     // Check that rows were parsed correctly.
     $rows = $result->getRows();
@@ -82,7 +82,7 @@ class CsvTest extends DevourTestCase {
 
     $payload = $this->getMockRawPayload(static::FILE_1);
     $result = $this->csv->parse($payload);
-    $this->assertInstanceOf('\Devour\Payload\Csv', $result);
+    $this->assertInstanceOf('\Devour\Table\Csv', $result);
 
     // Check that rows were parsed correctly.
     $rows = $result->getRows();

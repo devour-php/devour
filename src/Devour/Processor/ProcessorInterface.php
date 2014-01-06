@@ -7,7 +7,7 @@
 
 namespace Devour\Processor;
 
-use Devour\Payload\ParsedPayloadInterface;
+use Devour\Table\TableInterface;
 
 /**
  * The interface that all processors must implement.
@@ -22,6 +22,6 @@ interface ProcessorInterface {
    * @param \Devour\Payload\ParserInterface $payload
    *   The payload to process.
    */
-  public function process(ParsedPayloadInterface $payload);
+  public function process(TableInterface $payload);
 
 }

@@ -10,7 +10,7 @@ namespace Devour\Payload;
 /**
  * @todo After rename, and stream handling.
  */
-class File implements RawPayloadInterface {
+class File implements PayloadInterface {
 
   protected $filename;
 

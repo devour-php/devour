@@ -8,8 +8,8 @@
 namespace Devour\Importer;
 
 use Devour\Parser\ParserInterface;
-use Devour\Payload\ParsedPayloadInterface;
-use Devour\Payload\RawPayloadInterface;
+use Devour\Table\TableInterface;
+use Devour\Payload\PayloadInterface;
 use Devour\Processor\ProcessorInterface;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
@@ -51,7 +51,7 @@ class Importer implements ImporterInterface {
   /**
    * Executes the parsing step.
    */
-  protected function parse(RawPayloadInterface $payload) {
+  protected function parse(PayloadInterface $payload) {
     do {
       $parser_result = $this->parser->parse($payload);
       $this->process($parser_result);
@@ -61,7 +61,7 @@ class Importer implements ImporterInterface {
   /**
    * Executes the processing step.
    */
-  protected function process(ParsedPayloadInterface $payload) {
+  protected function process(TableInterface $payload) {
     do {
       $this->processor->process($payload);
     } while ($this->processor instanceof ProgressInterface && $this->processor->progress() != ProgressInterface::COMPLETE);

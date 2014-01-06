@@ -7,7 +7,7 @@
 
 namespace Devour\Processor;
 
-use Devour\Payload\ParsedPayloadInterface;
+use Devour\Table\TableInterface;
 use Devour\Row\RowInterface;
 
 /**
@@ -18,7 +18,7 @@ abstract class ProcessorBase implements ProcessorInterface {
   /**
    * {@inheritdoc}
    */
-  public function process(ParsedPayloadInterface $payload) {
+  public function process(TableInterface $payload) {
     while ($row = $payload->shiftRow()) {
       $this->processRow($row);
     }

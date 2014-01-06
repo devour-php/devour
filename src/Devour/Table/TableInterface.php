@@ -2,12 +2,12 @@
 
 /**
  * @file
- * Contains \Devour\Payload\ParsedPayloadInterface.
+ * Contains \Devour\Table\TableInterface.
  */
 
-namespace Devour\Payload;
+namespace Devour\Table;
 
-interface ParsedPayloadInterface {
+interface TableInterface {
 
   /**
    * Returns the first row, removing it.
