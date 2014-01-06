@@ -7,6 +7,8 @@
 
 namespace Import\Payload;
 
+use Import\Row\Row;
+
 class Csv implements ParsedPayloadInterface {
 
   protected $header;
@@ -27,6 +29,10 @@ class Csv implements ParsedPayloadInterface {
 
   public function getRows() {
     return $this->rows;
+  }
+
+  public function shiftRow() {
+    return new Row(array_shift($this->rows));
   }
 
 }
