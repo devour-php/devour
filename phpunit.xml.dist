@@ -11,11 +11,14 @@
 
     <testsuites>
       <testsuite>
-        <directory>./tests/Import/Tests</directory>
+        <directory>./tests/Devour/Tests</directory>
       </testsuite>
     </testsuites>
 
     <filter>
+      <whitelist>
+        <directory suffix=".php">./src/Devour</directory>
+      </whitelist>
       <blacklist>
         <directory>./vendor</directory>
       </blacklist>
