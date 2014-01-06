@@ -7,6 +7,7 @@
 
 namespace Import\Parser;
 
+use Import\ConfigurableInterface;
 use Import\Payload\Csv as CsvPayload;
 use Import\Payload\RawPayloadInterface;
 use Import\ProgressInterface;
@@ -14,7 +15,7 @@ use Import\ProgressInterface;
 /**
  * A CSV parser.
  */
-class Csv implements ParserInterface, ProgressInterface {
+class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
 
   protected $length = 0;
 
@@ -43,6 +44,18 @@ class Csv implements ParserInterface, ProgressInterface {
    */
   public function __construct() {
     $this->emptyLine = array(NULL);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function fromConfiguration(array $configuration) {
+    $parser = new static();
+    if (!empty($configuration['has_header'])) {
+      $parser->setHasHeader(TRUE);
+    }
+
+    return $parser;
   }
 
   /**
