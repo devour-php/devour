@@ -1,0 +1,16 @@
+{
+    "name": "import/import",
+    "type": "library",
+    "description": "Import is a PHP library for importing data.",
+
+    "require": {
+        "php": ">=5.4"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "Import": "src/",
+            "Import\\Tests": "tests/"
+        }
+    }
+}
