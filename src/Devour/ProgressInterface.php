@@ -15,6 +15,11 @@ namespace Devour;
  */
 interface ProgressInterface {
 
+  /**
+   * Indicated completed progress.
+   *
+   * @var float
+   */
   const COMPLETE = 1.0;
 
   /**

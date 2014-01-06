@@ -1,5 +1,6 @@
 <?php
-/*
+
+/**
  * @file
  * Contains \Devour\Console\Command\ImportCommand.
  */

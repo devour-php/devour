@@ -7,20 +7,35 @@
 
 namespace Devour\Payload;
 
+/**
+ * @todo After rename, and stream handling.
+ */
 class File implements RawPayloadInterface {
 
-  protected $filepath;
+  protected $filename;
 
-  public function __construct($filepath) {
-    $this->filepath = $filepath;
+  /**
+   * Constructs a new File object.
+   *
+   * @param string $filename
+   *   The name of the file.
+   */
+  public function __construct($filename) {
+    $this->filename = $filename;
   }
 
+  /**
+   * Returns the path to the payload.
+   */
   public function getPath() {
-    return $this->filepath;
+    return $this->filename;
   }
 
+  /**
+   * Returns the contents of the payload.
+   */
   public function getContents() {
-    return file_get_contents($this->filepath);
+    return file_get_contents($this->filename);
   }
 
 }

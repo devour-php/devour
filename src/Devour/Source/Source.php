@@ -12,8 +12,19 @@ namespace Devour\Source;
  */
 class Source implements SourceInterface {
 
+  /**
+   * The raw source string.
+   *
+   * @var string
+   */
   protected $source;
 
+  /**
+   * Constructs a new source object.
+   *
+   * @param string $source
+   *   The raw source string.
+   */
   public function __construct($source) {
     $this->source = $source;
   }

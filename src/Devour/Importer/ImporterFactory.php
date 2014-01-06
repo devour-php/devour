@@ -17,10 +17,15 @@ use Devour\Util\Yaml;
 class ImporterFactory {
 
   /**
-   * @throws \RuntimeException
-   *   Thrown if the configuration file is not readable.
-   * @throws \Symfony\Component\Yaml\Exception\ParseException
-   *   Thrown if the configuration file cannot be parsed.
+   * Builds an import from a configuration file.
+   *
+   * @param string $filename
+   *   The name of the configuration file.
+   *
+   * @return \Devour\Importer\ImporterInterface
+   *   A new importer.
+   *
+   * @see \Devour\Importer\ImporterFactory::fromConfiguration()
    */
   public static function fromConfigurationFile($filename) {
     FileSystem::checkFile($filename);
@@ -30,7 +35,20 @@ class ImporterFactory {
   }
 
   /**
-   * @todo
+   * Builds an import from a configuration array.
+   *
+   * @param array $configuration
+   *   The configuration array.
+   *
+   * @return \Devour\Importer\ImporterInterface
+   *   A new importer.
+   *
+   * @throws \RuntimeException
+   *   Thrown if the configuration file is not readable.
+   * @throws \Symfony\Component\Yaml\Exception\ParseException
+   *   Thrown if the configuration file cannot be parsed.
+   *
+   * @todo Normalize Exceptions.
    */
   public static function fromConfiguration(array $configuration) {
     $parts = array();

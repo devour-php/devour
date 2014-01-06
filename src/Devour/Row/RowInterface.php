@@ -7,4 +7,5 @@
 
 namespace Devour\Row;
 
-interface RowInterface extends \Iterator {}
+interface RowInterface extends \Iterator {
+}

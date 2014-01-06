@@ -1,7 +1,15 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Util\FileSystem.
+ */
+
 namespace Devour\Util;
 
+/**
+ * Wrapper class around basic filesystem actions.
+ */
 class FileSystem {
 
   /**

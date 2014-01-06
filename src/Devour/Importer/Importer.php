@@ -29,6 +29,9 @@ class Importer implements ImporterInterface {
 
   protected $processor;
 
+  /**
+   * Constructs a new Importer object.
+   */
   public function __construct(TransportInterface $transport, ParserInterface $parser, ProcessorInterface $processor) {
     $this->transport = $transport;
     $this->parser = $parser;
@@ -42,23 +45,26 @@ class Importer implements ImporterInterface {
     do {
       $payload = $this->transport->getRawPayload($source);
       $this->parse($payload);
-    }
-    while ($this->transport instanceof ProgressInterface && $this->transport->progress() != ProgressInterface::COMPLETE);
+    } while ($this->transport instanceof ProgressInterface && $this->transport->progress() != ProgressInterface::COMPLETE);
   }
 
+  /**
+   * Executes the parsing step.
+   */
   protected function parse(RawPayloadInterface $payload) {
     do {
       $parser_result = $this->parser->parse($payload);
       $this->process($parser_result);
-    }
-    while ($this->parser instanceof ProgressInterface && $this->parser->progress() != ProgressInterface::COMPLETE);
+    } while ($this->parser instanceof ProgressInterface && $this->parser->progress() != ProgressInterface::COMPLETE);
   }
 
+  /**
+   * Executes the processing step.
+   */
   protected function process(ParsedPayloadInterface $payload) {
     do {
       $this->processor->process($payload);
-    }
-    while ($this->processor instanceof ProgressInterface && $this->processor->progress() != ProgressInterface::COMPLETE);
+    } while ($this->processor instanceof ProgressInterface && $this->processor->progress() != ProgressInterface::COMPLETE);
   }
 
 }

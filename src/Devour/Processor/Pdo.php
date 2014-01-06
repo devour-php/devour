@@ -77,18 +77,30 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
     $this->save($item);
   }
 
+  /**
+   * Maps a field from source to destination.
+   */
   protected function map($field) {
     return $field;
   }
 
+  /**
+   * Prepares an item for saving.
+   */
   protected function prepare(array &$item) {
     $item += $this->defaults;
   }
 
+  /**
+   * Saves an item.
+   */
   protected function save(array $item) {
     $this->statement->execute($item);
   }
 
+  /**
+   * Builds the prepared statement for inserting new rows.
+   */
   protected function prepareStatement() {
     $fields = implode(',', $this->columns);
 
@@ -117,6 +129,9 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
     return preg_replace('/[^A-Za-z0-9_.]+/', '', $table);
   }
 
+  /**
+   * Returns the column names of the table.
+   */
   protected function getColumns() {
     switch ($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
       case 'sqlite':
@@ -124,10 +139,12 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
 
       default:
         return $this->getMysqlColumns();
-        break;
     }
   }
 
+  /**
+   * Finds columns names for MySQL.
+   */
   protected function getMysqlColumns() {
     $result = $this->connection->query('DESCRIBE ' . $this->table);
     $result->setFetchMode(\PDO::FETCH_ASSOC);
@@ -141,6 +158,9 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
     return $meta;
   }
 
+  /**
+   * Finds columns names for Sqlite.
+   */
   protected function getSqliteColumns() {
     // Stupid sqlite.
     $result = $this->connection->query("PRAGMA table_info(" . $this->table . ")");

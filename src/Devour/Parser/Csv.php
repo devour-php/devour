@@ -183,8 +183,7 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
 
     do {
       $data = fgetcsv($handle, $this->length, $this->delimiter, $this->enclosure, $this->escape);
-    }
-    while ($data === $this->emptyLine);
+    } while ($data === $this->emptyLine);
 
     return $data;
   }

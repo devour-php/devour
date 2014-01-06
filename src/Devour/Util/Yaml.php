@@ -1,7 +1,15 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Util\Yaml.
+ */
+
 namespace Devour\Util;
 
+/**
+ * Wrapper class around Yaml parsing.
+ */
 class Yaml {
 
   /**
@@ -9,7 +17,7 @@ class Yaml {
    *
    * This checks for different Yaml parsers, using the first one found.
    *
-   * @param string
+   * @param string $string
    *   A Yaml string.
    *
    * @return array

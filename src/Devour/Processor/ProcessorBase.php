@@ -28,6 +28,7 @@ abstract class ProcessorBase implements ProcessorInterface {
    * Processes a single row.
    *
    * @param \Devour\Row\RowInterface $row
+   *   A single row to process.
    */
   abstract protected function processRow(RowInterface $row);
 
