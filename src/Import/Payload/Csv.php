@@ -9,11 +9,9 @@ namespace Import\Payload;
 
 use Import\Row\Row;
 
-class Csv implements ParsedPayloadInterface {
+class Csv extends ParsedPayload {
 
   protected $header;
-
-  protected $rows = array();
 
   public function setHeader(array $header) {
     $this->header = $header;
@@ -24,15 +22,7 @@ class Csv implements ParsedPayloadInterface {
       $row = array_combine($this->header, $row);
     }
 
-    $this->rows[] = $row;
-  }
-
-  public function getRows() {
-    return $this->rows;
-  }
-
-  public function shiftRow() {
-    return new Row(array_shift($this->rows));
+    parent::addRow($row);
   }
 
 }
