@@ -14,10 +14,12 @@ use Import\Processor\ProcessorInterface;
 use Import\ProgressInterface;
 use Import\Source\SourceInterface;
 use Import\Transport\TransportInterface;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * This is a dumb importer that doesn't handle batching, or parallel processing
- * in any intelligent manner.
+ * in any intellgent manner.
  */
 class Importer implements ImporterInterface {
 
