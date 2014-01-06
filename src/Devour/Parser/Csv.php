@@ -8,7 +8,7 @@
 namespace Devour\Parser;
 
 use Devour\ConfigurableInterface;
-use Devour\Table\Csv as CsvTable;
+use Devour\Table\CsvTable;
 use Devour\Payload\PayloadInterface;
 use Devour\ProgressInterface;
 

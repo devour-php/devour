@@ -2,12 +2,12 @@
 
 /**
  * @file
- * Contains \Devour\Table\SimplePie.
+ * Contains \Devour\Table\SimplePieTable.
  */
 
 namespace Devour\Table;
 
-class SimplePie extends Table {
+class SimplePieTable extends Table {
 
   protected $title;
 

@@ -58,7 +58,7 @@ class CsvTest extends DevourTestCase {
 
     $payload = $this->getMockRawPayload(static::FILE_1);
     $result = $this->csv->parse($payload);
-    $this->assertInstanceOf('\Devour\Table\Csv', $result);
+    $this->assertInstanceOf('\Devour\Table\CsvTable', $result);
 
     // Check that rows were parsed correctly.
     $rows = $result->getRows();
@@ -82,7 +82,7 @@ class CsvTest extends DevourTestCase {
 
     $payload = $this->getMockRawPayload(static::FILE_1);
     $result = $this->csv->parse($payload);
-    $this->assertInstanceOf('\Devour\Table\Csv', $result);
+    $this->assertInstanceOf('\Devour\Table\CsvTable', $result);
 
     // Check that rows were parsed correctly.
     $rows = $result->getRows();

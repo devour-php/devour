@@ -8,7 +8,7 @@
 namespace Devour\Parser;
 
 use Devour\Payload\PayloadInterface;
-use Devour\Table\SimplePie as SimplePieTable;
+use Devour\Table\SimplePieTable;
 
 /**
  * Wraps SimplePie to parse RSS/Atom feeds.

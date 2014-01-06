@@ -2,12 +2,12 @@
 
 /**
  * @file
- * Contains \Devour\Table\Csv.
+ * Contains \Devour\Table\CsvTable.
  */
 
 namespace Devour\Table;
 
-class Csv extends Table {
+class CsvTable extends Table {
 
   /**
    * The list of header names.
