@@ -10,7 +10,7 @@ namespace Devour;
 /**
  * Allows progress reporting.
  *
- * Transports, parsers, and processors that implement this interface can do
+ * Transporters, parsers, and processors that implement this interface can do
  * batching or multi-process importing.
  */
 interface ProgressInterface {

@@ -10,7 +10,7 @@ namespace Devour\Importer;
 use Devour\Parser\ParserInterface;
 use Devour\Processor\ProcessorInterface;
 use Devour\Source\SourceInterface;
-use Devour\Transport\TransportInterface;
+use Devour\Transporter\TransporterInterface;
 
 interface ImporterInterface {
 

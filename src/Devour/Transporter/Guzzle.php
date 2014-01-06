@@ -2,17 +2,17 @@
 
 /**
  * @file
- * Contains \Devour\Transport\Guzzle.
+ * Contains \Devour\Transporter\Guzzle.
  */
 
-namespace Devour\Transport;
+namespace Devour\Transporter;
 
 use Devour\Source\SourceInterface;
 
 /**
  * A transport that fetches a payload via HTTP.
  */
-class Guzzle implements TransportInterface {
+class Guzzle implements TransporterInterface {
 
   /**
    * {@inheritdoc}

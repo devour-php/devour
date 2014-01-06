@@ -13,7 +13,7 @@ use Devour\Payload\PayloadInterface;
 use Devour\Processor\ProcessorInterface;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
-use Devour\Transport\TransportInterface;
+use Devour\Transporter\TransporterInterface;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -32,7 +32,7 @@ class Importer implements ImporterInterface {
   /**
    * Constructs a new Importer object.
    */
-  public function __construct(TransportInterface $transport, ParserInterface $parser, ProcessorInterface $processor) {
+  public function __construct(TransporterInterface $transport, ParserInterface $parser, ProcessorInterface $processor) {
     $this->transport = $transport;
     $this->parser = $parser;
     $this->processor = $processor;

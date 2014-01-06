@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Devour\Transport\Directory.
+ * Contains \Devour\Transporter\Directory.
  */
 
-namespace Devour\Transport;
+namespace Devour\Transporter;
 
 use Devour\Payload\FilePayload;
 use Devour\ProgressInterface;

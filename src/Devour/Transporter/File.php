@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Devour\Transport\File.
+ * Contains \Devour\Transporter\File.
  */
 
-namespace Devour\Transport;
+namespace Devour\Transporter;
 
 use Devour\Payload\FilePayload;
 use Devour\Source\SourceInterface;
@@ -14,7 +14,7 @@ use Devour\Util\FileSystem;
 /**
  * A transport that fetches a payload via a local file.
  */
-class File implements TransportInterface {
+class File implements TransporterInterface {
 
   /**
    * {@inheritdoc}

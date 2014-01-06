@@ -1,10 +1,10 @@
 <?php
 
-namespace Devour\Tests\Transport;
+namespace Devour\Tests\Transporter;
 
 use Devour\Source\SourceInterface;
 use Devour\Tests\DevourTestCase;
-use Devour\Transport\File;
+use Devour\Transporter\File;
 
 class FileTest extends DevourTestCase {
 

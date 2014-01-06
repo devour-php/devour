@@ -1,12 +1,12 @@
 <?php
 
-namespace Devour\Tests\Transport;
+namespace Devour\Tests\Transporter;
 
 use Devour\ProgressInterface;
 use Devour\Source\Source;
 use Devour\Source\SourceInterface;
 use Devour\Tests\DevourTestCase;
-use Devour\Transport\Directory;
+use Devour\Transporter\Directory;
 
 class DirectoryTest extends DevourTestCase {
 

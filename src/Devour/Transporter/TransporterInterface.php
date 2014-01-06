@@ -2,20 +2,20 @@
 
 /**
  * @file
- * Contains \Devour\Transport\TransportInterface.
+ * Contains \Devour\Transporter\TransporterInterface.
  */
 
-namespace Devour\Transport;
+namespace Devour\Transporter;
 
 use Devour\Source\SourceInterface;
 
 /**
  * The interface all transports must implement.
  *
- * A transport is a method of retrieving a paylod. Transports should strive to
+ * A transport is a method of retrieving a paylod. Transporters should strive to
  * be payload agnostic.
  */
-interface TransportInterface {
+interface TransporterInterface {
 
   /**
    * Returns the raw payload.
