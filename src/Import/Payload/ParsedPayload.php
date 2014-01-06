@@ -22,7 +22,11 @@ class ParsedPayload implements ParsedPayloadInterface {
   }
 
   public function shiftRow() {
-    return new Row(array_shift($this->rows));
+    if ($this->rows) {
+      return new Row(array_shift($this->rows));
+    }
+
+    return FALSE;
   }
 
 }
