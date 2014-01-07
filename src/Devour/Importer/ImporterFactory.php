@@ -8,6 +8,7 @@
 namespace Devour\Importer;
 
 use Devour\ConfigurableInterface;
+use Devour\Table\TableFactory;
 use Devour\Util\FileSystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -29,7 +30,7 @@ class ImporterFactory {
    */
   public static function fromConfigurationFile($filename) {
     if (!FileSystem::checkFile($filename)) {
-      throw new \LogicException(sprintf('The configuration file %s does not exist or is not readable.', $filename));
+      throw new \LogicException(sprintf('The configuration file "%s" does not exist or is not readable.', $filename));
     }
 
     $configuration = Yaml::parse(file_get_contents($filename));
@@ -67,9 +68,55 @@ class ImporterFactory {
       }
     }
 
+    $parts['parser']->setTableFactory(static::getTableFactory($configuration));
+
     $importer_class = $configuration['importer']['class'];
 
     return new $importer_class($parts['transporter'], $parts['parser'], $parts['processor']);
+  }
+
+  /**
+   * Returns a table factory based on configuration.
+   *
+   * @param array $configuration
+   *   The configuration.
+   *
+   * @return \Devour\Table\TableFactory
+   *   A new table factory object.
+   */
+  protected static function getTableFactory(array $configuration) {
+    $factory = new TableFactory();
+
+    if (!empty($configuration['table']) && !empty($configuration['table']['class'])) {
+      $factory->setTableClass($configuration['table']['class']);
+    }
+
+    if ($map = static::buildMap($configuration)) {
+      $factory->setMap($map);
+    }
+
+    return $factory;
+  }
+
+  /**
+   * Returns a map object based on configuration.
+   *
+   * @param array $configuration
+   *   The configuration.
+   *
+   * @return \Devour\Map\MapInterface|bool
+   *   A new map, or false if there is no map configuration.
+   */
+  protected static function buildMap(array $configuration) {
+    if (empty($configuration['map'])) {
+      return FALSE;
+    }
+
+    $class = '\Devour\Map\Map';
+    if (!empty($configuration['map']['class'])) {
+      $class = $configuration['map']['class'];
+    }
+    return new $class($configuration['map']['configuration']);
   }
 
 }
