@@ -32,6 +32,13 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
   protected $table;
 
   /**
+   * The default values.
+   *
+   * @var array
+   */
+  protected $defaults;
+
+  /**
    * The columns belonging to this table.
    *
    * @var array
@@ -39,18 +46,44 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
   protected $columns;
 
   /**
+   * The columns that are unique.
+   *
+   * @var array
+   */
+  protected $uniqueColumns;
+
+  /**
+   * The prepared statement for inserting items.
+   *
+   * @var \PDOStatement
+   */
+  protected $saveStatement;
+
+  /**
+   * The prepared statement for finding existing items.
+   *
+   * @var \PDOStatement
+   */
+  protected $uniqueStatement;
+
+  /**
    * Constructs a new Pdo object.
    *
    * @param \PDO $connection
    *   A PDO database connection.
    */
-  public function __construct(\PDO $connection, $table) {
+  public function __construct(\PDO $connection, $table, array $unique_columns = NULL) {
     $this->connection = $connection;
     $this->table = $this->escapeTable($table);
     $this->columns = $this->getColumns();
 
-    $this->statement = $this->prepareStatement();
+    $this->saveStatement = $this->prepareSaveStatement();
     $this->defaults = array_fill_keys($this->columns, NULL);
+
+    if ($unique_columns) {
+      $this->uniqueColumns = array_combine($unique_columns, $unique_columns);
+      $this->uniqueStatement = $this->prepareUniqueStatement();
+    }
   }
 
   /**
@@ -63,10 +96,10 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
       }
     }
 
-    $configuration += array('username' => NULL, 'password' => NULL);
+    $configuration += array('username' => NULL, 'password' => NULL, 'unique' => NULL);
     $connection = new \PDO($configuration['dsn'], $configuration['username'], $configuration['password']);
 
-    return new static($connection, $configuration['table']);
+    return new static($connection, $configuration['table'], $configuration['unique']);
   }
 
   /**
@@ -78,6 +111,10 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
 
     foreach ($this->columns as $field) {
       $item[$field] = $row->get($field);
+    }
+
+    if ($this->uniqueColumns && $this->itemIsUnique($item)) {
+      return;
     }
 
     $this->prepare($item);
@@ -96,13 +133,20 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
    * Saves an item.
    */
   protected function save(array $item) {
-    $this->statement->execute($item);
+    $this->saveStatement->execute($item);
+  }
+
+  protected function itemIsUnique(array $item) {
+    $unique = array_intersect_key($item, $this->uniqueColumns);
+    if ($result = $this->uniqueStatement->execute($unique)) {
+      return (bool) $this->uniqueStatement->fetch();
+    }
   }
 
   /**
    * Builds the prepared statement for inserting new rows.
    */
-  protected function prepareStatement() {
+  protected function prepareSaveStatement() {
     $fields = implode(',', $this->columns);
 
     $placeholders = array();
@@ -113,6 +157,21 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
 
     // Prepare our statement.
     return $this->connection->prepare("INSERT INTO {$this->table} ($fields) VALUES ($placeholders)");
+  }
+
+  /**
+   * Builds the prepared statement for finding existing rows.
+   */
+  protected function prepareUniqueStatement() {
+    $clauses = array();
+    foreach ($this->uniqueColumns as $column) {
+      $clauses[] = "$column = :$column";
+    }
+
+    $clause = implode(' AND ', $clauses);
+
+    // Prepare our statement.
+    return $this->connection->prepare("SELECT 1 FROM {$this->table} WHERE $clause LIMIT 1");
   }
 
   /**
