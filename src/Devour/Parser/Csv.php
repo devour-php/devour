@@ -64,13 +64,16 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
    * @todo Handle encoding.
    */
   public function parse(PayloadInterface $payload) {
-    $filepath = $payload->getPath();
+    $handle = $payload->getStream();
+    // Resume where we left off.
+    fseek($handle, $this->pointer);
 
-    $handle = $this->openHandle($filepath);
+    // Reset our counter.
+    $this->linesRead = 0;
 
     // Initial load.
     if ($this->fileLength === NULL) {
-      $this->fileLength = filesize($filepath);
+      $this->fileLength = $payload->getSize();
 
       if ($this->hasHeader) {
         $this->header = $this->readLine($handle);
@@ -118,35 +121,6 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
   public function setLimit($limit) {
     $this->limit = $limit;
     return $this;
-  }
-
-  /**
-   * Returns an open file handle.
-   *
-   * @param string $filepath
-   *   The path to a file.
-   *
-   * @return resource
-   *   An open file handle.
-   *
-   * @throws \RuntimeException
-   *   Thrown if the file cannot be read.
-   */
-  protected function openHandle($filepath) {
-
-    if (!is_file($filepath) || !is_readable($filepath)) {
-      throw new \RuntimeException('The CSV file could not be read.');
-    }
-
-    $handle = fopen($filepath, 'r');
-
-    // Resume where we left off.
-    fseek($handle, $this->pointer);
-
-    // Reset our counter.
-    $this->linesRead = 0;
-
-    return $handle;
   }
 
   /**

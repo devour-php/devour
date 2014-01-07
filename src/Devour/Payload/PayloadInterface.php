@@ -13,14 +13,20 @@ namespace Devour\Payload;
 interface PayloadInterface {
 
   /**
-   * Returns the path to the payload.
+   * Gets the size of the stream, if available.
    *
-   * This can be a file path, or an in-memory file.
-   *
-   * @return string
-   *   The path of the payload.
+   * @return int|bool
+   *   The size of the payload, or false if unavailable.
    */
-  public function getPath();
+  public function getSize();
+
+  /**
+   * Returns a stream containing the payload.
+   *
+   * @return resource
+   *   A streamable resource.
+   */
+  public function getStream();
 
   /**
    * Returns the contents of the raw payload.

@@ -3,6 +3,7 @@
 namespace Devour\Tests\Parser;
 
 use Devour\Parser\Csv;
+use Devour\Payload\FilePayload;
 use Devour\ProgressInterface;
 use Devour\Tests\DevourTestCase;
 
@@ -11,7 +12,6 @@ use Devour\Tests\DevourTestCase;
  */
 class CsvTest extends DevourTestCase {
 
-  const INVALID_FILE = './file_does_not_exist';
   const FILE_1 = './file_1';
 
   protected $csv;
@@ -43,13 +43,7 @@ class CsvTest extends DevourTestCase {
   }
 
   protected function getMockRawPayload($filepath) {
-    $source = $this->getMock('\Devour\Payload\PayloadInterface');
-
-    $source->expects($this->once())
-      ->method('getPath')
-      ->will($this->returnValue($filepath));
-
-    return $source;
+    return new FilePayload($filepath);
   }
 
   public function testParse() {
@@ -96,15 +90,6 @@ class CsvTest extends DevourTestCase {
     }
 
     $this->assertEquals(ProgressInterface::COMPLETE, $this->csv->progress());
-  }
-
-  /**
-   * @expectedException \RuntimeException
-   * @expectedExceptionMessage The CSV file could not be read.
-   */
-  public function testInvalidFile() {
-    $payload = $this->getMockRawPayload(static::INVALID_FILE);
-    $this->csv->parse($payload);
   }
 
   public function testLimit() {

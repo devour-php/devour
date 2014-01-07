@@ -25,14 +25,21 @@ class FilePayload implements PayloadInterface {
   }
 
   /**
-   * Returns the path to the payload.
+   * {@inheritdoc}
    */
-  public function getPath() {
-    return $this->filename;
+  public function getSize() {
+    return filesize($this->filename);
   }
 
   /**
-   * Returns the contents of the payload.
+   * {@inheritdoc}
+   */
+  public function getStream() {
+    return fopen($this->filename, 'r+');
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getContents() {
     return file_get_contents($this->filename);
