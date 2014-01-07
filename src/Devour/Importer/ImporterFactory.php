@@ -70,9 +70,17 @@ class ImporterFactory {
 
     $parts['parser']->setTableFactory(static::getTableFactory($configuration));
 
-    $importer_class = $configuration['importer']['class'];
+    $importer_class = '\Devour\Importer\Importer';
+    if (!empty($configuration['importer']['class'])) {
+      $importer_class = $configuration['importer']['class'];
+    }
 
-    return new $importer_class($parts['transporter'], $parts['parser'], $parts['processor']);
+    $importer_configuration = array();
+    if (!empty($configuration['importer']['configuration'])) {
+      $importer_configuration = $configuration['importer']['configuration'];
+    }
+
+    return new $importer_class($parts['transporter'], $parts['parser'], $parts['processor'], $configuration);
   }
 
   /**

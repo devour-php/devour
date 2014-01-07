@@ -93,7 +93,7 @@ class CsvTest extends DevourTestCase {
   }
 
   public function testLimit() {
-    $this->csv->setLimit(2);
+    $this->csv->setProcessLimit(2);
 
     $payload = $this->getMockRawPayload(static::FILE_1);
     $result = $this->csv->parse($payload);

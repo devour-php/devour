@@ -117,7 +117,7 @@ class Csv extends ParserBase implements ProgressInterface, ConfigurableInterface
    * @return self
    *   The parser object for chaining.
    */
-  public function setLimit($limit) {
+  public function setProcessLimit($limit) {
     $this->limit = $limit;
     return $this;
   }

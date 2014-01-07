@@ -32,10 +32,22 @@ class Importer implements ImporterInterface {
   /**
    * Constructs a new Importer object.
    */
-  public function __construct(TransporterInterface $transport, ParserInterface $parser, ProcessorInterface $processor) {
+  public function __construct(TransporterInterface $transport, ParserInterface $parser, ProcessorInterface $processor, array $configuration = array()) {
     $this->transport = $transport;
     $this->parser = $parser;
     $this->processor = $processor;
+
+    if (!empty($configuration['batch_size'])) {
+      if ($this->transport instanceof ProgressInterface) {
+        $this->transport->setProcessLimit($configuration['batch_size']);
+      }
+      if ($this->parser instanceof ProgressInterface) {
+        $this->parser->setProcessLimit($configuration['batch_size']);
+      }
+      if ($this->processor instanceof ProgressInterface) {
+        $this->processor->setProcessLimit($configuration['batch_size']);
+      }
+    }
   }
 
   /**

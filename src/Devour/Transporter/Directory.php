@@ -83,4 +83,11 @@ class Directory implements ProgressInterface {
     });
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function setProcessLimit($limit) {
+    return $this;
+  }
+
 }

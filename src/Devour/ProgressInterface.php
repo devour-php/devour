@@ -30,4 +30,15 @@ interface ProgressInterface {
    */
   public function progress();
 
+  /**
+   * Sets the number of lines to parse at one time.
+   *
+   * @param int $limit
+   *   The number of lines to parse.
+   *
+   * @return self
+   *   The object for chaining.
+   */
+  public function setProcessLimit($limit);
+
 }
