@@ -14,9 +14,7 @@ interface TableInterface {
 
   public function __construct(MapInterface $map);
 
-  public function createRow();
-
-  public function addRow(RowInterface $row);
+  public function getNewRow();
 
   public function addRowData(array $data);
 

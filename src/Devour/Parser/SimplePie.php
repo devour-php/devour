@@ -32,7 +32,7 @@ class SimplePie extends ParserBase {
     foreach ($feed->get_items(0, 0) as $item) {
 
       // @todo Add more fields.
-      $row = $table->createRow();
+      $row = $table->getNewRow();
       $row->set('id', $item->get_id());
       $row->set('permalink', $item->get_permalink());
       $row->set('title', $item->get_title());
@@ -43,8 +43,6 @@ class SimplePie extends ParserBase {
         $row->set('author_name', $author->get_name());
         $row->set('author_email', $author->get_email());
       }
-
-      $table->addRow($row);
     }
 
     return $table;

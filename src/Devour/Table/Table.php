@@ -30,21 +30,15 @@ class Table implements TableInterface {
     $this->data[$field] = $value;
   }
 
-  public function createRow() {
-    return new Row($this, $this->map);
-  }
-
-  /**
-   * Adds a row.
-   */
-  public function addRow(RowInterface $row) {
+  public function getNewRow() {
+    $row = new Row($this, $this->map);
     $this->rows[] = $row;
+    return $row;
   }
 
   public function addRowData(array $data) {
-    $row = $this->createRow();
+    $row = $this->getNewRow();
     $row->setData($data);
-    $this->rows[] = $row;
   }
 
   /**
