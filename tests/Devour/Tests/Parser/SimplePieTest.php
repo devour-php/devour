@@ -33,7 +33,7 @@ class SimplePieTest extends DevourTestCase {
     $payload = $this->getMockRawPayload($this->content);
     $result = $this->parser->parse($payload);
 
-    $first = $result->shiftRow();
+    $first = $result->shift();
     $this->assertEquals('Adaptivethemes: Why I killed Node, may it RIP', $first->get('title'));
     $this->assertEquals(1256317246, $first->get('date'));
     $this->assertEquals('http://adaptivethemes.com/why-i-killed-node-may-it-rip', $first->get('id'));
@@ -43,7 +43,7 @@ class SimplePieTest extends DevourTestCase {
 
     $this->assertSame('lawyer@boyer.net (Lawyer Boyer)', $first->get('author_email'));
 
-    $second = $result->shiftRow();
+    $second = $result->shift();
     $this->assertEquals('Midwestern Mac, LLC: Managing News - Revolutionary—not Evolutionary—Step for Drupal', $second->get('title'));
     $this->assertEquals(1256273895, $second->get('date'));
     $this->assertEquals('http://www.midwesternmac.com/blogs/geerlingguy/managing-news-revolutionary%E2%80%94not-evolutionary%E2%80%94step-drupal', $second->get('id'));

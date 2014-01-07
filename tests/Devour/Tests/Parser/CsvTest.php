@@ -47,7 +47,7 @@ class CsvTest extends DevourTestCase {
   }
 
   public function testParse() {
-    $this->assertEquals(ProgressInterface::COMPLETE, $this->csv->progress());
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
 
     $payload = $this->getMockRawPayload(static::FILE_1);
@@ -55,23 +55,22 @@ class CsvTest extends DevourTestCase {
     $this->assertInstanceOf('\Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
-    $rows = $result->getRows();
-    $this->assertEquals(count($this->csvData), count($rows));
+    $this->assertSame(count($this->csvData), count($result));
     foreach ($this->csvData as $key => $data) {
-      $this->assertEquals($data, $rows[$key]->getData());
+      $this->assertSame($data, $result[$key]->getData());
     }
 
-    $this->assertEquals(ProgressInterface::COMPLETE, $this->csv->progress());
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
     // Test that an empty array is returned after parsing is complete.
     $payload = $this->getMockRawPayload(static::FILE_1);
     $result = $this->csv->parse($payload);
-    $this->assertEquals(0, count($result->getRows()));
+    $this->assertSame(0, count($result));
   }
 
   public function testParseWithHeaders() {
     $this->csv->setHasHeader(TRUE);
-    $this->assertEquals(ProgressInterface::COMPLETE, $this->csv->progress());
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
 
     $payload = $this->getMockRawPayload(static::FILE_1);
@@ -79,17 +78,15 @@ class CsvTest extends DevourTestCase {
     $this->assertInstanceOf('\Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
-    $rows = $result->getRows();
-
     // Remove header line.
     $header = array_shift($this->csvData);
 
-    $this->assertEquals(count($this->csvData), count($rows));
+    $this->assertSame(count($this->csvData), count($result));
     foreach ($this->csvData as $key => $row) {
-      $this->assertEquals(array_combine($header, $row), $rows[$key]->getData());
+      $this->assertSame(array_combine($header, $row), $result[$key]->getData());
     }
 
-    $this->assertEquals(ProgressInterface::COMPLETE, $this->csv->progress());
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
   }
 
   public function testLimit() {

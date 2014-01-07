@@ -15,7 +15,7 @@ use Devour\Table\TableInterface;
 /**
  * A stub table implementation.
  */
-class TableStub implements TableInterface {
+class TableStub extends \SplQueue implements TableInterface {
 
   public function __construct(MapInterface $map) {
   }
@@ -23,28 +23,10 @@ class TableStub implements TableInterface {
   public function setField($field, $value) {
   }
 
+  public function getField($field) {
+  }
+
   public function getNewRow() {
-  }
-
-  public function addRowData(array $data) {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function shiftRow() {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function popRow() {
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getRows() {
   }
 
 }

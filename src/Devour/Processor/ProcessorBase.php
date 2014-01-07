@@ -18,8 +18,8 @@ abstract class ProcessorBase implements ProcessorInterface {
   /**
    * {@inheritdoc}
    */
-  public function process(TableInterface $payload) {
-    while ($row = $payload->shiftRow()) {
+  public function process(TableInterface $table) {
+    foreach ($table as $row) {
       $this->processRow($row);
     }
   }

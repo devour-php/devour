@@ -32,10 +32,10 @@ class TableFactoryTest extends DevourTestCase {
 
   /**
    * @expectedException \InvalidArgumentException
-   * @expectedExceptionMessage Class "\Devour\Map\NoopMap" needs to implement \Devour\Table\TableInterface
+   * @expectedExceptionMessage Class "Devour\Map\NoopMap" needs to implement \Devour\Table\TableInterface
    */
   public function testTableFactoryException() {
-    $stub_class = '\Devour\Map\NoopMap';
+    $stub_class = 'Devour\Map\NoopMap';
     $factory = new TableFactory();
     $factory->setTableClass($stub_class);
   }

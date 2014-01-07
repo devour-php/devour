@@ -14,47 +14,58 @@ use Devour\Row\RowInterface;
 /**
  * A simple table implementation.
  */
-class Table implements TableInterface {
+class Table extends \SplQueue implements TableInterface {
 
-  protected $data = array();
+  /**
+   * The fields belonging to the table.
+   *
+   * @var array
+   */
+  protected $fields = array();
 
-  protected $rows = array();
-
+  /**
+   * The map for this table.
+   *
+   * @var \Devour\Map\MapInterface
+   */
   protected $map;
 
+  /**
+   * Constructs a new Table.
+   *
+   * @param \Devour\Map\MapInterface $map
+   *   The map this table will use.
+   */
   public function __construct(MapInterface $map) {
     $this->map = $map;
+
+    // Default to delete to save memory when possible.
+    $this->setIteratorMode(\SplDoublyLinkedList::IT_MODE_DELETE);
   }
 
+  /**
+   * {@inheritodc}
+   */
   public function setField($field, $value) {
-    $this->data[$field] = $value;
+    $this->fields[$field] = $value;
   }
 
+  /**
+   * {@inheritodc}
+   */
+  public function getField($field) {
+    if (isset($this->fields[$field])) {
+      return $this->fields[$field];
+    }
+  }
+
+  /**
+   * {@inheritodc}
+   */
   public function getNewRow() {
     $row = new Row($this, $this->map);
-    $this->rows[] = $row;
+    $this->push($row);
     return $row;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function shiftRow() {
-    return array_shift($this->rows);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function popRow() {
-    return array_pop($this->rows);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getRows() {
-    return $this->rows;
   }
 
 }

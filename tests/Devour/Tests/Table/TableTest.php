@@ -24,25 +24,42 @@ class TableTest extends DevourTestCase {
   }
 
   public function testTable() {
+    // Test fields.
+    $this->table->setField('field 1', 1234);
+    $this->assertSame(1234, $this->table->getField('field 1'));
+    $this->assertNull($this->table->getField('field does not exist'));
 
     // Test adding.
     foreach ($this->rows as $row) {
       $this->table->getNewRow()->setData($row);
     }
 
-    // Test getRows().
-    $rows = $this->table->getRows();
-    $this->assertEquals(count($this->rows), count($rows));
+    // Test Countable interface.
+    $this->assertSame(count($this->rows), count($this->table));
 
+    // Test ArrayAccess interface.
     foreach ($this->rows as $delta => $row) {
-      $this->assertEquals($row, $rows[$delta]->getData());
+      $this->assertSame($row, $this->table[$delta]->getData());
     }
 
     // Test shift.
-    $this->assertEquals($this->rows[0], $this->table->shiftRow()->getData());
+    $this->assertSame($this->rows[0], $this->table->shift()->getData());
 
     // Test pop.
-    $this->assertEquals($this->rows[2], $this->table->popRow()->getData());
+    $this->assertSame($this->rows[2], $this->table->pop()->getData());
+  }
+
+  public function testTableIteration() {
+    foreach ($this->rows as $row) {
+      $this->table->getNewRow()->setData($row);
+    }
+
+    // Test Iterable interface.
+    foreach ($this->table as $row) {
+      $this->assertSame(array_shift($this->rows), $row->getData());
+    }
+
+    $this->assertTrue($this->table->isEmpty());
   }
 
 }

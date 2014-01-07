@@ -10,11 +10,50 @@ namespace Devour\Table;
 use Devour\Map\MapInterface;
 use Devour\Row\RowInterface;
 
-interface TableInterface {
+/**
+ * Tables get returned from parsers and passed into processors.
+ */
+interface TableInterface extends \Iterator, \ArrayAccess, \Countable {
 
+  /**
+   * Constructs a new TableInterface object.
+   *
+   * @param \Devour\Map\MapInterface $map
+   *   The map this table will use.
+   */
   public function __construct(MapInterface $map);
 
+  /**
+   * Returns a new row.
+   *
+   * Rows cannot be created independently from the table, this method must be
+   * used.
+   *
+   * @return \Devour\Row\RowInterface
+   *   A new row, bound to the table.
+   */
   public function getNewRow();
+
+  /**
+   * Sets a field for this table.
+   *
+   * @param string $field
+   *   The name of the field.
+   * @param mixed $value
+   *   The value of the field.
+   */
+  public function setField($field, $value);
+
+  /**
+   * Gets a field from this table.
+   *
+   * @param string $field
+   *   The name of the field.
+   *
+   * @return mixed
+   *   The value of the field.
+   */
+  public function getField($field);
 
   /**
    * Returns the first row, removing it.
@@ -24,7 +63,7 @@ interface TableInterface {
    * @return \Devour\Row\RowInterface
    *   A row object.
    */
-  public function shiftRow();
+  public function shift();
 
   /**
    * Returns the last row, removing it.
@@ -34,14 +73,6 @@ interface TableInterface {
    * @return \Devour\Row\RowInterface
    *   A row object.
    */
-  public function popRow();
-
-  /**
-   * Returns all of the rows in an array.
-   *
-   * @return \Devour\Row\RowInterface[]
-   *   A list of rows.
-   */
-  public function getRows();
+  public function pop();
 
 }
