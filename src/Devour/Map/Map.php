@@ -23,10 +23,10 @@ class Map implements MapInterface {
   protected $sourceToTarget;
 
   /**
-   * Constructs a new Map object.
+   * Constructs a Map object.
    *
    * @param array $map
-   *   A array keyed from source => target.
+   *   An array keyed from source => target.
    */
   public function __construct(array $map) {
     $this->sourceToTarget = $map;

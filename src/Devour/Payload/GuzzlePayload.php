@@ -10,7 +10,11 @@ namespace Devour\Payload;
 use Guzzle\Http\Message\Response;
 
 /**
- * @todo Add stream handling.
+ * A wrapper around a Guzzle response that acts as a payload.
+ *
+ * Guzzle's SreamInterface is pretty sweet, and we might end up copying more of
+ * if to PayloadInterface, which is a shame. But, it's not worth adding a hard
+ * dependency on Guzzle.
  */
 class GuzzlePayload implements PayloadInterface {
 
@@ -22,7 +26,7 @@ class GuzzlePayload implements PayloadInterface {
   protected $response;
 
   /**
-   * Constructs a new GuzzlePayload object.
+   * Constructs a GuzzlePayload object.
    *
    * @param \Guzzle\Http\Message\Response $response
    *   A Guzzle response.

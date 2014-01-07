@@ -8,14 +8,19 @@
 namespace Devour\Payload;
 
 /**
- * @todo After rename, and stream handling.
+ * A regular, saved-to-disk, file.
  */
 class FilePayload implements PayloadInterface {
 
+  /**
+   * The name of the file.
+   *
+   * @var string
+   */
   protected $filename;
 
   /**
-   * Constructs a new File object.
+   * Constructs a File object.
    *
    * @param string $filename
    *   The name of the file.

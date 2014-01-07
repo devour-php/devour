@@ -87,6 +87,7 @@ class Directory implements ProgressInterface {
    * {@inheritdoc}
    */
   public function setProcessLimit($limit) {
+    // This only processes one file at a time, so this is a no-op.
     return $this;
   }
 

@@ -36,6 +36,9 @@ class DirectoryTest extends DevourTestCase {
    * @expectedExceptionMessage There are no more files left to process.
    */
   public function testTransport() {
+    // For test coverage sake. This is a no-op.
+    $this->directory->setProcessLimit(10);
+
     $source = new Source(static::DIRECTORY);
 
     // We haven't read any directories yet.
@@ -56,7 +59,6 @@ class DirectoryTest extends DevourTestCase {
     $this->assertEquals($this->directory->progress(), ProgressInterface::COMPLETE);
     // The third call will throw \RuntimeException.
     $this->directory->transport($source);
-
   }
 
   /**

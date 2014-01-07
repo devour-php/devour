@@ -8,7 +8,8 @@
 namespace Devour\Payload;
 
 /**
- * A raw payload is a wrapper around a resource that gets passed to a parser.
+ * A payload is a wrapper around a resource that gets returned from a transport
+ * and passed to a parser.
  */
 interface PayloadInterface {
 
@@ -29,7 +30,7 @@ interface PayloadInterface {
   public function getStream();
 
   /**
-   * Returns the contents of the raw payload.
+   * Returns the contents of the payload.
    *
    * @return string
    *   The contents of the payload.
