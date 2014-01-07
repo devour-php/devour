@@ -14,7 +14,11 @@ interface TableInterface {
 
   public function __construct(MapInterface $map);
 
+  public function createRow();
+
   public function addRow(RowInterface $row);
+
+  public function addRowData(array $data);
 
   /**
    * Returns the first row, removing it.

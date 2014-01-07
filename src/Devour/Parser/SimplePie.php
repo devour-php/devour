@@ -9,13 +9,11 @@ namespace Devour\Parser;
 
 use Devour\Map\NoopMap;
 use Devour\Payload\PayloadInterface;
-use Devour\Row\SimplePieRow;
-use Devour\Table\SimplePieTable;
 
 /**
  * Wraps SimplePie to parse RSS/Atom feeds.
  */
-class SimplePie implements ParserInterface {
+class SimplePie extends ParserBase {
 
   /**
    * {@inheritdoc}
@@ -23,18 +21,18 @@ class SimplePie implements ParserInterface {
   public function parse(PayloadInterface $payload) {
     $feed = new \SimplePie();
 
-    $table = new SimplePieTable(new NoopMap());
+    $table = $this->getTableFactory()->create(new NoopMap());
 
     // @todo Use file directly.
     $feed->set_raw_data($payload->getContents());
     $feed->init();
 
-    $table->setFeedTitle($feed->get_title());
+    $table->setField('feed_title', $feed->get_title());
 
     foreach ($feed->get_items(0, 0) as $item) {
 
       // @todo Add more fields.
-      $row = new SimplePieRow($table);
+      $row = $table->createRow();
       $row->set('id', $item->get_id());
       $row->set('permalink', $item->get_permalink());
       $row->set('title', $item->get_title());

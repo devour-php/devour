@@ -8,6 +8,7 @@
 namespace Devour\Parser;
 
 use Devour\Payload\PayloadInterface;
+use Devour\Table\TableFactory;
 
 /**
  * The interface all parsers must implement.
@@ -24,5 +25,9 @@ interface ParserInterface {
    *   A parsed payload.
    */
   public function parse(PayloadInterface $payload);
+
+  public function setTableFactory(TableFactory $table_factory);
+
+  public function getTableFactory();
 
 }

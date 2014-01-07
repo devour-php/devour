@@ -14,10 +14,10 @@ use Devour\Table\TableInterface;
  * The interface for a single row in a table.
  */
 interface RowInterface {
-
-  public function setTable(TableInterface $table);
-
-  public function setMap(MapInterface $map);
+  /**
+   *
+   */
+  public function __construct(TableInterface $table, MapInterface $map);
 
   /**
    * Returns the value for a target field.
@@ -29,5 +29,11 @@ interface RowInterface {
    *   The value that corresponds to this field.
    */
   public function get($target_field);
+
+  public function set($source_field, $value);
+
+  public function getData();
+
+  public function setData(array $data);
 
 }

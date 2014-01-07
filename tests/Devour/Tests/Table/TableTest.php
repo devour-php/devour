@@ -3,7 +3,6 @@
 namespace Devour\Tests\Table;
 
 use Devour\Map\NoopMap;
-use Devour\Row\DynamicRow;
 use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
 
@@ -27,9 +26,8 @@ class TableTest extends DevourTestCase {
   public function testTable() {
 
     // Test adding.
-    foreach ($this->rows as $delta => $row) {
-      $row = new DynamicRow($row);
-      $this->table->addRow($row);
+    foreach ($this->rows as $row) {
+      $this->table->addRowData($row);
     }
 
     // Test getRows().

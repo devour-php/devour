@@ -8,12 +8,15 @@
 namespace Devour\Table;
 
 use Devour\Map\MapInterface;
+use Devour\Row\Row;
 use Devour\Row\RowInterface;
 
 /**
  * A simple table implementation.
  */
 class Table implements TableInterface {
+
+  protected $data = array();
 
   protected $rows = array();
 
@@ -23,12 +26,24 @@ class Table implements TableInterface {
     $this->map = $map;
   }
 
+  public function setField($field, $value) {
+    $this->data[$field] = $value;
+  }
+
+  public function createRow() {
+    return new Row($this, $this->map);
+  }
+
   /**
    * Adds a row.
    */
   public function addRow(RowInterface $row) {
-    $row->setTable($this);
-    $row->setMap($this->map);
+    $this->rows[] = $row;
+  }
+
+  public function addRowData(array $data) {
+    $row = $this->createRow();
+    $row->setData($data);
     $this->rows[] = $row;
   }
 

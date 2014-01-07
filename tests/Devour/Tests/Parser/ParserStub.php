@@ -8,20 +8,19 @@
 namespace Devour\Tests\Parser;
 
 use Devour\Map\NoopMap;
-use Devour\Parser\ParserInterface;
+use Devour\Parser\ParserBase;
 use Devour\Payload\PayloadInterface;
-use Devour\Table\Table;
 
 /**
  * A CSV parser.
  */
-class ParserStub implements ParserInterface {
+class ParserStub extends ParserBase {
 
   /**
    * {@inheritdoc}
    */
   public function parse(PayloadInterface $payload) {
-    return new Table(new NoopMap());
+    return $this->getTableFactory()->create(new NoopMap());
   }
 
 }

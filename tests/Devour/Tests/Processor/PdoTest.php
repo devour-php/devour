@@ -4,7 +4,7 @@ namespace Devour\Tests\Processor;
 
 use Devour\Map\NoopMap;
 use Devour\Processor\Pdo as PdoProcessor;
-use Devour\Row\DynamicRow;
+use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
 
 /**
@@ -51,21 +51,12 @@ class PdoTest extends DevourTestCase {
   }
 
   protected function getMockTable() {
-    $table = $this->getMock('\Devour\Table\TableInterface');
     $map = new NoopMap();
+    $table = new Table($map);
 
-    $rows = array();
-    foreach (range(0, 2) as $delta) {
-      $row = new DynamicRow($this->pdoData[$delta]);
-      $row->setMap($map);
-      $row->setTable($table);
-      $rows[] = $row;
+    foreach ($this->pdoData as $data) {
+      $table->addRowData($data);
     }
-
-
-    $table->expects($this->any())
-      ->method('shiftRow')
-      ->will($this->onConsecutiveCalls($rows[0], $rows[1], $rows[2]));
 
     return $table;
   }

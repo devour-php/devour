@@ -11,13 +11,11 @@ use Devour\ConfigurableInterface;
 use Devour\Map\NoopMap;
 use Devour\Payload\PayloadInterface;
 use Devour\ProgressInterface;
-use Devour\Row\DynamicRow;
-use Devour\Table\Table;
 
 /**
  * A CSV parser.
  */
-class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
+class Csv extends ParserBase implements ProgressInterface, ConfigurableInterface {
 
   protected $length = 0;
 
@@ -82,19 +80,19 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
       }
     }
 
-    $result = new Table(new NoopMap());
+    $table = $this->getTableFactory()->create(new NoopMap());
 
     while ($data = $this->getCsvLine($handle)) {
 
       if ($this->hasHeader) {
         $data = array_combine($this->header, $data);
       }
-      $result->addRow(new DynamicRow($data));
+      $table->addRowData($data);
     }
 
     $this->closeHandle($handle);
 
-    return $result;
+    return $table;
   }
 
   /**
