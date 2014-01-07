@@ -67,12 +67,26 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
   protected $uniqueStatement;
 
   /**
+   * Whether to update existing rows.
+   *
+   * @var bool
+   */
+  protected $updateExisting;
+
+  /**
+   * The prepared statement for updating items.
+   *
+   * @var \PDOStatement
+   */
+  protected $updateStatement;
+
+  /**
    * Constructs a new Pdo object.
    *
    * @param \PDO $connection
    *   A PDO database connection.
    */
-  public function __construct(\PDO $connection, $table, array $unique_columns = NULL) {
+  public function __construct(\PDO $connection, $table, array $unique_columns = NULL, $update_existing = FALSE) {
     $this->connection = $connection;
     $this->table = $this->escapeTable($table);
     $this->columns = $this->getColumns();
@@ -83,6 +97,11 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
     if ($unique_columns) {
       $this->uniqueColumns = array_combine($unique_columns, $unique_columns);
       $this->uniqueStatement = $this->prepareUniqueStatement();
+    }
+
+    $this->updateExisting = $update_existing;
+    if ($update_existing) {
+      $this->updateStatement = $this->prepareUpdateStatement();
     }
   }
 
@@ -114,6 +133,11 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
     }
 
     if ($this->uniqueColumns && $this->itemIsUnique($item)) {
+
+      if ($this->updateExisting) {
+        $this->update($item);
+      }
+
       return;
     }
 
@@ -136,11 +160,27 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
     $this->saveStatement->execute($item);
   }
 
+  /**
+   * Updates as item.
+   */
+  protected function update(array $item) {
+    $this->updateStatement->execute($item);
+  }
+
+  /**
+   * Determines if an item is unique.
+   *
+   * @param array $item
+   *   The item.
+   *
+   * @return bool
+   *   True if the item is unique, false if not.
+   */
   protected function itemIsUnique(array $item) {
     $unique = array_intersect_key($item, $this->uniqueColumns);
-    if ($result = $this->uniqueStatement->execute($unique)) {
-      return (bool) $this->uniqueStatement->fetch();
-    }
+    $this->uniqueStatement->execute($unique);
+
+    return (bool) $this->uniqueStatement->fetch();
   }
 
   /**
@@ -168,10 +208,32 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
       $clauses[] = "$column = :$column";
     }
 
-    $clause = implode(' AND ', $clauses);
+    $clauses = implode(' AND ', $clauses);
 
     // Prepare our statement.
-    return $this->connection->prepare("SELECT 1 FROM {$this->table} WHERE $clause LIMIT 1");
+    return $this->connection->prepare("SELECT 1 FROM {$this->table} WHERE $clauses LIMIT 1");
+  }
+
+  /**
+   * Builds the prepared statement for updating existing rows.
+   */
+  protected function prepareUpdateStatement() {
+    $clauses = array();
+    foreach ($this->uniqueColumns as $column) {
+      $clauses[] = "$column = :$column";
+    }
+
+    $clauses = implode(' AND ', $clauses);
+
+    // Fields to update.
+    $fields = array();
+    foreach (array_diff($this->columns, $this->uniqueColumns) as $field) {
+      $fields[] = "$field = :$field";
+    }
+    $fields = implode(',', $fields);
+
+    // Prepare our statement.
+    return $this->connection->prepare("UPDATE {$this->table} SET $fields WHERE $clauses");
   }
 
   /**

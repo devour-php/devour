@@ -74,6 +74,38 @@ class PdoTest extends DevourTestCase {
     }
   }
 
+  public function testProcessUnique() {
+    $pdo = new PdoProcessor($this->connection, '~my_table', array('a'));
+    $pdo->process($this->getMockTable());
+
+    $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
+    // Imported 3 rows.
+    $this->assertEquals(count($this->pdoData), $result[0]);
+
+    // Import again.
+    $pdo->process($this->getMockTable());
+    $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
+    // Still only 3 rows!
+    $this->assertEquals(count($this->pdoData), $result[0]);
+  }
+
+  public function testProcessUpdate() {
+    $pdo = new PdoProcessor($this->connection, '~my_table', array('a'), TRUE);
+    $pdo->process($this->getMockTable());
+
+    $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
+    // Imported 3 rows.
+    $this->assertEquals(count($this->pdoData), $result[0]);
+
+    // Change a row.
+    $this->pdoData[0]['b'] = 'udpated';
+    // Import again.
+    $pdo->process($this->getMockTable());
+    $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
+    // Still only 3 rows!
+    $this->assertEquals(count($this->pdoData), $result[0]);
+  }
+
   public function testFactory() {
     $processor = PdoProcessor::fromConfiguration(array('dsn' => 'sqlite::memory:', 'table' => 'my_table'));
   }
