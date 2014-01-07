@@ -28,7 +28,7 @@ class GuzzleTest extends DevourTestCase {
   public function testGuzzle() {
     $transporter = new Guzzle();
     $source = $this->getMockSource('asdfsadf');
-    $transporter->getRawPayload($source);
+    $transporter->transport($source);
   }
 
 }

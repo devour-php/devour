@@ -19,7 +19,7 @@ class TransporterStub implements TransporterInterface {
   /**
    * {@inheritdoc}
    */
-  public function getRawPayload(SourceInterface $source) {
+  public function transport(SourceInterface $source) {
     return new FilePayload('');
   }
 

@@ -38,7 +38,7 @@ class FileTest extends DevourTestCase {
 
   public function testGetRawPayload() {
     $source = $this->getMockSource(static::FILE_PATH_EXISTS);
-    $this->assertInstanceOf('\Devour\Payload\FilePayload', $this->file->getRawPayload($source));
+    $this->assertInstanceOf('\Devour\Payload\FilePayload', $this->file->transport($source));
   }
 
   /**
@@ -46,7 +46,7 @@ class FileTest extends DevourTestCase {
    */
   public function testGetRawPayloadFileNotExists() {
     $source = $this->getMockSource(static::FILE_PATH_NOT_EXISTS);
-    $this->file->getRawPayload($source);
+    $this->file->transport($source);
   }
 
   /**
@@ -54,7 +54,7 @@ class FileTest extends DevourTestCase {
    */
   public function testGetRawPayloadDirectory() {
     $source = $this->getMockSource(static::DIRECTORY_EXISTS);
-    $this->file->getRawPayload($source);
+    $this->file->transport($source);
   }
 
 }

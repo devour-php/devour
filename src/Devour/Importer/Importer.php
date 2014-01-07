@@ -43,7 +43,7 @@ class Importer implements ImporterInterface {
    */
   public function import(SourceInterface $source) {
     do {
-      $payload = $this->transport->getRawPayload($source);
+      $payload = $this->transport->transport($source);
       $this->parse($payload);
     } while ($this->transport instanceof ProgressInterface && $this->transport->progress() != ProgressInterface::COMPLETE);
   }

@@ -43,7 +43,7 @@ class DirectoryTest extends DevourTestCase {
 
     // There are 2 files in the directory.
     foreach (array('file_2', 'file_1') as $key => $file) {
-      $payload = $this->directory->getRawPayload($source);
+      $payload = $this->directory->transport($source);
 
       $this->assertInstanceOf('\Devour\Payload\FilePayload', $payload);
       $this->assertEquals($payload->getPath(), static::DIRECTORY . '/' . $file);
@@ -55,7 +55,7 @@ class DirectoryTest extends DevourTestCase {
 
     $this->assertEquals($this->directory->progress(), ProgressInterface::COMPLETE);
     // The third call will throw \RuntimeException.
-    $this->directory->getRawPayload($source);
+    $this->directory->transport($source);
 
   }
 
@@ -65,7 +65,7 @@ class DirectoryTest extends DevourTestCase {
    */
   public function testGetRawPayloadDirectoryNotExists() {
     $source = new Source(static::DIRECTORY_NOT_EXISTS);
-    $this->directory->getRawPayload($source);
+    $this->directory->transport($source);
   }
 
 }

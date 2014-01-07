@@ -34,7 +34,7 @@ class Directory implements ProgressInterface {
   /**
    * {@inheritdoc}
    */
-  public function getRawPayload(SourceInterface $source) {
+  public function transport(SourceInterface $source) {
     $directory = $source->getSource();
 
     // Initial pass.

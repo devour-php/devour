@@ -29,6 +29,6 @@ interface TransporterInterface {
    * @throws \RuntimeException
    *   Thrown if an error occured.
    */
-  public function getRawPayload(SourceInterface $source);
+  public function transport(SourceInterface $source);
 
 }

@@ -19,7 +19,7 @@ class File implements TransporterInterface {
   /**
    * {@inheritdoc}
    */
-  public function getRawPayload(SourceInterface $source) {
+  public function transport(SourceInterface $source) {
     $filepath = $source->getSource();
 
     if (FileSystem::checkFile($filepath)) {
