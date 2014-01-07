@@ -27,7 +27,17 @@ class GuzzleTest extends DevourTestCase {
 
   public function testGuzzle() {
     $transporter = new Guzzle();
-    $source = $this->getMockSource('asdfsadf');
+    $source = $this->getMockSource('http://google.com');
+    $transporter->transport($source);
+  }
+
+  /**
+   * @expectedException \RuntimeException
+   * @expectedExceptionMessage [curl] 3: <url> malformed [url] /badurl
+   */
+  public function testBadUrl() {
+    $transporter = new Guzzle();
+    $source = $this->getMockSource('badurl');
     $transporter->transport($source);
   }
 

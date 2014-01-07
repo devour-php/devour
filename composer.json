@@ -12,7 +12,8 @@
         "symfony/console": "2.*",
         "symfony/yaml": "2.*",
         "simplepie/simplepie": "dev-master",
-        "aura/sql-schema": "2.*@dev"
+        "aura/sql-schema": "2.*@dev",
+        "guzzle/guzzle": "3.*"
     },
 
     "suggest": {
