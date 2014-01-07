@@ -39,6 +39,18 @@ class GuzzleTest extends GuzzleTestCase {
     $this->assertSame('Good boy.', $payload->getContents());
   }
 
+  public function testFromConfiguration() {
+    $configuration = array(
+      'request.options' => array(
+        'headers' => array('X-Foo' => 'Bar'),
+      ),
+    );
+
+    $transporter = Guzzle::fromConfiguration($configuration);
+    $config = $transporter->getConfig('request.options');
+    $this->assertSame($configuration['request.options'], $config);
+  }
+
   /**
    * @expectedException \RuntimeException
    */
