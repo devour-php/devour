@@ -14,12 +14,23 @@ use Devour\Tests\DevourTestCase;
 
 class RowTest extends DevourTestCase {
 
+  protected function getMockTable($field, $value) {
+    $table = $this->getMock('\Devour\Table\TableInterface');
+
+    $table->expects($this->once())
+      ->method('getField')
+      ->with($field)
+      ->will($this->returnValue($value));
+
+    return $table;
+  }
+
   public function testRow() {
     $map = new NoopMap();
-    $table = new Table($map);
+    $table = $this->getMockTable('does not exist', 9876);
     $row = new Row($table, $map);
 
-    $this->assertNull($row->get('does not exist'));
+    $this->assertSame(9876, $row->get('does not exist'));
 
     // Test get, set and fluidity at once.
     $this->assertSame(1234, $row->set('exists', 1234)->get('exists'));

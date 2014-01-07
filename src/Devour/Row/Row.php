@@ -35,6 +35,8 @@ class Row implements RowInterface {
     if (isset($this->data[$source_field])) {
       return $this->data[$source_field];
     }
+
+    return $this->table->getField($source_field);
   }
 
   /**
