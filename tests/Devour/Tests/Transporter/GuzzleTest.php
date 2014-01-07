@@ -3,16 +3,22 @@
 namespace Devour\Tests\Transporter;
 
 use Devour\Source\SourceInterface;
-use Devour\Tests\DevourTestCase;
 use Devour\Transporter\File;
 use Devour\Transporter\Guzzle;
+use Guzzle\Http\Message\Response;
+use Guzzle\Plugin\Mock\MockPlugin;
+use Guzzle\Tests\GuzzleTestCase;
 
-class GuzzleTest extends DevourTestCase {
+class GuzzleTest extends GuzzleTestCase {
+
+  protected $transporter;
+
+  protected $mockPlugin;
 
   public function setUp() {
-  }
-
-  public function tearDown() {
+    $this->mockPlugin = new MockPlugin();
+    $this->transporter = new Guzzle();
+    $this->transporter->addSubscriber($this->mockPlugin);
   }
 
   protected function getMockSource($filepath) {
@@ -26,9 +32,21 @@ class GuzzleTest extends DevourTestCase {
   }
 
   public function testGuzzle() {
-    $transporter = new Guzzle();
-    $source = $this->getMockSource('http://google.com');
-    $transporter->transport($source);
+    $this->mockPlugin->addResponse(new Response(200, NULL, 'Good boy.'));
+
+    $source = $this->getMockSource('http://example.com');
+    $payload = $this->transporter->transport($source);
+    $this->assertSame('Good boy.', $payload->getContents());
+  }
+
+  /**
+   * @expectedException \RuntimeException
+   */
+  public function testGuzzle404() {
+    $this->mockPlugin->addResponse(new Response(404));
+
+    $source = $this->getMockSource('http://example.com');
+    $this->transporter->transport($source);
   }
 
   /**
