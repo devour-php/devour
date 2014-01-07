@@ -7,7 +7,9 @@
 
 namespace Devour\Processor;
 
+use Aura\Sql_Schema\ColumnFactory;
 use Devour\ConfigurableInterface;
+use Devour\Exception\ConfigurationException;
 use Devour\Row\RowInterface;
 
 /**
@@ -55,6 +57,12 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
+    foreach (array('dsn', 'table') as $field) {
+      if (empty($configuration[$field])) {
+        throw new ConfigurationException(sprintf('The field "%s" is required.', $field));
+      }
+    }
+
     $configuration += array('username' => NULL, 'password' => NULL);
     $connection = new \PDO($configuration['dsn'], $configuration['username'], $configuration['password']);
 
@@ -75,13 +83,6 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
     $this->prepare($item);
 
     $this->save($item);
-  }
-
-  /**
-   * Maps a field from source to destination.
-   */
-  protected function map($field) {
-    return $field;
   }
 
   /**
@@ -133,46 +134,12 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
    * Returns the column names of the table.
    */
   protected function getColumns() {
-    switch ($this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
-      case 'sqlite':
-        return $this->getSqliteColumns();
+    $driver = $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
 
-      default:
-        return $this->getMysqlColumns();
-    }
-  }
-
-  /**
-   * Finds columns names for MySQL.
-   */
-  protected function getMysqlColumns() {
-    $result = $this->connection->query('DESCRIBE ' . $this->table);
-    $result->setFetchMode(\PDO::FETCH_ASSOC);
-
-    $meta = array();
-
-    foreach ($result as $row) {
-      $meta[] = $row['Field'];
-    }
-
-    return $meta;
-  }
-
-  /**
-   * Finds columns names for Sqlite.
-   */
-  protected function getSqliteColumns() {
-    // Stupid sqlite.
-    $result = $this->connection->query("PRAGMA table_info(" . $this->table . ")");
-    $result->setFetchMode(\PDO::FETCH_ASSOC);
-
-    $meta = array();
-
-    foreach ($result as $row) {
-      $meta[] = $row['name'];
-    }
-
-    return $meta;
+    // Calculate the driver class. Why don't they do this for us?
+    $class = '\\Aura\\Sql_Schema\\' . ucfirst($driver) . 'Schema';
+    $schema = new $class($this->connection, new ColumnFactory());
+    return array_keys($schema->fetchTableCols($this->table));
   }
 
 }

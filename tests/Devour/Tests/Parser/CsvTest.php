@@ -107,4 +107,16 @@ class CsvTest extends DevourTestCase {
     $this->csv->parse($payload);
   }
 
+  public function testLimit() {
+    $this->csv->setLimit(2);
+
+    $payload = $this->getMockRawPayload(static::FILE_1);
+    $result = $this->csv->parse($payload);
+    $this->assertSame(.8, $this->csv->progress());
+
+    // Complete parsing.
+    $this->csv->parse($this->getMockRawPayload(static::FILE_1));
+    $this->assertSame(1.0, $this->csv->progress());
+  }
+
 }

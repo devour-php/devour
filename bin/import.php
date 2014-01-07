@@ -2,4 +2,4 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-\Devour\Console\ConsoleRunner::run();
+\Devour\Console\ConsoleRunner::getApplication()->run();

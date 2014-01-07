@@ -20,6 +20,9 @@ interface ConfigurableInterface {
    *
    * @return object
    *   Some new object based on configuration.
+   *
+   * @throws \Devour\Exception\ConfigurationException
+   *   Thrown when there is a fatal configuration error.
    */
   public static function fromConfiguration(array $configuration);
 

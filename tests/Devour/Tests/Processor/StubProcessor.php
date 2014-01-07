@@ -2,11 +2,12 @@
 
 /**
  * @file
- * Contains \Devour\Processor\ProcessorInterface.
+ * Contains \Devour\Tests\Processor\StubProcessor.
  */
 
-namespace Devour\Processor;
+namespace Devour\Tests\Processor;
 
+use Devour\Processor\ProcessorInterface;
 use Devour\Table\TableInterface;
 
 /**
@@ -14,7 +15,7 @@ use Devour\Table\TableInterface;
  *
  * @todo
  */
-interface ProcessorInterface {
+class StubProcessor implements ProcessorInterface {
 
   /**
    * Processes the results from a parser.
@@ -22,6 +23,8 @@ interface ProcessorInterface {
    * @param \Devour\Table\TableInterface $table
    *   The table to process.
    */
-  public function process(TableInterface $table);
+  public function process(TableInterface $table) {
+
+  }
 
 }

@@ -107,6 +107,20 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
   }
 
   /**
+   * Sets the number of lines to parse at one time.
+   *
+   * @param int $limit
+   *   The number of lines to parse.
+   *
+   * @return self
+   *   The parser object for chaining.
+   */
+  public function setLimit($limit) {
+    $this->limit = $limit;
+    return $this;
+  }
+
+  /**
    * Returns an open file handle.
    *
    * @param string $filepath
@@ -193,7 +207,7 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
    */
   public function progress() {
     if ($this->fileLength) {
-      return $this->pointer / $this->fileLength;
+      return (float) $this->pointer / $this->fileLength;
     }
 
     return ProgressInterface::COMPLETE;

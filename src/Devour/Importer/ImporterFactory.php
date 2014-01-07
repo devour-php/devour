@@ -9,7 +9,7 @@ namespace Devour\Importer;
 
 use Devour\ConfigurableInterface;
 use Devour\Util\FileSystem;
-use Devour\Util\Yaml;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @todo
@@ -28,7 +28,9 @@ class ImporterFactory {
    * @see \Devour\Importer\ImporterFactory::fromConfiguration()
    */
   public static function fromConfigurationFile($filename) {
-    FileSystem::checkFile($filename);
+    if (!FileSystem::checkFile($filename)) {
+      throw new \LogicException(sprintf('The configuration file %s does not exist or is not readable.', $filename));
+    }
 
     $configuration = Yaml::parse(file_get_contents($filename));
     return static::fromConfiguration($configuration);
@@ -53,10 +55,11 @@ class ImporterFactory {
   public static function fromConfiguration(array $configuration) {
     $parts = array();
 
-    foreach (array('transport', 'parser', 'processor') as $part) {
+    foreach (array('transporter', 'parser', 'processor') as $part) {
       $part_class = $configuration[$part]['class'];
 
       if (is_subclass_of($part_class, '\Devour\ConfigurableInterface')) {
+        $configuration[$part] += array('configuration' => array());
         $parts[$part] = $part_class::fromConfiguration($configuration[$part]['configuration']);
       }
       else {
@@ -66,7 +69,7 @@ class ImporterFactory {
 
     $importer_class = $configuration['importer']['class'];
 
-    return new $importer_class($parts['transport'], $parts['parser'], $parts['processor']);
+    return new $importer_class($parts['transporter'], $parts['parser'], $parts['processor']);
   }
 
 }

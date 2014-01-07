@@ -9,6 +9,7 @@ namespace Devour\Console\Command;
 
 use Devour\Importer\ImporterFactory;
 use Devour\Source\Source;
+use Devour\Util\FileSystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,8 +37,9 @@ class ImportCommand extends Command {
   protected function execute(InputInterface $input, OutputInterface $output) {
     $config = $input->getOption('config');
 
-    if (!is_file($config) || !is_readable($config)) {
+    if (!FileSystem::checkFile($config)) {
       $output->writeln('<error>The configuration file does not exist or is not readable.</error>');
+      return;
     }
 
     $importer = ImporterFactory::fromConfigurationFile($config);

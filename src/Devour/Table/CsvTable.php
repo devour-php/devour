@@ -48,8 +48,6 @@ class CsvTable implements TableInterface {
     if ($this->rows) {
       return new DynamicRow(array_shift($this->rows));
     }
-
-    return FALSE;
   }
 
   /**
@@ -59,8 +57,6 @@ class CsvTable implements TableInterface {
     if ($this->rows) {
       return new DynamicRow(array_pop($this->rows));
     }
-
-    return FALSE;
   }
 
   /**

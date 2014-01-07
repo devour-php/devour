@@ -56,7 +56,7 @@ class Directory implements ProgressInterface {
    */
   public function progress() {
     if ($this->totalFileCount) {
-      return ($this->totalFileCount - count($this->files)) / $this->totalFileCount;
+      return (float) ($this->totalFileCount - count($this->files)) / $this->totalFileCount;
     }
 
     return ProgressInterface::COMPLETE;

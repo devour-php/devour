@@ -42,6 +42,7 @@ class SimplePie implements ParserInterface {
 
       if ($author = $item->get_author()) {
         $row->set('author_name', $author->get_name());
+        $row->set('author_email', $author->get_email());
       }
 
       $result->addRow($row);

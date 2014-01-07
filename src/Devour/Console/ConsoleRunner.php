@@ -18,12 +18,12 @@ class ConsoleRunner {
   /**
    * Executes the console.
    */
-  public static function run() {
-    $cli = new Application('Import Command Line Interface');
+  public static function getApplication() {
+    $cli = new Application('Devour Command Line Interface');
     // $cli->setCatchExceptions(true);
     // $cli->setHelperSet($helperSet);
     self::addCommands($cli);
-    $cli->run();
+    return $cli;
   }
 
   /**
