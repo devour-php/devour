@@ -7,7 +7,6 @@
 
 namespace Devour\Parser;
 
-use Devour\Map\NoopMap;
 use Devour\Payload\PayloadInterface;
 use Devour\Table\TableInterface;
 
@@ -22,7 +21,7 @@ class SimplePie extends ParserBase {
   public function parse(PayloadInterface $payload) {
     $feed = new \SimplePie();
 
-    $table = $this->getTableFactory()->create(new NoopMap());
+    $table = $this->getTableFactory()->create();
 
     // @todo Use file directly.
     $feed->set_raw_data($payload->getContents());

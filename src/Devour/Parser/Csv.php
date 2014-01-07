@@ -8,7 +8,6 @@
 namespace Devour\Parser;
 
 use Devour\ConfigurableInterface;
-use Devour\Map\NoopMap;
 use Devour\Payload\PayloadInterface;
 use Devour\ProgressInterface;
 
@@ -80,7 +79,7 @@ class Csv extends ParserBase implements ProgressInterface, ConfigurableInterface
       }
     }
 
-    $table = $this->getTableFactory()->create(new NoopMap());
+    $table = $this->getTableFactory()->create();
 
     while ($data = $this->getCsvLine($handle)) {
 

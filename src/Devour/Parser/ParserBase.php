@@ -7,11 +7,10 @@
 
 namespace Devour\Parser;
 
-use Devour\Payload\PayloadInterface;
 use Devour\Table\TableFactory;
 
 /**
- * The interface all parsers must implement.
+ * A base class for pasers that has helper methods.
  */
 abstract class ParserBase implements ParserInterface {
 

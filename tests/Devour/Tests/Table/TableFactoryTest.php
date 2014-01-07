@@ -7,7 +7,6 @@
 
 namespace Devour\Tests\Table;
 
-use Devour\Map\NoopMap;
 use Devour\Table\TableFactory;
 use Devour\Tests\DevourTestCase;
 
@@ -18,7 +17,7 @@ class TableFactoryTest extends DevourTestCase {
     $factory = new TableFactory();
 
     $factory->setTableClass($stub_class);
-    $table = $factory->create(new NoopMap());
+    $table = $factory->create();
 
     $this->assertSame($stub_class, get_class($table));
   }

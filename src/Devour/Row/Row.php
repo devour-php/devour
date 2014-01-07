@@ -31,6 +31,7 @@ class Row implements RowInterface {
    */
   public function get($target_field) {
     $source_field = $this->map->getSourceField($target_field);
+
     if (isset($this->data[$source_field])) {
       return $this->data[$source_field];
     }
@@ -44,6 +45,9 @@ class Row implements RowInterface {
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setData(array $data) {
     $this->data = $data;
     return $this;

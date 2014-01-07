@@ -29,8 +29,8 @@ class Map implements MapInterface {
    *   A array keyed from source => target.
    */
   public function __construct(array $map) {
-    $this->targetToSource = array_reverse($map);
     $this->sourceToTarget = $map;
+    $this->targetToSource = array_flip($map);
   }
 
   /**
