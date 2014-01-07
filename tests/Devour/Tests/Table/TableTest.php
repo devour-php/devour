@@ -2,6 +2,7 @@
 
 namespace Devour\Tests\Table;
 
+use Devour\Map\NoopMap;
 use Devour\Row\DynamicRow;
 use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
@@ -15,7 +16,7 @@ class TableTest extends DevourTestCase {
   protected $rows;
 
   public function setUp() {
-    $this->table = new Table();
+    $this->table = new Table(new NoopMap());
     $this->rows = array(
       array('a1', 'b1', 'c1'),
       array('a2', 'b2', 'c2'),
@@ -36,14 +37,14 @@ class TableTest extends DevourTestCase {
     $this->assertEquals(count($this->rows), count($rows));
 
     foreach ($this->rows as $delta => $row) {
-      $this->assertEquals($row, $rows[$delta]->getArrayCopy());
+      $this->assertEquals($row, $rows[$delta]->getData());
     }
 
     // Test shift.
-    $this->assertEquals($this->rows[0], $this->table->shiftRow()->getArrayCopy());
+    $this->assertEquals($this->rows[0], $this->table->shiftRow()->getData());
 
     // Test pop.
-    $this->assertEquals($this->rows[2], $this->table->popRow()->getArrayCopy());
+    $this->assertEquals($this->rows[2], $this->table->popRow()->getData());
   }
 
 }

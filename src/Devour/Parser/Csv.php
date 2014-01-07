@@ -8,9 +8,11 @@
 namespace Devour\Parser;
 
 use Devour\ConfigurableInterface;
-use Devour\Table\CsvTable;
+use Devour\Map\NoopMap;
 use Devour\Payload\PayloadInterface;
 use Devour\ProgressInterface;
+use Devour\Row\DynamicRow;
+use Devour\Table\Table;
 
 /**
  * A CSV parser.
@@ -80,14 +82,14 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
       }
     }
 
-    $result = new CsvTable();
-
-    if ($this->hasHeader) {
-      $result->setHeader($this->header);
-    }
+    $result = new Table(new NoopMap());
 
     while ($data = $this->getCsvLine($handle)) {
-      $result->addRow($data);
+
+      if ($this->hasHeader) {
+        $data = array_combine($this->header, $data);
+      }
+      $result->addRow(new DynamicRow($data));
     }
 
     $this->closeHandle($handle);

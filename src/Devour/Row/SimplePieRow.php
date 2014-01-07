@@ -10,7 +10,7 @@ namespace Devour\Row;
 /**
  * @todo Add all fields.
  */
-class SimplePieRow implements RowInterface {
+class SimplePieRow extends RowBase {
 
   protected $title;
 
@@ -37,19 +37,16 @@ class SimplePieRow implements RowInterface {
   }
 
   /**
-   * Translates a field value.
-   *
-   * @todo Implement.
-   */
-  protected function translate($target_field) {
-    return $target_field;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function get($target_field) {
-    return $this->{$this->translate($target_field)};
+    $field = $this->map->getSourceField($target_field);
+
+    if (isset($this->$field)) {
+      return $this->$field;
+    }
+
+    return $this->table->get($field);
   }
 
 }

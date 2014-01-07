@@ -12,13 +12,26 @@ namespace Devour\Row;
  *
  * @see \Devour\Parser\Csv::parse()
  */
-class DynamicRow extends \ArrayIterator implements RowInterface {
+class DynamicRow extends RowBase {
+
+  protected $data;
+
+  public function __construct(array $data) {
+    $this->data = $data;
+  }
 
   /**
    * {@inheritdoc}
    */
   public function get($target_field) {
-    return $this->offsetGet($target_field);
+    $source_field = $this->map->getSourceField($target_field);
+    if (isset($this->data[$source_field])) {
+      return $this->data[$source_field];
+    }
+  }
+
+  public function getData() {
+    return $this->data;
   }
 
 }

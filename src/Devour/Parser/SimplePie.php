@@ -7,6 +7,7 @@
 
 namespace Devour\Parser;
 
+use Devour\Map\NoopMap;
 use Devour\Payload\PayloadInterface;
 use Devour\Row\SimplePieRow;
 use Devour\Table\SimplePieTable;
@@ -22,18 +23,18 @@ class SimplePie implements ParserInterface {
   public function parse(PayloadInterface $payload) {
     $feed = new \SimplePie();
 
-    $result = new SimplePieTable();
+    $table = new SimplePieTable(new NoopMap());
 
     // @todo Use file directly.
     $feed->set_raw_data($payload->getContents());
     $feed->init();
 
-    $result->setTitle($feed->get_title());
+    $table->setFeedTitle($feed->get_title());
 
     foreach ($feed->get_items(0, 0) as $item) {
 
       // @todo Add more fields.
-      $row = new SimplePieRow();
+      $row = new SimplePieRow($table);
       $row->set('id', $item->get_id());
       $row->set('permalink', $item->get_permalink());
       $row->set('title', $item->get_title());
@@ -45,9 +46,9 @@ class SimplePie implements ParserInterface {
         $row->set('author_email', $author->get_email());
       }
 
-      $result->addRow($row);
+      $table->addRow($row);
     }
 
-    return $result;
+    return $table;
   }
 }

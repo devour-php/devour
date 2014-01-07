@@ -7,6 +7,7 @@
 
 namespace Devour\Table;
 
+use Devour\Map\MapInterface;
 use Devour\Row\RowInterface;
 
 /**
@@ -16,10 +17,18 @@ class Table implements TableInterface {
 
   protected $rows = array();
 
+  protected $map;
+
+  public function __construct(MapInterface $map) {
+    $this->map = $map;
+  }
+
   /**
    * Adds a row.
    */
   public function addRow(RowInterface $row) {
+    $row->setTable($this);
+    $row->setMap($this->map);
     $this->rows[] = $row;
   }
 

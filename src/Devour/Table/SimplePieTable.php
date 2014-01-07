@@ -9,7 +9,7 @@ namespace Devour\Table;
 
 class SimplePieTable extends Table {
 
-  protected $title;
+  protected $feed_title;
 
   /**
    * Sets the title.
@@ -17,8 +17,14 @@ class SimplePieTable extends Table {
    * @param string $title
    *   The feed title.
    */
-  public function setTitle($title) {
-    $this->title = $title;
+  public function setFeedTitle($title) {
+    $this->feed_title = $title;
+  }
+
+  public function get($field) {
+    if (isset($this->$field)) {
+      return $this->$field;
+    }
   }
 
 }

@@ -52,13 +52,13 @@ class CsvTest extends DevourTestCase {
 
     $payload = $this->getMockRawPayload(static::FILE_1);
     $result = $this->csv->parse($payload);
-    $this->assertInstanceOf('\Devour\Table\CsvTable', $result);
+    $this->assertInstanceOf('\Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
     $rows = $result->getRows();
     $this->assertEquals(count($this->csvData), count($rows));
     foreach ($this->csvData as $key => $data) {
-      $this->assertEquals($data, $rows[$key]->getArrayCopy());
+      $this->assertEquals($data, $rows[$key]->getData());
     }
 
     $this->assertEquals(ProgressInterface::COMPLETE, $this->csv->progress());
@@ -76,7 +76,7 @@ class CsvTest extends DevourTestCase {
 
     $payload = $this->getMockRawPayload(static::FILE_1);
     $result = $this->csv->parse($payload);
-    $this->assertInstanceOf('\Devour\Table\CsvTable', $result);
+    $this->assertInstanceOf('\Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
     $rows = $result->getRows();
@@ -86,7 +86,7 @@ class CsvTest extends DevourTestCase {
 
     $this->assertEquals(count($this->csvData), count($rows));
     foreach ($this->csvData as $key => $row) {
-      $this->assertEquals(array_combine($header, $row), $rows[$key]->getArrayCopy());
+      $this->assertEquals(array_combine($header, $row), $rows[$key]->getData());
     }
 
     $this->assertEquals(ProgressInterface::COMPLETE, $this->csv->progress());

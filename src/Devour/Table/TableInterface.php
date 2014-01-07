@@ -7,7 +7,14 @@
 
 namespace Devour\Table;
 
+use Devour\Map\MapInterface;
+use Devour\Row\RowInterface;
+
 interface TableInterface {
+
+  public function __construct(MapInterface $map);
+
+  public function addRow(RowInterface $row);
 
   /**
    * Returns the first row, removing it.

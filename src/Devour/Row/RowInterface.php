@@ -7,10 +7,17 @@
 
 namespace Devour\Row;
 
+use Devour\Map\MapInterface;
+use Devour\Table\TableInterface;
+
 /**
  * The interface for a single row in a table.
  */
 interface RowInterface {
+
+  public function setTable(TableInterface $table);
+
+  public function setMap(MapInterface $map);
 
   /**
    * Returns the value for a target field.

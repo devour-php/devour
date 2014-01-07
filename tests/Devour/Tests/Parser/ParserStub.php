@@ -7,6 +7,7 @@
 
 namespace Devour\Tests\Parser;
 
+use Devour\Map\NoopMap;
 use Devour\Parser\ParserInterface;
 use Devour\Payload\PayloadInterface;
 use Devour\Table\Table;
@@ -20,7 +21,7 @@ class ParserStub implements ParserInterface {
    * {@inheritdoc}
    */
   public function parse(PayloadInterface $payload) {
-    return new Table();
+    return new Table(new NoopMap());
   }
 
 }
