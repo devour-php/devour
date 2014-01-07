@@ -43,7 +43,7 @@ class PdoTest extends DevourTestCase {
     $source = $this->getMock('\PDO');
 
     $source->expects($this->once())
-      ->method('getPath')
+      ->method('getStream')
       ->will($this->returnValue($filepath));
 
     return $source;
