@@ -55,7 +55,7 @@ class PdoTest extends DevourTestCase {
     $table = new Table($map);
 
     foreach ($this->pdoData as $data) {
-      $table->addRowData($data);
+      $table->getNewRow()->setData($data);
     }
 
     return $table;

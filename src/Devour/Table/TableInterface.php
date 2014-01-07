@@ -16,8 +16,6 @@ interface TableInterface {
 
   public function getNewRow();
 
-  public function addRowData(array $data);
-
   /**
    * Returns the first row, removing it.
    *

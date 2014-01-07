@@ -36,11 +36,6 @@ class Table implements TableInterface {
     return $row;
   }
 
-  public function addRowData(array $data) {
-    $row = $this->getNewRow();
-    $row->setData($data);
-  }
-
   /**
    * {@inheritdoc}
    */

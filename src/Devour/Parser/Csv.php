@@ -86,7 +86,7 @@ class Csv extends ParserBase implements ProgressInterface, ConfigurableInterface
       if ($this->hasHeader) {
         $data = array_combine($this->header, $data);
       }
-      $table->addRowData($data);
+      $table->getNewRow()->setData($data);
     }
 
     $this->closeHandle($handle);

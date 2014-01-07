@@ -27,7 +27,7 @@ class TableTest extends DevourTestCase {
 
     // Test adding.
     foreach ($this->rows as $row) {
-      $this->table->addRowData($row);
+      $this->table->getNewRow()->setData($row);
     }
 
     // Test getRows().
