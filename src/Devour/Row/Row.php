@@ -41,10 +41,12 @@ class Row implements RowInterface {
    */
   public function set($source_field, $value) {
     $this->data[$source_field] = $value;
+    return $this;
   }
 
   public function setData(array $data) {
     $this->data = $data;
+    return $this;
   }
 
   /**

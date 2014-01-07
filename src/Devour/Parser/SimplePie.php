@@ -9,6 +9,7 @@ namespace Devour\Parser;
 
 use Devour\Map\NoopMap;
 use Devour\Payload\PayloadInterface;
+use Devour\Table\TableInterface;
 
 /**
  * Wraps SimplePie to parse RSS/Atom feeds.
@@ -30,21 +31,34 @@ class SimplePie extends ParserBase {
     $table->setField('feed_title', $feed->get_title());
 
     foreach ($feed->get_items(0, 0) as $item) {
-
-      // @todo Add more fields.
-      $row = $table->getNewRow();
-      $row->set('id', $item->get_id());
-      $row->set('permalink', $item->get_permalink());
-      $row->set('title', $item->get_title());
-      $row->set('date', $item->get_gmdate('U'));
-      $row->set('content', $item->get_content());
-
-      if ($author = $item->get_author()) {
-        $row->set('author_name', $author->get_name());
-        $row->set('author_email', $author->get_email());
-      }
+      $this->parseItem($table, $item);
     }
 
     return $table;
   }
+
+  /**
+   * Parses a since feed item.
+   *
+   * @param \Devour\Table\TableInterface $table
+   *   A table obeject.
+   * @param \SimplePie_Item $item
+   *   A SimplePie item.
+   */
+  protected function parseItem(TableInterface $table, \SimplePie_Item $item) {
+    // @todo Add more fields.
+    $row = $table->getNewRow();
+
+    $row->set('id', $item->get_id())
+        ->set('permalink', $item->get_permalink())
+        ->set('title', $item->get_title())
+        ->set('date', $item->get_gmdate('U'))
+        ->set('content', $item->get_content());
+
+    if ($author = $item->get_author()) {
+      $row->set('author_name', $author->get_name())
+          ->set('author_email', $author->get_email());
+    }
+  }
+
 }
