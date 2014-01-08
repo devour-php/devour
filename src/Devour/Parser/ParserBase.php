@@ -14,12 +14,23 @@ use Devour\Table\TableFactory;
  */
 abstract class ParserBase implements ParserInterface {
 
+  /**
+   * The table factory.
+   *
+   * @var \Devour\Table\TableFactory
+   */
   protected $tableFactory;
 
+  /**
+   * {@inheritdoc}
+   */
   public function setTableFactory(TableFactory $table_factory) {
     $this->tableFactory = $table_factory;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getTableFactory() {
     if (!$this->tableFactory) {
       $this->tableFactory = new TableFactory();

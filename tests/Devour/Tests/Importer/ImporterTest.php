@@ -41,7 +41,7 @@ class ImporterTest extends DevourTestCase {
     $this->parser = $this->getMock('Devour\Parser\ParserInterface');
     $this->parser->expects($this->once())
                  ->method('parse')
-                 ->with($this->payload)
+                 ->with($this->source, $this->payload)
                  ->will($this->returnValue($table));
 
 

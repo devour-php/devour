@@ -8,6 +8,7 @@
 namespace Devour\Parser;
 
 use Devour\Payload\PayloadInterface;
+use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
 
 /**
@@ -18,7 +19,7 @@ class SimplePie extends ParserBase {
   /**
    * {@inheritdoc}
    */
-  public function parse(PayloadInterface $payload) {
+  public function parse(SourceInterface $source, PayloadInterface $payload) {
     $feed = new \SimplePie();
 
     $table = $this->getTableFactory()->create();

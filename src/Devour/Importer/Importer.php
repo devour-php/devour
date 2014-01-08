@@ -60,7 +60,7 @@ class Importer implements ImporterInterface {
    */
   public function parse(SourceInterface $source, PayloadInterface $payload) {
     do {
-      $parser_result = $this->parser->parse($payload);
+      $parser_result = $this->parser->parse($source, $payload);
       $this->process($source, $parser_result);
     } while ($this->parser instanceof ProgressInterface && $this->parser->progress() != ProgressInterface::COMPLETE);
   }

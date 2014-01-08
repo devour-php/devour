@@ -10,6 +10,7 @@ namespace Devour\Parser;
 use Devour\ConfigurableInterface;
 use Devour\Payload\PayloadInterface;
 use Devour\ProgressInterface;
+use Devour\Source\SourceInterface;
 
 /**
  * A CSV parser.
@@ -62,7 +63,7 @@ class Csv extends ParserBase implements ProgressInterface, ConfigurableInterface
    *
    * @todo Handle encoding.
    */
-  public function parse(PayloadInterface $payload) {
+  public function parse(SourceInterface $source, PayloadInterface $payload) {
     $handle = $payload->getStream();
     // Resume where we left off.
     fseek($handle, $this->pointer);
