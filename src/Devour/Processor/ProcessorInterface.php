@@ -7,6 +7,7 @@
 
 namespace Devour\Processor;
 
+use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
 
 /**
@@ -22,6 +23,6 @@ interface ProcessorInterface {
    * @param \Devour\Table\TableInterface $table
    *   The table to process.
    */
-  public function process(TableInterface $table);
+  public function process(SourceInterface $source, TableInterface $table);
 
 }

@@ -9,6 +9,7 @@ namespace Devour\Tests\Processor;
 
 use Devour\Map\NoopMap;
 use Devour\Processor\Printer;
+use Devour\Source\Source;
 use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
 
@@ -42,7 +43,7 @@ class PrinterTest extends DevourTestCase {
 
     $this->expectOutputString($output);
     $printer = new Printer();
-    $printer->process($table);
+    $printer->process(new Source(NULL), $table);
   }
 
 }

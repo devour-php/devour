@@ -7,8 +7,9 @@
 
 namespace Devour\Processor;
 
-use Devour\Table\TableInterface;
 use Devour\Row\RowInterface;
+use Devour\Source\SourceInterface;
+use Devour\Table\TableInterface;
 
 /**
  * A helper processor class.
@@ -18,7 +19,7 @@ abstract class ProcessorBase implements ProcessorInterface {
   /**
    * {@inheritdoc}
    */
-  public function process(TableInterface $table) {
+  public function process(SourceInterface $source, TableInterface $table) {
     foreach ($table as $row) {
       $this->processRow($row);
     }

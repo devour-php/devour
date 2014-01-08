@@ -8,6 +8,7 @@
 namespace Devour\Tests\Processor;
 
 use Devour\Processor\ProcessorInterface;
+use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
 
 /**
@@ -18,7 +19,7 @@ class StubProcessor implements ProcessorInterface {
   /**
    * {@inheritdoc}
    */
-  public function process(TableInterface $table) {
+  public function process(SourceInterface $source, TableInterface $table) {
 
   }
 

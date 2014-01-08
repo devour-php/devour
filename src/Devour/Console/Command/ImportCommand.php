@@ -66,7 +66,7 @@ class ImportCommand extends Command {
 
       $payload = $importer->transport($source);
 
-      $args = array('php', $script_path, $config, $payload->getPath());
+      $args = array('php', $script_path, $config, (string) $source, $payload->getPath());
 
       $builder = new ProcessBuilder($args);
       $process = $builder->getProcess();

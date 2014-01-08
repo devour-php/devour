@@ -51,26 +51,26 @@ class Importer implements ImporterInterface {
   public function import(SourceInterface $source) {
     do {
       $payload = $this->transporter->transport($source);
-      $this->parse($payload);
+      $this->parse($source, $payload);
     } while ($this->transporter instanceof ProgressInterface && $this->transporter->progress() != ProgressInterface::COMPLETE);
   }
 
   /**
    * Executes the parsing step.
    */
-  public function parse(PayloadInterface $payload) {
+  public function parse(SourceInterface $source, PayloadInterface $payload) {
     do {
       $parser_result = $this->parser->parse($payload);
-      $this->process($parser_result);
+      $this->process($source, $parser_result);
     } while ($this->parser instanceof ProgressInterface && $this->parser->progress() != ProgressInterface::COMPLETE);
   }
 
   /**
    * Executes the processing step.
    */
-  protected function process(TableInterface $payload) {
+  protected function process(SourceInterface $source, TableInterface $payload) {
     do {
-      $this->processor->process($payload);
+      $this->processor->process($source, $payload);
     } while ($this->processor instanceof ProgressInterface && $this->processor->progress() != ProgressInterface::COMPLETE);
   }
 

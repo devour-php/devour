@@ -8,6 +8,7 @@
 namespace Devour\Tests\Processor;
 
 use Devour\Map\NoopMap;
+use Devour\Source\Source;
 use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
 
@@ -34,7 +35,7 @@ class ProcessorBaseTest extends DevourTestCase {
     $processor->expects($this->exactly(3))
               ->method('processRow');
 
-    $processor->process($table);
+    $processor->process(new Source(NULL), $table);
   }
 
 }

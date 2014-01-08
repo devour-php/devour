@@ -9,6 +9,7 @@ namespace Devour\Tests\Processor;
 
 use Devour\Map\NoopMap;
 use Devour\Processor\Pdo as PdoProcessor;
+use Devour\Source\Source;
 use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
 
@@ -67,9 +68,10 @@ class PdoTest extends DevourTestCase {
   }
 
   public function testProcess() {
-    $payload = $this->getMockTable();
+    $source = new Source(NULL);
 
-    $this->pdo->process($payload);
+    $payload = $this->getMockTable();
+    $this->pdo->process($source, $payload);
 
     $result = $this->connection->query("SELECT * FROM my_table");
     $result->setFetchMode(\PDO::FETCH_ASSOC);
@@ -80,23 +82,27 @@ class PdoTest extends DevourTestCase {
   }
 
   public function testProcessUnique() {
+    $source = new Source(NULL);
+
     $pdo = new PdoProcessor($this->connection, '~my_table', array('a'));
-    $pdo->process($this->getMockTable());
+    $pdo->process($source, $this->getMockTable());
 
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
     // Imported 3 rows.
     $this->assertEquals(count($this->pdoData), $result[0]);
 
     // Import again.
-    $pdo->process($this->getMockTable());
+    $pdo->process($source, $this->getMockTable());
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
     // Still only 3 rows!
     $this->assertEquals(count($this->pdoData), $result[0]);
   }
 
   public function testProcessUpdate() {
+    $source = new Source(NULL);
+
     $pdo = new PdoProcessor($this->connection, '~my_table', array('a'), TRUE);
-    $pdo->process($this->getMockTable());
+    $pdo->process($source, $this->getMockTable());
 
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
     // Imported 3 rows.
@@ -105,7 +111,7 @@ class PdoTest extends DevourTestCase {
     // Change a row.
     $this->pdoData[0]['b'] = 'udpated';
     // Import again.
-    $pdo->process($this->getMockTable());
+    $pdo->process($source, $this->getMockTable());
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
     // Still only 3 rows!
     $this->assertEquals(count($this->pdoData), $result[0]);

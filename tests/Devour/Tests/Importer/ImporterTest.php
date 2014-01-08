@@ -46,7 +46,7 @@ class ImporterTest extends DevourTestCase {
     $this->processor = $this->getMock('Devour\Processor\ProcessorInterface');
     $this->processor->expects($this->once())
                     ->method('process')
-                    ->with($table);
+                    ->with($this->source, $table);
   }
 
   public function testImporterImport() {
