@@ -32,4 +32,15 @@ abstract class DevourTestCase extends \PHPUnit_Framework_TestCase {
     return $method;
   }
 
+  protected function getMockProcess($is_running, $expects) {
+    $process = $this->getMockBuilder('Symfony\Component\Process\Process')
+                    ->disableOriginalConstructor()
+                    ->getMock();
+    $process->expects($expects)
+            ->method('isRunning')
+            ->will($this->returnValue($is_running));
+
+    return $process;
+  }
+
 }

@@ -33,7 +33,7 @@ class ImportCommand extends Command {
       ->setDescription('Execute an import.')
       ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'The path to the configuration file.')
       ->addOption('source', 's', InputOption::VALUE_REQUIRED, 'The source of the import.')
-      ->addOption('concurrency', NULL, InputOption::VALUE_OPTIONAL, 'The number of parallel proceses to execute.');
+      ->addOption('concurrency', NULL, InputOption::VALUE_OPTIONAL, 'The number of parallel proceses to execute.', 1);
   }
 
   /**

@@ -67,30 +67,24 @@ class ImportCommandTest extends DevourTestCase {
     $this->assertSame('The configuration file does not exist or is not readable.', trim($commandTester->getDisplay()));
   }
 
+  /**
+   * @covers \Devour\Console\Command\ImportCommand::limitProcess
+   */
   public function testLimitProcess() {
     $method = $this->getMethod('Devour\Console\Command\ImportCommand', 'limitProcess');
     $command = new ImportCommand();
-    $process_group = new \SplObjectStorage();
 
+    $process_group = new \SplObjectStorage();
     foreach (range(1, 4) as $i) {
-      $process = $this->getMockBuilder('Symfony\Component\Process\Process')
-                      ->disableOriginalConstructor()
-                      ->getMock();
       // We can't depend on the order in SplObjectStorage when iterating, so
       // these might get not all get called if the baddy gets called first.
-      $process->expects($this->any())
-              ->method('isRunning')
-              ->will($this->returnValue(TRUE));
+      // Hence, $this->any().
+      $process = $this->getMockProcess(TRUE, $this->any());
       $process_group->attach($process);
     }
 
     // The baddy.
-    $process = $this->getMockBuilder('Symfony\Component\Process\Process')
-                    ->disableOriginalConstructor()
-                    ->getMock();
-    $process->expects($this->once())
-            ->method('isRunning')
-            ->will($this->returnValue(FALSE));
+    $process = $this->getMockProcess(FALSE, $this->once());
     $process_group->attach($process);
 
     $method->invokeArgs($command, array($process_group, 5));
