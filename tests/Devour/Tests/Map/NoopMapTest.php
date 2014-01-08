@@ -10,6 +10,9 @@ namespace Devour\Tests\Map;
 use Devour\Map\NoopMap;
 use Devour\Tests\DevourTestCase;
 
+/**
+ * @covers \Devour\Map\NoopMap
+ */
 class NoopMapTest extends DevourTestCase {
 
   public function testMap() {

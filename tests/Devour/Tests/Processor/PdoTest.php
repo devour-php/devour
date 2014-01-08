@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Processor\PdoTest.
+ */
+
 namespace Devour\Tests\Processor;
 
 use Devour\Map\NoopMap;
@@ -8,7 +13,7 @@ use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
 
 /**
- * @todo Test batching.
+ * @covers \Devour\Processor\Pdo
  */
 class PdoTest extends DevourTestCase {
 

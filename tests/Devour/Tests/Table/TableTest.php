@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Table\TableTest.
+ */
+
 namespace Devour\Tests\Table;
 
 use Devour\Map\NoopMap;
@@ -7,7 +12,7 @@ use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
 
 /**
- * Simple tests for the base table.
+ * @covers \Devour\Table\Table
  */
 class TableTest extends DevourTestCase {
 

@@ -1,12 +1,17 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Source\SourceTest.
+ */
+
 namespace Devour\Tests\Source;
 
 use Devour\Source\Source;
 use Devour\Tests\DevourTestCase;
 
 /**
- * Simple tests for the base table.
+ * @covers \Devour\Source\Source
  */
 class SourceTest extends DevourTestCase {
 

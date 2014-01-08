@@ -8,8 +8,6 @@
 namespace Devour\Tests\Table;
 
 use Devour\Map\MapInterface;
-use Devour\Row\Row;
-use Devour\Row\RowInterface;
 use Devour\Table\TableInterface;
 
 /**

@@ -10,12 +10,13 @@ namespace Devour\Transporter;
 use Devour\Payload\FilePayload;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
+use Devour\Transporter\TransporterInterface;
 use Devour\Util\FileSystem;
 
 /**
  * A transport that fetches a payload via a local directory.
  */
-class Directory implements ProgressInterface {
+class Directory implements TransporterInterface, ProgressInterface {
 
   /**
    * The list of files in the directory.

@@ -1,11 +1,19 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Transporter\FileTest.
+ */
+
 namespace Devour\Tests\Transporter;
 
 use Devour\Source\SourceInterface;
 use Devour\Tests\DevourTestCase;
 use Devour\Transporter\File;
 
+/**
+ * @covers \Devour\Transporter\File
+ */
 class FileTest extends DevourTestCase {
 
   const FILE_PATH_EXISTS = './file_exists';

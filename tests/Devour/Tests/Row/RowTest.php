@@ -12,6 +12,9 @@ use Devour\Row\Row;
 use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
 
+/**
+ * @covers \Devour\Row\Row
+ */
 class RowTest extends DevourTestCase {
 
   protected function getMockTable($field, $value) {

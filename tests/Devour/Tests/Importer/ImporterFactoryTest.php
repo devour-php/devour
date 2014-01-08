@@ -1,11 +1,19 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Importer\ImporterFactoryTest.
+ */
+
 namespace Devour\Tests\Importer;
 
 use Devour\Importer\ImporterFactory;
 use Devour\Tests\DevourTestCase;
 use Symfony\Component\Yaml\Dumper;
 
+/**
+ * @covers \Devour\Importer\ImporterFactory
+ */
 class ImporterFactoryTest extends DevourTestCase {
 
   const FILE_PATH = './tpm_config';
@@ -15,6 +23,7 @@ class ImporterFactoryTest extends DevourTestCase {
     $this->configuration = array(
       'importer' => array(
         'class' => 'Devour\Importer\Importer',
+        'configuration' => array('thing' => 1),
       ),
       'transporter' => array(
         'class' => 'Devour\Transporter\File',
@@ -64,6 +73,9 @@ class ImporterFactoryTest extends DevourTestCase {
     $this->assertSame($this->configuration['importer']['class'], get_class($importer));
   }
 
+  /**
+   * @covers \Devour\Importer\ImporterFactory::fromConfigurationFile
+   */
   public function testImporterFactoryFromFile() {
     $importer = ImporterFactory::fromConfigurationFile(static::FILE_PATH);
     $this->assertSame($this->configuration['importer']['class'], get_class($importer));

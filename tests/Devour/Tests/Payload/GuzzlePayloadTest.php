@@ -1,10 +1,18 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Payload\GuzzlePayloadTest.
+ */
+
 namespace Devour\Tests\Payload;
 
 use Devour\Payload\GuzzlePayload;
 use Devour\Tests\DevourTestCase;
 
+/**
+ * @covers \Devour\Payload\GuzzlePayload
+ */
 class GuzzlePayloadTest extends DevourTestCase {
 
   protected $returnValue;

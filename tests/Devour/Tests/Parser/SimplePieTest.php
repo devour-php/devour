@@ -1,10 +1,18 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Parser\SimplePieTest.
+ */
+
 namespace Devour\Tests\Parser;
 
 use Devour\Parser\SimplePie;
 use Devour\Tests\DevourTestCase;
 
+/**
+ * @covers \Devour\Parser\SimplePie
+ */
 class SimplePieTest extends DevourTestCase {
 
   protected $parser;

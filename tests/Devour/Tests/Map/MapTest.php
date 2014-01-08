@@ -10,6 +10,9 @@ namespace Devour\Tests\Map;
 use Devour\Map\Map;
 use Devour\Tests\DevourTestCase;
 
+/**
+ * @covers \Devour\Map\Map
+ */
 class MapTest extends DevourTestCase {
 
   public function testMap() {

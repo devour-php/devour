@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Transporter\DirectoryTest.
+ */
+
 namespace Devour\Tests\Transporter;
 
 use Devour\ProgressInterface;
@@ -8,6 +13,9 @@ use Devour\Source\SourceInterface;
 use Devour\Tests\DevourTestCase;
 use Devour\Transporter\Directory;
 
+/**
+ * @covers \Devour\Transporter\Directory
+ */
 class DirectoryTest extends DevourTestCase {
 
   const FILE_1 = './directory_exists/file_1';

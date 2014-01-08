@@ -11,17 +11,12 @@ use Devour\Processor\ProcessorInterface;
 use Devour\Table\TableInterface;
 
 /**
- * The interface that all processors must implement.
- *
- * @todo
+ * A stub processor for mocking.
  */
 class StubProcessor implements ProcessorInterface {
 
   /**
-   * Processes the results from a parser.
-   *
-   * @param \Devour\Table\TableInterface $table
-   *   The table to process.
+   * {@inheritdoc}
    */
   public function process(TableInterface $table) {
 

@@ -12,7 +12,7 @@ use Devour\Source\SourceInterface;
 use Devour\Transporter\TransporterInterface;
 
 /**
- * A transport that fetches a payload via a local file.
+ * A stub transporter implementation.
  */
 class TransporterStub implements TransporterInterface {
 

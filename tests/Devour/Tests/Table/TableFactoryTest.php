@@ -11,6 +11,9 @@ use Devour\Map\Map;
 use Devour\Table\TableFactory;
 use Devour\Tests\DevourTestCase;
 
+/**
+ * @covers \Devour\Table\TableFactory
+ */
 class TableFactoryTest extends DevourTestCase {
 
   public function testTableFactory() {

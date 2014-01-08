@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Parser\CsvTest.
+ */
+
 namespace Devour\Tests\Parser;
 
 use Devour\Parser\Csv;
@@ -8,6 +13,7 @@ use Devour\ProgressInterface;
 use Devour\Tests\DevourTestCase;
 
 /**
+ * @covers \Devour\Parser\Csv
  * @todo Test batching.
  */
 class CsvTest extends DevourTestCase {
@@ -99,6 +105,14 @@ class CsvTest extends DevourTestCase {
     // Complete parsing.
     $this->csv->parse($this->getMockRawPayload(static::FILE_1));
     $this->assertSame(1.0, $this->csv->progress());
+  }
+
+  /**
+   * @covers \Devour\Parser\Csv::fromConfiguration
+   */
+  public function testFactory() {
+    $parser = Csv::fromConfiguration(array('has_header' => TRUE));
+    $this->assertSame(get_class($this->csv), get_class($parser));
   }
 
 }

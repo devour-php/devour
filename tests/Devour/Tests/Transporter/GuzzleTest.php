@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Transporter\GuzzleTest.
+ */
+
 namespace Devour\Tests\Transporter;
 
 use Devour\Source\SourceInterface;
@@ -9,6 +14,9 @@ use Guzzle\Http\Message\Response;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Tests\GuzzleTestCase;
 
+/**
+ * @covers \Devour\Transporter\Guzzle
+ */
 class GuzzleTest extends GuzzleTestCase {
 
   protected $transporter;
