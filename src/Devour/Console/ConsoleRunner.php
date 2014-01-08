@@ -7,6 +7,8 @@
 
 namespace Devour\Console;
 
+use Devour\Console\Command\ClearCommand;
+use Devour\Console\Command\ImportCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\HelperSet;
 
@@ -33,9 +35,7 @@ class ConsoleRunner {
    *   The cli application.
    */
   public static function addCommands(Application $cli) {
-    $cli->addCommands(array(
-      new \Devour\Console\Command\ImportCommand(),
-    ));
+    $cli->addCommands(array(new ImportCommand(), new ClearCommand()));
   }
 
 }

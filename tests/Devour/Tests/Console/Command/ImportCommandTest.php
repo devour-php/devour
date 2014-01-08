@@ -48,8 +48,6 @@ class ImportCommandTest extends DevourTestCase {
     $command = $application->find('import');
     $commandTester = new CommandTester($command);
     $commandTester->execute(array('command' => $command->getName(), 'source' => array(''), '--config' => static::FILE_PATH, '--concurrency' => 1));
-
-    // $this->assertRegExp('/.../', $commandTester->getDisplay());
   }
 
   /**
