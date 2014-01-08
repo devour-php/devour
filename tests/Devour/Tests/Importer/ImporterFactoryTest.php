@@ -18,6 +18,8 @@ class ImporterFactoryTest extends DevourTestCase {
 
   const FILE_PATH = 'tpm_config';
 
+  const EMPTY_FILE = 'empty_file';
+
   public function setUp() {
     $this->cleanUpFiles();
 
@@ -71,6 +73,28 @@ class ImporterFactoryTest extends DevourTestCase {
   }
 
   /**
+   * @covers \Devour\Importer\ImporterFactory::fromConfiguration
+   *
+   * @expectedException \RuntimeException
+   * @expectedExceptionMessage The transporter class is required.
+   */
+  public function testImporterFactoryWithNoPartClass() {
+    unset($this->configuration['transporter']['class']);
+    ImporterFactory::fromConfiguration($this->configuration);
+  }
+
+  /**
+   * @covers \Devour\Importer\ImporterFactory::fromConfiguration
+   *
+   * @expectedException \RuntimeException
+   * @expectedExceptionMessage The "IDONTEXISTCLASS" class is unavailable.
+   */
+  public function testImporterFactoryWithInvalidPartClass() {
+    $this->configuration['transporter']['class'] = 'IDONTEXISTCLASS';
+    ImporterFactory::fromConfiguration($this->configuration);
+  }
+
+  /**
    * @covers \Devour\Importer\ImporterFactory::fromConfigurationFile
    */
   public function testImporterFactoryFromFile() {
@@ -79,11 +103,24 @@ class ImporterFactoryTest extends DevourTestCase {
   }
 
   /**
-   * @expectedException \LogicException
+   * @covers \Devour\Importer\ImporterFactory::fromConfigurationFile
+   *
+   * @expectedException \RuntimeException
    * @expectedExceptionMessage The configuration file "boop" does not exist or is not readable.
    */
   public function testImporterFactoryFailFromFile() {
     ImporterFactory::fromConfigurationFile('boop');
+  }
+
+  /**
+   * @covers \Devour\Importer\ImporterFactory::fromConfigurationFile
+   *
+   * @expectedException \RuntimeException
+   * @expectedExceptionMessage The configuration file "empty_file" is invalid.
+   */
+  public function testImporterFactoryFailFromFileEmpy() {
+    touch(static::EMPTY_FILE);
+    ImporterFactory::fromConfigurationFile(static::EMPTY_FILE);
   }
 
 }

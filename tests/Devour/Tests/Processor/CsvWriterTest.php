@@ -70,7 +70,16 @@ class CsvWriterTest extends DevourTestCase {
   }
 
   /**
+   * @depends testCsvWriter
+   */
+  public function testAutoCreateDirectory() {
+    rmdir(static::DIRECTORY);
+    new CsvWriter(static::DIRECTORY);
+  }
+
+  /**
    * @covers \Devour\Processor\CsvWriter::clear
+   * @depends testCsvWriter
    */
   public function testClear() {
     touch(static::FILE_FULL);
@@ -82,10 +91,18 @@ class CsvWriterTest extends DevourTestCase {
 
   /**
    * @covers \Devour\Processor\CsvWriter::fromConfiguration
+   *
+   * @expectedException \RuntimeException
+   * @expectedExceptionMessage The directory parameter is required for CsvWriter.
+   *
+   * @depends testCsvWriter
    */
   public function testFromConfiguration() {
     $config = array('directory' => static::DIRECTORY);
     $this->assertSame('Devour\Processor\CsvWriter', get_class(CsvWriter::fromConfiguration($config)));
+
+    // Throws an exception.
+    CsvWriter::fromConfiguration(array());
   }
 
 }

@@ -14,6 +14,7 @@ use Devour\Source\Source;
 use Devour\Source\SourceInterface;
 use Devour\Util\FileSystem;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,8 +32,8 @@ class ImportCommand extends Command {
     $this
       ->setName('import')
       ->setDescription('Execute an import.')
-      ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'The path to the configuration file.')
-      ->addOption('source', 's', InputOption::VALUE_REQUIRED, 'The source of the import.')
+      ->addArgument('source', InputArgument::REQUIRED, 'The source of the import.')
+      ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'The source of the import.', 'devour.yml')
       ->addOption('concurrency', NULL, InputOption::VALUE_OPTIONAL, 'The number of parallel proceses to execute.', 1);
   }
 
@@ -41,23 +42,20 @@ class ImportCommand extends Command {
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
     $config = $input->getOption('config');
-
-    if (!FileSystem::checkFile($config)) {
-      $output->writeln('<error>The configuration file does not exist or is not readable.</error>');
-      return;
-    }
+    $source = $input->getArgument('source');
+    $concurrency = $input->getOption('concurrency');
 
     $importer = ImporterFactory::fromConfigurationFile($config);
-    $source = new Source($input->getOption('source'));
+    $source = new Source($source);
 
-    $this->executeParallel($importer, $source, $input->getOption('concurrency'), $config);
+    $this->executeParallel($importer, $source, $concurrency, $config);
   }
 
   /**
    * Executes an import in parallel.
    */
   protected function executeParallel(ImporterInterface $importer, SourceInterface $source, $num_processes, $config) {
-    $script_path = START_DIR . '/batch.php';
+    $script_path = DEVOUR_COMMAND_START_DIR . '/batch.php';
 
     $process_group = new \SplObjectStorage();
 

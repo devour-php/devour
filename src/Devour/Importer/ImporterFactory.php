@@ -30,10 +30,15 @@ class ImporterFactory {
    */
   public static function fromConfigurationFile($filename) {
     if (!FileSystem::checkFile($filename)) {
-      throw new \LogicException(sprintf('The configuration file "%s" does not exist or is not readable.', $filename));
+      throw new \RuntimeException(sprintf('The configuration file "%s" does not exist or is not readable.', $filename));
     }
 
     $configuration = Yaml::parse(file_get_contents($filename));
+
+    if (!is_array($configuration)) {
+      throw new \RuntimeException(sprintf('The configuration file "%s" is invalid.', $filename));
+    }
+
     return static::fromConfiguration($configuration);
   }
 
@@ -57,7 +62,15 @@ class ImporterFactory {
     $parts = array();
 
     foreach (array('transporter', 'parser', 'processor') as $part) {
+      if (empty($configuration[$part]['class'])) {
+        throw new \RuntimeException(sprintf('The %s class is required.', $part));
+      }
+
       $part_class = $configuration[$part]['class'];
+
+      if (!class_exists($part_class)) {
+        throw new \RuntimeException(sprintf('The "%s" class is unavailable.', $part_class));
+      }
 
       if (is_subclass_of($part_class, '\Devour\ConfigurableInterface')) {
         $configuration[$part] += array('configuration' => array());

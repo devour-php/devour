@@ -47,20 +47,22 @@ class ImportCommandTest extends DevourTestCase {
 
     $command = $application->find('import');
     $commandTester = new CommandTester($command);
-    $commandTester->execute(array('command' => $command->getName(), '--config' => static::FILE_PATH, '--source' => '', '--concurrency' => 1));
+    $commandTester->execute(array('command' => $command->getName(), 'source' => '', '--config' => static::FILE_PATH, '--concurrency' => 1));
 
     // $this->assertRegExp('/.../', $commandTester->getDisplay());
   }
 
+  /**
+   * @expectedException \RuntimeException
+   * @expectedExceptionMessage The configuration file "devour.yml" does not exist or is not readable.
+   */
   public function testCommandNoConfig() {
     $application = new Application();
     $application->add(new ImportCommand());
 
     $command = $application->find('import');
     $commandTester = new CommandTester($command);
-    $commandTester->execute(array('command' => $command->getName(), '--source' => ''));
-
-    $this->assertSame('The configuration file does not exist or is not readable.', trim($commandTester->getDisplay()));
+    $commandTester->execute(array('command' => $command->getName(), 'source' => ''));
   }
 
   /**

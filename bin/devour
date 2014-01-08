@@ -1,4 +1,4 @@
 #!/usr/bin/env php
 <?php
 
-include('import.php');
+include('devour.php');

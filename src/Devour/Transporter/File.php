@@ -20,13 +20,13 @@ class File implements TransporterInterface {
    * {@inheritdoc}
    */
   public function transport(SourceInterface $source) {
-    $filepath = $source->getSource();
+    $filename = $source->getSource();
 
-    if (FileSystem::checkFile($filepath)) {
-      return new FilePayload($filepath);
+    if (FileSystem::checkFile($filename)) {
+      return new FilePayload($filename);
     }
 
-    throw new \RuntimeException('Nothing more to process.');
+    throw new \RuntimeException(sprintf('The file "%s" does not exist or is not readable.', $filename));
   }
 
 }

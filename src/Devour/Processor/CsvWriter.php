@@ -12,6 +12,7 @@ use Devour\ConfigurableInterface;
 use Devour\Row\RowInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
+use Devour\Util\FileSystem;
 
 /**
  * Writes data to a CSV file.
@@ -74,12 +75,20 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
     $this->mode = trim($mode, '+');
     $this->delimeter = $delimeter;
     $this->enclosure = $enclosure;
+
+    if (!FileSystem::checkDirectory($directory)) {
+      mkdir($directory);
+    }
   }
 
   /**
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $config) {
+    if (empty($config['directory'])) {
+      throw new \RuntimeException('The directory parameter is required for CsvWriter.');
+    }
+
     $config += array('header' => NULL, 'mode' => 'a', 'delimeter' => ',', 'enclosure' => '"');
     return new static($config['directory'], $config['header'], $config['mode'], $config['delimeter'], $config['enclosure']);
   }
@@ -98,7 +107,7 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
   }
 
   protected function getHandle(SourceInterface $source) {
-    $filename = "{$this->directory}/$source.csv";
+    $filename = $this->getFileName($source);
     $handle = fopen($filename, $this->mode);
 
     if (!$this->header) {
@@ -112,6 +121,11 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
     return $handle;
   }
 
+  protected function getFileName(SourceInterface $source) {
+    $source = str_replace('/', '_', $source);
+    return "{$this->directory}/$source.csv";
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -123,7 +137,11 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
    * {@inheritdoc}
    */
   public function clear(SourceInterface $source) {
-    unlink("{$this->directory}/$source.csv");
+    $filename = $this->getFileName($source);
+
+    if (file_exists($filename)) {
+      unlink($filename);
+    }
   }
 
 }
