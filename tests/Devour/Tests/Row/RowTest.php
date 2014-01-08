@@ -18,7 +18,7 @@ use Devour\Tests\DevourTestCase;
 class RowTest extends DevourTestCase {
 
   protected function getMockTable($field, $value) {
-    $table = $this->getMock('\Devour\Table\TableInterface');
+    $table = $this->getMock('Devour\Table\TableInterface');
 
     $table->expects($this->once())
       ->method('getField')

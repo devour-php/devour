@@ -50,7 +50,7 @@ class CsvTest extends DevourTestCase {
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
     $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
-    $this->assertInstanceOf('\Devour\Table\Table', $result);
+    $this->assertInstanceOf('Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
     $this->assertSame(count($this->csvData), count($result));
@@ -70,7 +70,7 @@ class CsvTest extends DevourTestCase {
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
     $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
-    $this->assertInstanceOf('\Devour\Table\Table', $result);
+    $this->assertInstanceOf('Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
     // Remove header line.

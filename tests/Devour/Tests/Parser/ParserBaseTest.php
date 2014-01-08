@@ -16,7 +16,7 @@ use Devour\Tests\DevourTestCase;
 class ParserBaseTest extends DevourTestCase {
 
   public function testParserBase() {
-    $parser = $this->getMockForAbstractClass('\Devour\Parser\ParserBase');
+    $parser = $this->getMockForAbstractClass('Devour\Parser\ParserBase');
 
     // Test default factory.
     $this->assertSame('Devour\Table\TableFactory', get_class($parser->getTableFactory()));

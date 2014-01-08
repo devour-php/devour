@@ -7,12 +7,12 @@ use Devour\Map\NoopMap;
 
 class TableFactory {
 
-  protected $tableClass = '\Devour\Table\Table';
+  protected $tableClass = 'Devour\Table\Table';
 
   protected $map;
 
   public function setTableClass($class) {
-    if (!is_subclass_of($class, '\Devour\Table\TableInterface')) {
+    if (!is_subclass_of($class, 'Devour\Table\TableInterface')) {
       throw new \InvalidArgumentException(sprintf('Class "%s" needs to implement \Devour\Table\TableInterface', $class));
     }
     $this->tableClass = $class;

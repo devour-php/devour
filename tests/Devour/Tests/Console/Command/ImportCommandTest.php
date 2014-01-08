@@ -24,16 +24,16 @@ class ImportCommandTest extends DevourTestCase {
     $this->cleanUpFiles();
     $this->configuration = array(
       'importer' => array(
-        'class' => '\Devour\Importer\Importer',
+        'class' => 'Devour\Importer\Importer',
       ),
       'transporter' => array(
-        'class' => '\Devour\Tests\Transporter\TransporterStub',
+        'class' => 'Devour\Tests\Transporter\TransporterStub',
       ),
       'parser' => array(
-        'class' => '\Devour\Tests\Parser\ParserStub',
+        'class' => 'Devour\Tests\Parser\ParserStub',
       ),
       'processor' => array(
-        'class' => '\Devour\Tests\Processor\StubProcessor',
+        'class' => 'Devour\Tests\Processor\StubProcessor',
       ),
     );
 

@@ -25,7 +25,7 @@ class ProcessorBaseTest extends DevourTestCase {
       array('a' => 'a3','b' => 'b3','c' => 'c3'),
     );
 
-    $processor = $this->getMockForAbstractClass('\Devour\Processor\ProcessorBase');
+    $processor = $this->getMockForAbstractClass('Devour\Processor\ProcessorBase');
     $processor->expects($this->exactly(3))
               ->method('processRow');
 

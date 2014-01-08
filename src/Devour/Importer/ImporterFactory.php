@@ -72,7 +72,7 @@ class ImporterFactory {
         throw new \RuntimeException(sprintf('The "%s" class is unavailable.', $part_class));
       }
 
-      if (is_subclass_of($part_class, '\Devour\ConfigurableInterface')) {
+      if (is_subclass_of($part_class, 'Devour\ConfigurableInterface')) {
         $configuration[$part] += array('configuration' => array());
         $parts[$part] = $part_class::fromConfiguration($configuration[$part]['configuration']);
       }
@@ -83,7 +83,7 @@ class ImporterFactory {
 
     $parts['parser']->setTableFactory(static::getTableFactory($configuration));
 
-    $importer_class = '\Devour\Importer\Importer';
+    $importer_class = 'Devour\Importer\Importer';
     if (!empty($configuration['importer']['class'])) {
       $importer_class = $configuration['importer']['class'];
     }
@@ -133,7 +133,7 @@ class ImporterFactory {
       return FALSE;
     }
 
-    $class = '\Devour\Map\Map';
+    $class = 'Devour\Map\Map';
     if (!empty($configuration['map']['class'])) {
       $class = $configuration['map']['class'];
     }
