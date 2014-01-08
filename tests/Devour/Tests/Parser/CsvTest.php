@@ -24,6 +24,7 @@ class CsvTest extends DevourTestCase {
   protected $csvData;
 
   public function setUp() {
+    $this->cleanUpFiles();
     $this->csv = new Csv();
 
     $this->csvData = array(
@@ -45,7 +46,7 @@ class CsvTest extends DevourTestCase {
   }
 
   public function tearDown() {
-    unlink(static::FILE_1);
+    $this->cleanUpFiles();
   }
 
   protected function getMockRawPayload($filepath) {

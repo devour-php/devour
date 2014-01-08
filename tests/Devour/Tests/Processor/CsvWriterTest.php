@@ -20,29 +20,18 @@ class CsvWriterTest extends DevourTestCase {
 
   const FILE = 'csv_file';
 
-  protected function getFileName() {
-    return static::DIRECTORY . '/' . static::FILE . '.csv';
-  }
-
-  protected function cleanUp() {
-    if (file_exists($this->getFileName())) {
-      unlink($this->getFileName());
-    }
-    if (is_dir(static::DIRECTORY)) {
-      rmdir(static::DIRECTORY);
-    }
-  }
+  const FILE_FULL = 'csv_dir/csv_file.csv';
 
   public function setUp() {
-    $this->cleanUp();
+    $this->cleanUpFiles();
     mkdir(static::DIRECTORY);
   }
 
   public function tearDown() {
-    $this->cleanUp();
+    $this->cleanUpFiles();
   }
 
-  public function testPrinter() {
+  public function testCsvWriter() {
 
     $source = new Source(static::FILE);
 
@@ -61,29 +50,45 @@ class CsvWriterTest extends DevourTestCase {
     $csv_writer = new CsvWriter(static::DIRECTORY, array('a', 'b', 'c'));
     $csv_writer->process($source, $this->getStubTable($data));
 
-    $this->assertSame($output, file_get_contents($this->getFileName()));
-    unlink($this->getFileName());
+    $this->assertSame($output, file_get_contents(static::FILE_FULL));
+    unlink(static::FILE_FULL);
 
     // Test no header.
     $output = str_replace("a,b,c\n", '', $output);
     $csv_writer = new CsvWriter(static::DIRECTORY);
     $csv_writer->process($source, $this->getStubTable($data));
-    $this->assertSame($output, file_get_contents($this->getFileName()));
+    $this->assertSame($output, file_get_contents(static::FILE_FULL));
 
     // Test append.
     $csv_writer = new CsvWriter(static::DIRECTORY);
     $csv_writer->process($source, $this->getStubTable($data));
-    $this->assertSame($output . $output, file_get_contents($this->getFileName()));
-    unlink($this->getFileName());
+    $this->assertSame($output . $output, file_get_contents(static::FILE_FULL));
+    unlink(static::FILE_FULL);
 
     // Test write.
     $csv_writer = new CsvWriter(static::DIRECTORY, NULL, 'w');
     $csv_writer->process($source, $this->getStubTable($data));
     $csv_writer = new CsvWriter(static::DIRECTORY, NULL, 'w');
     $csv_writer->process($source, $this->getStubTable($data));
-    $this->assertSame($output, file_get_contents($this->getFileName()));
+    $this->assertSame($output, file_get_contents(static::FILE_FULL));
   }
 
+  /**
+   * @covers \Devour\Processor\CsvWriter::clear
+   * @depends testCsvWriter
+   */
+  public function testClear() {
+    touch(static::FILE_FULL);
+    $this->assertTrue(file_exists(static::FILE_FULL));
+    $csv_writer = new CsvWriter(static::DIRECTORY);
+    $csv_writer->clear(new Source(static::FILE));
+    $this->assertFalse(file_exists(static::FILE_FULL));
+  }
+
+  /**
+   * @covers \Devour\Processor\CsvWriter::fromConfiguration
+   * @depends testCsvWriter
+   */
   public function testFromConfiguration() {
     $config = array('directory' => static::DIRECTORY);
     $this->assertSame('Devour\Processor\CsvWriter', get_class(CsvWriter::fromConfiguration($config)));

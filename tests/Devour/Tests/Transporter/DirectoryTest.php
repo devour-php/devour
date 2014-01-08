@@ -26,6 +26,7 @@ class DirectoryTest extends DevourTestCase {
   protected $directory;
 
   public function setUp() {
+    $this->cleanUpFiles();
     mkdir(static::DIRECTORY);
     touch(static::FILE_1);
     touch(static::FILE_2);
@@ -34,9 +35,7 @@ class DirectoryTest extends DevourTestCase {
   }
 
   public function tearDown() {
-    unlink(static::FILE_1);
-    unlink(static::FILE_2);
-    rmdir(static::DIRECTORY);
+    $this->cleanUpFiles();
   }
 
   /**

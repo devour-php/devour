@@ -17,16 +17,16 @@ class FileSystemTest extends DevourTestCase {
 
   const FILE = './file_1';
 
-  const DIRECORY = './directory';
+  const DIRECTORY = './directory';
 
   public function setUp() {
+    $this->cleanUpFiles();
     touch(static::FILE);
-    mkdir(static::DIRECORY);
+    mkdir(static::DIRECTORY);
   }
 
   public function tearDown() {
-    unlink(static::FILE);
-    rmdir(static::DIRECORY);
+    $this->cleanUpFiles();
   }
 
   public function testCheckFile() {
@@ -42,11 +42,11 @@ class FileSystemTest extends DevourTestCase {
   public function testCheckDirectory() {
     $this->assertFalse(FileSystem::checkDirectory('does_not_exist'));
     // Remove read permission.
-    chmod(static::DIRECORY, 000);
-    $this->assertFalse(FileSystem::checkDirectory(static::DIRECORY));
+    chmod(static::DIRECTORY, 000);
+    $this->assertFalse(FileSystem::checkDirectory(static::DIRECTORY));
 
-    chmod(static::DIRECORY, 777);
-    $this->assertTrue(FileSystem::checkDirectory(static::DIRECORY));
+    chmod(static::DIRECTORY, 777);
+    $this->assertTrue(FileSystem::checkDirectory(static::DIRECTORY));
   }
 
 }

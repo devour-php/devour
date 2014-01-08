@@ -20,11 +20,12 @@ class FilePayloadTest extends DevourTestCase {
   const FILE_CONTENTS = 'boop';
 
   public function setUp() {
+    $this->cleanUpFiles();
     file_put_contents(static::FILE_PATH, static::FILE_CONTENTS);
   }
 
   public function tearDown() {
-    unlink(static::FILE_PATH);
+    $this->cleanUpFiles();
   }
 
   public function testPayloadFactoryFromFile() {

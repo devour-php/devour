@@ -22,6 +22,7 @@ class ImportCommandTest extends DevourTestCase {
   const FILE_PATH = './tpm_config';
 
   public function setUp() {
+    $this->cleanUpFiles();
     $this->configuration = array(
       'importer' => array(
         'class' => '\Devour\Importer\Importer',
@@ -42,7 +43,7 @@ class ImportCommandTest extends DevourTestCase {
   }
 
   public function tearDown() {
-    unlink(static::FILE_PATH);
+    $this->cleanUpFiles();
   }
 
   public function testCommand() {

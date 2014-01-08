@@ -43,4 +43,33 @@ abstract class DevourTestCase extends \PHPUnit_Framework_TestCase {
     return $process;
   }
 
+  /**
+   * Removes files and directories.
+   *
+   * The file, or files to remove. This takes a variable number of paramaters to
+   * avoid having to wrap the argument in an array.
+   *
+   * This will also automatically grab any class constants and check them for
+   * files to remove.
+   */
+  protected static function cleanUpFiles() {
+
+    $refl = new \ReflectionClass(get_called_class());
+    $files = array_unique(array_filter(array_merge(func_get_args(), $refl->getConstants())));
+
+    // Remove files first so directories will be empty.
+    foreach ($files as $delta => $file) {
+      if (is_file($file)) {
+        unset($files[$delta]);
+        unlink($file);
+      }
+    }
+
+    foreach ($files as $directory) {
+      if (is_dir($directory)) {
+        rmdir($directory);
+      }
+    }
+  }
+
 }

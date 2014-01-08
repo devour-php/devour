@@ -18,8 +18,6 @@ use Devour\Tests\DevourTestCase;
  */
 class PdoTest extends DevourTestCase {
 
-  const DB = './sqlite';
-
   protected $pdo;
   protected $pdoData;
   protected $connection;
@@ -43,8 +41,6 @@ class PdoTest extends DevourTestCase {
       array('a' => 'a3','b' => 'b3','c' => 'c3'),
     );
   }
-
-  public function tearDown() {}
 
   protected function getMockPdo() {
     $source = $this->getMock('\PDO');

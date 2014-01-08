@@ -24,9 +24,6 @@ class SimplePieTest extends DevourTestCase {
     $this->content = file_get_contents(dirname(__FILE__) . '/../TestData/drupalplanet.rss2');
   }
 
-  public function tearDown() {
-  }
-
   protected function getMockRawPayload($content) {
     $source = $this->getMock('\Devour\Payload\PayloadInterface');
 

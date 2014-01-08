@@ -19,7 +19,7 @@ class ImporterFactoryTest extends DevourTestCase {
   const FILE_PATH = './tpm_config';
 
   public function setUp() {
-
+    $this->cleanUpFiles();
     $this->configuration = array(
       'importer' => array(
         'class' => 'Devour\Importer\Importer',
@@ -42,7 +42,7 @@ class ImporterFactoryTest extends DevourTestCase {
   }
 
   public function tearDown() {
-    unlink(static::FILE_PATH);
+    $this->cleanUpFiles();
   }
 
   public function testImporterFactory() {
