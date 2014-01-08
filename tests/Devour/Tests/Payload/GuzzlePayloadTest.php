@@ -37,11 +37,15 @@ class GuzzlePayloadTest extends DevourTestCase {
       ->method('getSize')
       ->will($this->returnValue($this->returnValue));
 
+    $stream->expects($this->once())
+      ->method('getUri')
+      ->will($this->returnValue($this->returnValue));
+
     $response = $this->getMockBuilder('\Guzzle\Http\Message\Response')
                      ->disableOriginalConstructor()
                      ->getMock();
 
-    $response->expects($this->exactly(3))
+    $response->expects($this->exactly(4))
       ->method('getBody')
       ->will($this->returnValue($stream));
 
@@ -55,7 +59,7 @@ class GuzzlePayloadTest extends DevourTestCase {
     $this->assertSame($this->returnValue, $payload->getStream());
     $this->assertSame($this->returnValue, $payload->getSize());
     $this->assertSame($this->returnValue, $payload->getContents());
-
+    $this->assertSame($this->returnValue, $payload->getPath());
   }
 
 }

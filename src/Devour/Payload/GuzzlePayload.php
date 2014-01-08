@@ -56,4 +56,11 @@ class GuzzlePayload implements PayloadInterface {
     return (string) $this->response->getBody();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getPath() {
+    return $this->response->getBody()->getUri();
+  }
+
 }

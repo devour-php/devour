@@ -37,4 +37,12 @@ interface PayloadInterface {
    */
   public function getContents();
 
+  /**
+   * Returns the path of the payload.
+   *
+   * @return string
+   *   The path of the payload.
+   */
+  public function getPath();
+
 }
