@@ -30,8 +30,7 @@ class RowTest extends DevourTestCase {
 
   public function testRow() {
     $map = new NoopMap();
-    $table = $this->getMockTable('does not exist', 9876);
-    $row = new Row($table, $map);
+    $row = new Row($this->getMockTable('does not exist', 9876), $map);
 
     $this->assertSame(9876, $row->get('does not exist'));
 
@@ -40,4 +39,5 @@ class RowTest extends DevourTestCase {
 
     $this->assertSame(array('beep', 'boop'), $row->setData(array('beep', 'boop'))->getData());
   }
+
 }

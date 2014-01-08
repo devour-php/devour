@@ -8,6 +8,8 @@
 namespace Devour\Tests\Importer;
 
 use Devour\Importer\Importer;
+use Devour\Payload\FilePayload;
+use Devour\Source\Source;
 use Devour\Tests\DevourTestCase;
 
 /**
@@ -26,8 +28,8 @@ class ImporterTest extends DevourTestCase {
   protected $source;
 
   public function setUp() {
-    $this->source = $this->getMock('Devour\Source\SourceInterface');
-    $this->payload = $this->getMock('Devour\Payload\PayloadInterface');
+    $this->source = new Source(NULL);
+    $this->payload = new FilePayload(NULL);
     $table = $this->getStubTable();
 
     $this->transporter = $this->getMock('Devour\Transporter\TransporterInterface');

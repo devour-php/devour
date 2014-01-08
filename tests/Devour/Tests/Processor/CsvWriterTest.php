@@ -27,10 +27,6 @@ class CsvWriterTest extends DevourTestCase {
     mkdir(static::DIRECTORY);
   }
 
-  public function tearDown() {
-    $this->cleanUpFiles();
-  }
-
   public function testCsvWriter() {
 
     $source = new Source(static::FILE);
@@ -75,7 +71,6 @@ class CsvWriterTest extends DevourTestCase {
 
   /**
    * @covers \Devour\Processor\CsvWriter::clear
-   * @depends testCsvWriter
    */
   public function testClear() {
     touch(static::FILE_FULL);
@@ -87,7 +82,6 @@ class CsvWriterTest extends DevourTestCase {
 
   /**
    * @covers \Devour\Processor\CsvWriter::fromConfiguration
-   * @depends testCsvWriter
    */
   public function testFromConfiguration() {
     $config = array('directory' => static::DIRECTORY);

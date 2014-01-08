@@ -11,7 +11,6 @@ use Devour\Console\Command\ImportCommand;
 use Devour\Tests\DevourTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Dumper;
 
 /**
@@ -19,7 +18,7 @@ use Symfony\Component\Yaml\Dumper;
  */
 class ImportCommandTest extends DevourTestCase {
 
-  const FILE_PATH = './tpm_config';
+  const FILE_PATH = 'tpm_config';
 
   public function setUp() {
     $this->cleanUpFiles();
@@ -40,10 +39,6 @@ class ImportCommandTest extends DevourTestCase {
 
     $dumper = new Dumper();
     file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
-  }
-
-  public function tearDown() {
-    $this->cleanUpFiles();
   }
 
   public function testCommand() {

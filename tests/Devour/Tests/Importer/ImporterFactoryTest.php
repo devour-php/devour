@@ -16,10 +16,11 @@ use Symfony\Component\Yaml\Dumper;
  */
 class ImporterFactoryTest extends DevourTestCase {
 
-  const FILE_PATH = './tpm_config';
+  const FILE_PATH = 'tpm_config';
 
   public function setUp() {
     $this->cleanUpFiles();
+
     $this->configuration = array(
       'importer' => array(
         'class' => 'Devour\Importer\Importer',
@@ -39,10 +40,6 @@ class ImporterFactoryTest extends DevourTestCase {
 
     $dumper = new Dumper();
     file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
-  }
-
-  public function tearDown() {
-    $this->cleanUpFiles();
   }
 
   public function testImporterFactory() {

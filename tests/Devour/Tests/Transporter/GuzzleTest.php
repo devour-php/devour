@@ -7,8 +7,7 @@
 
 namespace Devour\Tests\Transporter;
 
-use Devour\Source\SourceInterface;
-use Devour\Transporter\File;
+use Devour\Source\Source;
 use Devour\Transporter\Guzzle;
 use Guzzle\Http\Message\Response;
 use Guzzle\Plugin\Mock\MockPlugin;
@@ -29,24 +28,16 @@ class GuzzleTest extends GuzzleTestCase {
     $this->transporter->addSubscriber($this->mockPlugin);
   }
 
-  protected function getMockSource($filepath) {
-    $source = $this->getMock('\Devour\Source\SourceInterface');
-
-    $source->expects($this->any())
-      ->method('getSource')
-      ->will($this->returnValue($filepath));
-
-    return $source;
-  }
-
   public function testGuzzle() {
     $this->mockPlugin->addResponse(new Response(200, NULL, 'Good boy.'));
 
-    $source = $this->getMockSource('http://example.com');
-    $payload = $this->transporter->transport($source);
+    $payload = $this->transporter->transport(new Source('http://example.com'));
     $this->assertSame('Good boy.', $payload->getContents());
   }
 
+  /**
+   * @covers \Devour\Transporter\Guzzle::fromConfiguration
+   */
   public function testFromConfiguration() {
     $configuration = array(
       'request.options' => array(
@@ -64,9 +55,7 @@ class GuzzleTest extends GuzzleTestCase {
    */
   public function testGuzzle404() {
     $this->mockPlugin->addResponse(new Response(404));
-
-    $source = $this->getMockSource('http://example.com');
-    $this->transporter->transport($source);
+    $this->transporter->transport(new Source('http://example.com'));
   }
 
   /**
@@ -75,8 +64,7 @@ class GuzzleTest extends GuzzleTestCase {
    */
   public function testBadUrl() {
     $transporter = new Guzzle();
-    $source = $this->getMockSource('badurl');
-    $transporter->transport($source);
+    $transporter->transport(new Source('badurl'));
   }
 
 }

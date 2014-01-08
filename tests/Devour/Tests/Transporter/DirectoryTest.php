@@ -9,7 +9,6 @@ namespace Devour\Tests\Transporter;
 
 use Devour\ProgressInterface;
 use Devour\Source\Source;
-use Devour\Source\SourceInterface;
 use Devour\Tests\DevourTestCase;
 use Devour\Transporter\Directory;
 
@@ -18,10 +17,9 @@ use Devour\Transporter\Directory;
  */
 class DirectoryTest extends DevourTestCase {
 
-  const FILE_1 = './directory_exists/file_1';
-  const FILE_2 = './directory_exists/file_2';
-  const DIRECTORY = './directory_exists';
-  const DIRECTORY_NOT_EXISTS = './directory_not_exists';
+  const FILE_1 = 'directory_exists/file_1';
+  const FILE_2 = 'directory_exists/file_2';
+  const DIRECTORY = 'directory_exists';
 
   protected $directory;
 
@@ -32,10 +30,6 @@ class DirectoryTest extends DevourTestCase {
     touch(static::FILE_2);
 
     $this->directory = new Directory();
-  }
-
-  public function tearDown() {
-    $this->cleanUpFiles();
   }
 
   /**
@@ -56,11 +50,10 @@ class DirectoryTest extends DevourTestCase {
       $payload = $this->directory->transport($source);
 
       $this->assertInstanceOf('\Devour\Payload\FilePayload', $payload);
-      // $this->assertEquals($payload->getStream(), static::DIRECTORY . '/' . $file);
+      $this->assertEquals($payload->getPath(), static::DIRECTORY . '/' . $file);
 
       // Check progress.
       $this->assertEquals($this->directory->progress(), ++$key / 2);
-
     }
 
     $this->assertEquals($this->directory->progress(), ProgressInterface::COMPLETE);
@@ -73,8 +66,7 @@ class DirectoryTest extends DevourTestCase {
    * @expectedExceptionMessage The directory does not exist, or is not readable.
    */
   public function testGetRawPayloadDirectoryNotExists() {
-    $source = new Source(static::DIRECTORY_NOT_EXISTS);
-    $this->directory->transport($source);
+    $this->directory->transport(new Source('directory_not_exists'));
   }
 
 }

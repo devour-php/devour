@@ -15,6 +15,14 @@ use Devour\Table\Table;
  */
 abstract class DevourTestCase extends \PHPUnit_Framework_TestCase {
 
+  public function setUp() {
+    $this->cleanUpFiles();
+  }
+
+  public function tearDown() {
+    $this->cleanUpFiles();
+  }
+
   protected function getStubTable(array $rows = array()) {
     $map = new NoopMap();
     $table = new Table($map);

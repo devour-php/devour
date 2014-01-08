@@ -19,7 +19,9 @@ use Devour\Tests\DevourTestCase;
 class PdoTest extends DevourTestCase {
 
   protected $pdo;
+
   protected $pdoData;
+
   protected $connection;
 
   public function setUp() {
@@ -42,31 +44,10 @@ class PdoTest extends DevourTestCase {
     );
   }
 
-  protected function getMockPdo() {
-    $source = $this->getMock('\PDO');
-
-    $source->expects($this->once())
-      ->method('getStream')
-      ->will($this->returnValue($filepath));
-
-    return $source;
-  }
-
-  protected function getMockTable() {
-    $map = new NoopMap();
-    $table = new Table($map);
-
-    foreach ($this->pdoData as $data) {
-      $table->getNewRow()->setData($data);
-    }
-
-    return $table;
-  }
-
   public function testProcess() {
     $source = new Source(NULL);
 
-    $payload = $this->getMockTable();
+    $payload = $this->getStubTable($this->pdoData);
     $this->pdo->process($source, $payload);
 
     $result = $this->connection->query("SELECT * FROM my_table");
@@ -81,14 +62,14 @@ class PdoTest extends DevourTestCase {
     $source = new Source(NULL);
 
     $pdo = new PdoProcessor($this->connection, '~my_table', array('a'));
-    $pdo->process($source, $this->getMockTable());
+    $pdo->process($source, $this->getStubTable($this->pdoData));
 
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
     // Imported 3 rows.
     $this->assertEquals(count($this->pdoData), $result[0]);
 
     // Import again.
-    $pdo->process($source, $this->getMockTable());
+    $pdo->process($source, $this->getStubTable($this->pdoData));
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
     // Still only 3 rows!
     $this->assertEquals(count($this->pdoData), $result[0]);
@@ -98,7 +79,7 @@ class PdoTest extends DevourTestCase {
     $source = new Source(NULL);
 
     $pdo = new PdoProcessor($this->connection, '~my_table', array('a'), TRUE);
-    $pdo->process($source, $this->getMockTable());
+    $pdo->process($source, $this->getStubTable($this->pdoData));
 
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
     // Imported 3 rows.
@@ -107,12 +88,15 @@ class PdoTest extends DevourTestCase {
     // Change a row.
     $this->pdoData[0]['b'] = 'udpated';
     // Import again.
-    $pdo->process($source, $this->getMockTable());
+    $pdo->process($source, $this->getStubTable($this->pdoData));
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
     // Still only 3 rows!
     $this->assertEquals(count($this->pdoData), $result[0]);
   }
 
+  /**
+   * @covers \Devour\Processor\Pdo::fromConfiguration
+   */
   public function testFactory() {
     $processor = PdoProcessor::fromConfiguration(array('dsn' => 'sqlite::memory:', 'table' => 'my_table'));
   }

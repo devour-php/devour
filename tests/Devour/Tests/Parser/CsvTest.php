@@ -18,7 +18,7 @@ use Devour\Tests\DevourTestCase;
  */
 class CsvTest extends DevourTestCase {
 
-  const FILE_1 = './file_1';
+  const FILE_1 = 'file_1';
 
   protected $csv;
   protected $csvData;
@@ -45,20 +45,10 @@ class CsvTest extends DevourTestCase {
     file_put_contents(static::FILE_1, $csv_data);
   }
 
-  public function tearDown() {
-    $this->cleanUpFiles();
-  }
-
-  protected function getMockRawPayload($filepath) {
-    return new FilePayload($filepath);
-  }
-
   public function testParse() {
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
-
-    $payload = $this->getMockRawPayload(static::FILE_1);
-    $result = $this->csv->parse($payload);
+    $result = $this->csv->parse(new FilePayload(static::FILE_1));
     $this->assertInstanceOf('\Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
@@ -70,8 +60,7 @@ class CsvTest extends DevourTestCase {
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
     // Test that an empty array is returned after parsing is complete.
-    $payload = $this->getMockRawPayload(static::FILE_1);
-    $result = $this->csv->parse($payload);
+    $result = $this->csv->parse(new FilePayload(static::FILE_1));
     $this->assertSame(0, count($result));
   }
 
@@ -79,9 +68,7 @@ class CsvTest extends DevourTestCase {
     $this->csv->setHasHeader(TRUE);
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
-
-    $payload = $this->getMockRawPayload(static::FILE_1);
-    $result = $this->csv->parse($payload);
+    $result = $this->csv->parse(new FilePayload(static::FILE_1));
     $this->assertInstanceOf('\Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
@@ -99,13 +86,12 @@ class CsvTest extends DevourTestCase {
   public function testLimit() {
     $this->csv->setProcessLimit(2);
 
-    $payload = $this->getMockRawPayload(static::FILE_1);
-    $result = $this->csv->parse($payload);
+    $result = $this->csv->parse(new FilePayload(static::FILE_1));
     $this->assertSame(.8, $this->csv->progress());
 
     // Complete parsing.
-    $this->csv->parse($this->getMockRawPayload(static::FILE_1));
-    $this->assertSame(1.0, $this->csv->progress());
+    $this->csv->parse(new FilePayload(static::FILE_1));
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
   }
 
   /**
