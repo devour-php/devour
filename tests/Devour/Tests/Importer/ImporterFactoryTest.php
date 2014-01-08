@@ -46,7 +46,7 @@ class ImporterFactoryTest extends DevourTestCase {
 
   public function testImporterFactory() {
     $importer = ImporterFactory::fromConfiguration($this->configuration);
-    $this->assertSame($this->configuration['importer']['class'], get_class($importer));
+    $this->assertInstanceOf($this->configuration['importer']['class'], $importer);
   }
 
   public function testImporterFactoryWithMap() {
@@ -59,17 +59,17 @@ class ImporterFactoryTest extends DevourTestCase {
       ),
     );
     $importer = ImporterFactory::fromConfiguration($this->configuration);
-    $this->assertSame($this->configuration['importer']['class'], get_class($importer));
+    $this->assertInstanceOf($this->configuration['importer']['class'], $importer);
 
     $this->configuration['map']['class'] = 'Devour\Map\NoopMap';
     $importer = ImporterFactory::fromConfiguration($this->configuration);
-    $this->assertSame($this->configuration['importer']['class'], get_class($importer));
+    $this->assertInstanceOf($this->configuration['importer']['class'], $importer);
   }
 
   public function testImporterFactoryWithTableClass() {
     $this->configuration['table']['class'] = 'Devour\Table\Table';
     $importer = ImporterFactory::fromConfiguration($this->configuration);
-    $this->assertSame($this->configuration['importer']['class'], get_class($importer));
+    $this->assertInstanceOf($this->configuration['importer']['class'], $importer);
   }
 
   /**
@@ -99,7 +99,7 @@ class ImporterFactoryTest extends DevourTestCase {
    */
   public function testImporterFactoryFromFile() {
     $importer = ImporterFactory::fromConfigurationFile(static::FILE_PATH);
-    $this->assertSame($this->configuration['importer']['class'], get_class($importer));
+    $this->assertInstanceOf($this->configuration['importer']['class'], $importer);
   }
 
   /**

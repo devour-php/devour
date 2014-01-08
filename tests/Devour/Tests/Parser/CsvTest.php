@@ -100,7 +100,7 @@ class CsvTest extends DevourTestCase {
    */
   public function testFactory() {
     $parser = Csv::fromConfiguration(array('has_header' => TRUE));
-    $this->assertSame(get_class($this->csv), get_class($parser));
+    $this->assertInstanceOf(get_class($this->csv), $parser);
   }
 
 }

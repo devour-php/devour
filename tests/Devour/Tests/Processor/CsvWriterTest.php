@@ -100,7 +100,7 @@ class CsvWriterTest extends DevourTestCase {
    */
   public function testFromConfiguration() {
     $config = array('directory' => static::DIRECTORY);
-    $this->assertSame('Devour\Processor\CsvWriter', get_class(CsvWriter::fromConfiguration($config)));
+    $this->assertInstanceOf('Devour\Processor\CsvWriter', CsvWriter::fromConfiguration($config));
 
     // Throws an exception.
     CsvWriter::fromConfiguration(array());

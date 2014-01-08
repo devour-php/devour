@@ -19,7 +19,7 @@ class ConsoleRunnerTest extends DevourTestCase {
 
   public function testGetApp() {
     $app = ConsoleRunner::getApplication();
-    $this->assertSame('Symfony\Component\Console\Application', get_class($app));
+    $this->assertInstanceOf('Symfony\Component\Console\Application', $app);
   }
 
   public function testAddCommands() {

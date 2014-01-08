@@ -19,7 +19,7 @@ class ParserBaseTest extends DevourTestCase {
     $parser = $this->getMockForAbstractClass('Devour\Parser\ParserBase');
 
     // Test default factory.
-    $this->assertSame('Devour\Table\TableFactory', get_class($parser->getTableFactory()));
+    $this->assertInstanceOf('Devour\Table\TableFactory', $parser->getTableFactory());
 
     $factory = new TableFactory();
     $parser->setTableFactory($factory);

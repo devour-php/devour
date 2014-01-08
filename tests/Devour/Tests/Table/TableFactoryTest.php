@@ -23,10 +23,10 @@ class TableFactoryTest extends DevourTestCase {
     $factory->setTableClass($stub_class);
     $table = $factory->create();
 
-    $this->assertSame($stub_class, get_class($table));
+    $this->assertInstanceOf($stub_class, $table);
 
     // Check Map handling.
-    $this->assertSame('Devour\Map\NoopMap', get_class($factory->getMap()));
+    $this->assertInstanceOf('Devour\Map\NoopMap', $factory->getMap());
 
     $map = new Map(array());
     $factory->setMap($map);
