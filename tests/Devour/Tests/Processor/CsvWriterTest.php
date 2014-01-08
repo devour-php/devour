@@ -75,6 +75,7 @@ class CsvWriterTest extends DevourTestCase {
   public function testAutoCreateDirectory() {
     rmdir(static::DIRECTORY);
     new CsvWriter(static::DIRECTORY);
+    $this->assertTrue(is_dir(static::DIRECTORY));
   }
 
   /**
