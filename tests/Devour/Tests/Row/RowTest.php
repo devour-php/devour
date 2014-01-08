@@ -22,7 +22,7 @@ class RowTest extends DevourTestCase {
 
     $table->expects($this->once())
       ->method('getField')
-      ->with($field)
+      ->with($this->equalTo($field))
       ->will($this->returnValue($value));
 
     return $table;

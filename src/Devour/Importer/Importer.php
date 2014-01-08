@@ -7,12 +7,13 @@
 
 namespace Devour\Importer;
 
+use Devour\ClearableInterface;
 use Devour\Parser\ParserInterface;
-use Devour\Table\TableInterface;
 use Devour\Payload\PayloadInterface;
 use Devour\Processor\ProcessorInterface;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
+use Devour\Table\TableInterface;
 use Devour\Transporter\TransporterInterface;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -72,6 +73,17 @@ class Importer implements ImporterInterface {
     do {
       $this->processor->process($source, $payload);
     } while ($this->processor instanceof ProgressInterface && $this->processor->progress() != ProgressInterface::COMPLETE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function clear(SourceInterface $source) {
+    foreach (array('transporter', 'parser', 'processor') as $part) {
+      if ($this->$part instanceof ClearableInterface) {
+        $this->$part->clear($source);
+      }
+    }
   }
 
 }

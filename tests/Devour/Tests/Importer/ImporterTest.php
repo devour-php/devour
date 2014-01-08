@@ -17,44 +17,58 @@ use Devour\Tests\DevourTestCase;
  */
 class ImporterTest extends DevourTestCase {
 
-  protected $transporter;
-
-  protected $payload;
-
-  protected $parser;
-
-  protected $processor;
-
-  protected $source;
-
-  public function setUp() {
-    $this->source = new Source(NULL);
-    $this->payload = new FilePayload(NULL);
+  public function testImporterImport() {
+    $source = new Source(NULL);
+    $payload = new FilePayload(NULL);
     $table = $this->getStubTable();
 
-    $this->transporter = $this->getMock('Devour\Transporter\TransporterInterface');
-    $this->transporter->expects($this->exactly(2))
-                      ->method('transport')
-                      ->with($this->source)
-                      ->will($this->returnValue($this->payload));
+    $transporter = $this->getMock('Devour\Transporter\TransporterInterface');
+    $transporter->expects($this->exactly(2))
+                ->method('transport')
+                ->with($this->identicalTo($source))
+                ->will($this->returnValue($payload));
 
-    $this->parser = $this->getMock('Devour\Parser\ParserInterface');
-    $this->parser->expects($this->once())
-                 ->method('parse')
-                 ->with($this->source, $this->payload)
-                 ->will($this->returnValue($table));
+    $parser = $this->getMock('Devour\Parser\ParserInterface');
+    $parser->expects($this->once())
+           ->method('parse')
+           ->with($this->identicalTo($source), $this->identicalTo($payload))
+           ->will($this->returnValue($table));
 
 
-    $this->processor = $this->getMock('Devour\Processor\ProcessorInterface');
-    $this->processor->expects($this->once())
-                    ->method('process')
-                    ->with($this->source, $table);
+    $processor = $this->getMock('Devour\Processor\ProcessorInterface');
+    $processor->expects($this->once())
+              ->method('process')
+              ->with($this->identicalTo($source), $this->identicalTo($table));
+
+    $importer = new Importer($transporter, $parser, $processor);
+    $importer->import($source);
+    $this->assertSame($payload, $importer->transport($source));
   }
 
-  public function testImporterImport() {
-    $importer = new Importer($this->transporter, $this->parser, $this->processor);
-    $importer->import($this->source);
-    $this->assertSame($this->payload, $importer->transport($this->source));
-  }
+  /**
+   * @covers \Devour\Importer\Importer::clear
+   * @depends testImporterImport
+   */
+  public function testImporterClear() {
+    $source = new Source(NULL);
 
+    $transporter = $this->getMock('Devour\Transporter\TransporterInterface');
+    $transporter->expects($this->never())
+                ->method('clear');
+
+    $parser = $this->getMock('Devour\Parser\ParserInterface');
+    $parser->expects($this->never())
+           ->method('clear');
+
+    // Implements ClearableInterface.
+    $processor = $this->getMockBuilder('Devour\Processor\CsvWriter')
+                      ->disableOriginalConstructor()
+                      ->getMock();
+    $processor->expects($this->once())
+              ->method('clear')
+              ->with($this->identicalTo($source));
+
+    $importer = new Importer($transporter, $parser, $processor);
+    $importer->clear($source);
+  }
 }
