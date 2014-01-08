@@ -8,9 +8,9 @@
 namespace Devour\Parser;
 
 use Devour\ConfigurableInterface;
-use Devour\Payload\PayloadInterface;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
+use Guzzle\Stream\StreamInterface;
 
 /**
  * A CSV parser.
@@ -63,8 +63,8 @@ class Csv extends ParserBase implements ProgressInterface, ConfigurableInterface
    *
    * @todo Handle encoding.
    */
-  public function parse(SourceInterface $source, PayloadInterface $payload) {
-    $handle = $payload->getStream();
+  public function parse(SourceInterface $source, StreamInterface $stream) {
+    $handle = $stream->getStream();
     // Resume where we left off.
     fseek($handle, $this->pointer);
 
@@ -73,7 +73,7 @@ class Csv extends ParserBase implements ProgressInterface, ConfigurableInterface
 
     // Initial load.
     if ($this->fileLength === NULL) {
-      $this->fileLength = $payload->getSize();
+      $this->fileLength = $stream->getSize();
 
       if ($this->hasHeader) {
         $this->header = $this->readLine($handle);

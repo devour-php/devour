@@ -7,12 +7,12 @@
 
 namespace Devour\Transporter;
 
-use Devour\Payload\FilePayload;
 use Devour\Source\SourceInterface;
 use Devour\Util\FileSystem;
+use Guzzle\Stream\Stream;
 
 /**
- * A transport that fetches a payload via a local file.
+ * A single file transport.
  */
 class File implements TransporterInterface {
 
@@ -23,7 +23,7 @@ class File implements TransporterInterface {
     $filename = $source->getSource();
 
     if (FileSystem::checkFile($filename)) {
-      return new FilePayload($filename);
+      return new Stream(fopen($filename, 'r+'));
     }
 
     throw new \RuntimeException(sprintf('The file "%s" does not exist or is not readable.', $filename));

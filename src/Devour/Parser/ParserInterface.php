@@ -7,9 +7,9 @@
 
 namespace Devour\Parser;
 
-use Devour\Payload\PayloadInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\TableFactory;
+use Guzzle\Stream\StreamInterface;
 
 /**
  * The interface all parsers must implement.
@@ -17,17 +17,17 @@ use Devour\Table\TableFactory;
 interface ParserInterface {
 
   /**
-   * Parses a raw payload.
+   * Parses a stream.
    *
    * @param \Devour\Source\SourceInterface $source
    *   The source being imported.
-   * @param \Devour\Payload\PayloadInterface $payload
-   *   The raw payload.
+   * @param \Guzzle\Stream\StreamInterface $stream
+   *   The stream to use to obtain data to parse.
    *
    * @return \Devour\Table\TableInterface
-   *   A parsed payload.
+   *   A table.
    */
-  public function parse(SourceInterface $source, PayloadInterface $payload);
+  public function parse(SourceInterface $source, StreamInterface $stream);
 
   /**
    * Set the table factory.

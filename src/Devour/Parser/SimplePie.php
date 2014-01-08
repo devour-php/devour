@@ -7,9 +7,9 @@
 
 namespace Devour\Parser;
 
-use Devour\Payload\PayloadInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
+use Guzzle\Stream\StreamInterface;
 
 /**
  * Wraps SimplePie to parse RSS/Atom feeds.
@@ -19,13 +19,13 @@ class SimplePie extends ParserBase {
   /**
    * {@inheritdoc}
    */
-  public function parse(SourceInterface $source, PayloadInterface $payload) {
+  public function parse(SourceInterface $source, StreamInterface $stream) {
     $feed = new \SimplePie();
 
     $table = $this->getTableFactory()->create();
 
     // @todo Use file directly.
-    $feed->set_raw_data($payload->getContents());
+    $feed->set_raw_data((string) $stream);
     $feed->init();
 
     $table->setField('feed_title', $feed->get_title());

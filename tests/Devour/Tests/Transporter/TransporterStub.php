@@ -7,8 +7,8 @@
 
 namespace Devour\Tests\Transporter;
 
-use Devour\Payload\FilePayload;
 use Devour\Source\SourceInterface;
+use Devour\Tests\Stream\StreamStub;
 use Devour\Transporter\TransporterInterface;
 
 /**
@@ -20,7 +20,7 @@ class TransporterStub implements TransporterInterface {
    * {@inheritdoc}
    */
   public function transport(SourceInterface $source) {
-    return new FilePayload('');
+    return new StreamStub();
   }
 
 }

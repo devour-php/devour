@@ -7,12 +7,11 @@
 
 namespace Devour\Transporter;
 
-use Devour\Payload\GuzzlePayload;
 use Devour\Source\SourceInterface;
 use Guzzle\Http\Client;
 
 /**
- * A transport that fetches a payload via HTTP.
+ * A transport that returns a stream via HTTP.
  */
 class Guzzle extends Client implements TransporterInterface {
 
@@ -31,8 +30,7 @@ class Guzzle extends Client implements TransporterInterface {
       $request->setResponseBody(tempnam(sys_get_temp_dir(), 'devour_'));
     }
 
-    $response = $request->send();
-    return new GuzzlePayload($response);
+    return $request->send()->getBody();
   }
 
   /**

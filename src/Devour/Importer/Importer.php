@@ -9,12 +9,12 @@ namespace Devour\Importer;
 
 use Devour\ClearableInterface;
 use Devour\Parser\ParserInterface;
-use Devour\Payload\PayloadInterface;
 use Devour\Processor\ProcessorInterface;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
 use Devour\Transporter\TransporterInterface;
+use Guzzle\Stream\StreamInterface;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -51,17 +51,17 @@ class Importer implements ImporterInterface {
    */
   public function import(SourceInterface $source) {
     do {
-      $payload = $this->transporter->transport($source);
-      $this->parse($source, $payload);
+      $stream = $this->transporter->transport($source);
+      $this->parse($source, $stream);
     } while ($this->transporter instanceof ProgressInterface && $this->transporter->progress() != ProgressInterface::COMPLETE);
   }
 
   /**
    * Executes the parsing step.
    */
-  public function parse(SourceInterface $source, PayloadInterface $payload) {
+  public function parse(SourceInterface $source, StreamInterface $stream) {
     do {
-      $parser_result = $this->parser->parse($source, $payload);
+      $parser_result = $this->parser->parse($source, $stream);
       $this->process($source, $parser_result);
     } while ($this->parser instanceof ProgressInterface && $this->parser->progress() != ProgressInterface::COMPLETE);
   }
@@ -69,9 +69,9 @@ class Importer implements ImporterInterface {
   /**
    * Executes the processing step.
    */
-  protected function process(SourceInterface $source, TableInterface $payload) {
+  protected function process(SourceInterface $source, TableInterface $table) {
     do {
-      $this->processor->process($source, $payload);
+      $this->processor->process($source, $table);
     } while ($this->processor instanceof ProgressInterface && $this->processor->progress() != ProgressInterface::COMPLETE);
   }
 

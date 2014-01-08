@@ -47,8 +47,8 @@ class PdoTest extends DevourTestCase {
   public function testProcess() {
     $source = new Source(NULL);
 
-    $payload = $this->getStubTable($this->pdoData);
-    $this->pdo->process($source, $payload);
+    $table = $this->getStubTable($this->pdoData);
+    $this->pdo->process($source, $table);
 
     $result = $this->connection->query("SELECT * FROM my_table");
     $result->setFetchMode(\PDO::FETCH_ASSOC);

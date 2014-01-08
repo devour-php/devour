@@ -8,9 +8,9 @@
 namespace Devour\Tests\Parser;
 
 use Devour\Parser\SimplePie;
-use Devour\Payload\FilePayload;
 use Devour\Source\Source;
 use Devour\Tests\DevourTestCase;
+use Devour\Tests\Stream\StreamStub;
 
 /**
  * @covers \Devour\Parser\SimplePie
@@ -20,7 +20,7 @@ class SimplePieTest extends DevourTestCase {
   public function testParse() {
     $file = dirname(__FILE__) . '/../TestData/drupalplanet.rss2';
     $parser = new SimplePie();
-    $result = $parser->parse(new Source(NULL), new FilePayload($file));
+    $result = $parser->parse(new Source(NULL), new StreamStub($file));
 
     $first = $result->shift();
     $this->assertEquals('Adaptivethemes: Why I killed Node, may it RIP', $first->get('title'));

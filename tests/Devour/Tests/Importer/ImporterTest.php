@@ -8,9 +8,9 @@
 namespace Devour\Tests\Importer;
 
 use Devour\Importer\Importer;
-use Devour\Payload\FilePayload;
 use Devour\Source\Source;
 use Devour\Tests\DevourTestCase;
+use Devour\Tests\Stream\StreamStub;
 
 /**
  * @covers \Devour\Importer\Importer
@@ -19,19 +19,19 @@ class ImporterTest extends DevourTestCase {
 
   public function testImporterImport() {
     $source = new Source(NULL);
-    $payload = new FilePayload(NULL);
+    $stream = new StreamStub();
     $table = $this->getStubTable();
 
     $transporter = $this->getMock('Devour\Transporter\TransporterInterface');
     $transporter->expects($this->exactly(2))
                 ->method('transport')
                 ->with($this->identicalTo($source))
-                ->will($this->returnValue($payload));
+                ->will($this->returnValue($stream));
 
     $parser = $this->getMock('Devour\Parser\ParserInterface');
     $parser->expects($this->once())
            ->method('parse')
-           ->with($this->identicalTo($source), $this->identicalTo($payload))
+           ->with($this->identicalTo($source), $this->identicalTo($stream))
            ->will($this->returnValue($table));
 
 
@@ -42,7 +42,7 @@ class ImporterTest extends DevourTestCase {
 
     $importer = new Importer($transporter, $parser, $processor);
     $importer->import($source);
-    $this->assertSame($payload, $importer->transport($source));
+    $this->assertSame($stream, $importer->transport($source));
   }
 
   /**

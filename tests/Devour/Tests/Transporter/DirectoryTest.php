@@ -47,10 +47,10 @@ class DirectoryTest extends DevourTestCase {
 
     // There are 2 files in the directory.
     foreach (array('file_2', 'file_1') as $key => $file) {
-      $payload = $this->directory->transport($source);
+      $stream = $this->directory->transport($source);
 
-      $this->assertInstanceOf('\Devour\Payload\FilePayload', $payload);
-      $this->assertEquals($payload->getPath(), static::DIRECTORY . '/' . $file);
+      $this->assertInstanceOf('Guzzle\Stream\StreamInterface', $stream);
+      $this->assertEquals($stream->getUri(), static::DIRECTORY . '/' . $file);
 
       // Check progress.
       $this->assertEquals($this->directory->progress(), ++$key / 2);

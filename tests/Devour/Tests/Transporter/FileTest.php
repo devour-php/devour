@@ -27,7 +27,7 @@ class FileTest extends DevourTestCase {
 
   public function testGetRawPayload() {
     touch(static::FILE);
-    $this->assertInstanceOf('\Devour\Payload\FilePayload', $this->file->transport(new Source(static::FILE)));
+    $this->assertInstanceOf('Guzzle\Stream\StreamInterface', $this->file->transport(new Source(static::FILE)));
   }
 
   /**

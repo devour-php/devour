@@ -72,9 +72,9 @@ class ImportCommand extends Command {
     do {
       $this->limitProcess($process_group, $num_processes);
 
-      $payload = $importer->transport($source);
+      $stream = $importer->transport($source);
 
-      $args = array('php', $script_path, $config, (string) $source, $payload->getPath());
+      $args = array('php', $script_path, $config, (string) $source, $stream->getUri());
 
       $builder = new ProcessBuilder($args);
       $process = $builder->getProcess();

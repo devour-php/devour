@@ -12,19 +12,20 @@ use Devour\Source\SourceInterface;
 /**
  * The interface all transports must implement.
  *
- * A transport is a method of retrieving a paylod. Transporters should strive to
- * be payload agnostic.
+ * A transport is a method of retrieving a stream. Transporters should strive to
+ * be payload agnostic, meaning, they shouldn't care about the contents of the
+ * stream.
  */
 interface TransporterInterface {
 
   /**
-   * Returns the raw payload.
+   * Returns the stream.
    *
    * @param \Devour\Source\SourceInterface $source
    *   A source object.
    *
-   * @return \Devour\Payload\PayloadInterface
-   *   A raw payload object.
+   * @return \Guzzle\Stream\StreamInterface
+   *   A stream object.
    *
    * @throws \RuntimeException
    *   Thrown if an error occured.

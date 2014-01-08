@@ -7,14 +7,14 @@
 
 namespace Devour\Transporter;
 
-use Devour\Payload\FilePayload;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Transporter\TransporterInterface;
 use Devour\Util\FileSystem;
+use Guzzle\Stream\Stream;
 
 /**
- * A transport that fetches a payload via a local directory.
+ * A transport that batches over a directory, returning each file individually.
  */
 class Directory implements TransporterInterface, ProgressInterface {
 
@@ -46,7 +46,7 @@ class Directory implements TransporterInterface, ProgressInterface {
 
     if ($this->files) {
       $file = array_pop($this->files);
-      return new FilePayload("$directory/$file");
+      return new Stream(fopen("$directory/$file", 'r+'));
     }
 
     throw new \RuntimeException('There are no more files left to process.');

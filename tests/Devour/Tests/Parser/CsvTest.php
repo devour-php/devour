@@ -8,10 +8,10 @@
 namespace Devour\Tests\Parser;
 
 use Devour\Parser\Csv;
-use Devour\Payload\FilePayload;
 use Devour\ProgressInterface;
 use Devour\Source\Source;
 use Devour\Tests\DevourTestCase;
+use Devour\Tests\Stream\StreamStub;
 
 /**
  * @covers \Devour\Parser\Csv
@@ -49,7 +49,7 @@ class CsvTest extends DevourTestCase {
   public function testParse() {
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
-    $result = $this->csv->parse(new Source(NULL), new FilePayload(static::FILE_1));
+    $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
     $this->assertInstanceOf('\Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
@@ -61,7 +61,7 @@ class CsvTest extends DevourTestCase {
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
     // Test that an empty array is returned after parsing is complete.
-    $result = $this->csv->parse(new Source(NULL), new FilePayload(static::FILE_1));
+    $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
     $this->assertSame(0, count($result));
   }
 
@@ -69,7 +69,7 @@ class CsvTest extends DevourTestCase {
     $this->csv->setHasHeader(TRUE);
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
 
-    $result = $this->csv->parse(new Source(NULL), new FilePayload(static::FILE_1));
+    $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
     $this->assertInstanceOf('\Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
@@ -87,11 +87,11 @@ class CsvTest extends DevourTestCase {
   public function testLimit() {
     $this->csv->setProcessLimit(2);
 
-    $result = $this->csv->parse(new Source(NULL), new FilePayload(static::FILE_1));
+    $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
     $this->assertSame(.8, $this->csv->progress());
 
     // Complete parsing.
-    $this->csv->parse(new Source(NULL), new FilePayload(static::FILE_1));
+    $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
   }
 

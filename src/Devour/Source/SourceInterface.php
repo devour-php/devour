@@ -15,7 +15,7 @@ namespace Devour\Source;
 interface SourceInterface {
 
   /**
-   * Returns the source address used to transport the payload.
+   * Returns the source address used to find the stream(s).
    *
    * @return string
    *   Some kind of address string, for example, a web address, or a file path.

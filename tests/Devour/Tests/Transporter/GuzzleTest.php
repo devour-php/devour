@@ -31,8 +31,8 @@ class GuzzleTest extends GuzzleTestCase {
   public function testGuzzle() {
     $this->mockPlugin->addResponse(new Response(200, NULL, 'Good boy.'));
 
-    $payload = $this->transporter->transport(new Source('http://example.com'));
-    $this->assertSame('Good boy.', $payload->getContents());
+    $stream = $this->transporter->transport(new Source('http://example.com'));
+    $this->assertSame('Good boy.', (string) $stream);
   }
 
   /**
