@@ -50,4 +50,8 @@ class FilePayload implements PayloadInterface {
     return file_get_contents($this->filename);
   }
 
+  public function getPath() {
+    return $this->filename;
+  }
+
 }

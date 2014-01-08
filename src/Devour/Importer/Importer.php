@@ -23,7 +23,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Importer implements ImporterInterface {
 
-  protected $transport;
+  public $transporter;
 
   protected $parser;
 
@@ -32,22 +32,17 @@ class Importer implements ImporterInterface {
   /**
    * Constructs a new Importer object.
    */
-  public function __construct(TransporterInterface $transport, ParserInterface $parser, ProcessorInterface $processor, array $configuration = array()) {
-    $this->transport = $transport;
+  public function __construct(TransporterInterface $transporter, ParserInterface $parser, ProcessorInterface $processor, array $configuration = array()) {
+    $this->transporter = $transporter;
     $this->parser = $parser;
     $this->processor = $processor;
+  }
 
-    if (!empty($configuration['batch_size'])) {
-      if ($this->transport instanceof ProgressInterface) {
-        $this->transport->setProcessLimit($configuration['batch_size']);
-      }
-      if ($this->parser instanceof ProgressInterface) {
-        $this->parser->setProcessLimit($configuration['batch_size']);
-      }
-      if ($this->processor instanceof ProgressInterface) {
-        $this->processor->setProcessLimit($configuration['batch_size']);
-      }
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public function transport(SourceInterface $source) {
+    return $this->transporter->transport($source);
   }
 
   /**
@@ -55,15 +50,15 @@ class Importer implements ImporterInterface {
    */
   public function import(SourceInterface $source) {
     do {
-      $payload = $this->transport->transport($source);
+      $payload = $this->transporter->transport($source);
       $this->parse($payload);
-    } while ($this->transport instanceof ProgressInterface && $this->transport->progress() != ProgressInterface::COMPLETE);
+    } while ($this->transporter instanceof ProgressInterface && $this->transporter->progress() != ProgressInterface::COMPLETE);
   }
 
   /**
    * Executes the parsing step.
    */
-  protected function parse(PayloadInterface $payload) {
+  public function parse(PayloadInterface $payload) {
     do {
       $parser_result = $this->parser->parse($payload);
       $this->process($parser_result);

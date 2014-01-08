@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Devour\Tests\Console\ConsoleRunnerTest.
+ */
+
 namespace Devour\Tests\Console;
 
 use Devour\Console\ConsoleRunner;
@@ -7,6 +12,7 @@ use Devour\Tests\DevourTestCase;
 use Symfony\Component\Console\Application;
 
 /**
+ * @covers \Devour\Console\ConsoleRunner
  * @todo More tests.
  */
 class ConsoleRunnerTest extends DevourTestCase {
