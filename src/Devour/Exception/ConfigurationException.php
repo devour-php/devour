@@ -12,5 +12,5 @@ namespace Devour\Exception;
  *
  * @see \Devour\ConfigurableInterface::fromConfiguration()
  */
-class ConfigurationException extends \Exception {
+class ConfigurationException extends \RuntimeException {
 }
