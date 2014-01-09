@@ -8,13 +8,13 @@
 namespace Devour\Parser;
 
 use Devour\Source\SourceInterface;
-use Devour\Table\TableFactoryInterface;
+use Devour\Table\HasTableFactoryInterface;
 use Guzzle\Stream\StreamInterface;
 
 /**
  * The interface all parsers must implement.
  */
-interface ParserInterface {
+interface ParserInterface extends HasTableFactoryInterface {
 
   /**
    * Parses a stream.
@@ -28,21 +28,5 @@ interface ParserInterface {
    *   A table.
    */
   public function parse(SourceInterface $source, StreamInterface $stream);
-
-  /**
-   * Set the table factory.
-   *
-   * @param \Devour\Table\TableFactory $table_factory
-   *   The table factory.
-   */
-  public function setTableFactory(TableFactoryInterface $table_factory);
-
-  /**
-   * Returnds the table factory.
-   *
-   * @return \Devour\Table\TableFactory
-   *   The table factory.
-   */
-  public function getTableFactory();
 
 }

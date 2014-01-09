@@ -7,14 +7,17 @@
 
 namespace Devour\Tests\Parser;
 
-use Devour\Parser\ParserBase;
+use Devour\Parser\ParserInterface;
 use Devour\Source\SourceInterface;
+use Devour\Table\HasTableFactoryTrait;
 use Guzzle\Stream\StreamInterface;
 
 /**
  * A minimal parser.
  */
-class ParserStub extends ParserBase {
+class ParserStub implements ParserInterface {
+
+  use HasTableFactoryTrait;
 
   /**
    * {@inheritdoc}

@@ -8,13 +8,16 @@
 namespace Devour\Parser;
 
 use Devour\Source\SourceInterface;
+use Devour\Table\HasTableFactoryTrait;
 use Devour\Table\TableInterface;
 use Guzzle\Stream\StreamInterface;
 
 /**
  * Wraps SimplePie to parse RSS/Atom feeds.
  */
-class SimplePie extends ParserBase {
+class SimplePie implements ParserInterface {
+
+  use HasTableFactoryTrait;
 
   /**
    * {@inheritdoc}

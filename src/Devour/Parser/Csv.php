@@ -10,12 +10,15 @@ namespace Devour\Parser;
 use Devour\ConfigurableInterface;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
+use Devour\Table\HasTableFactoryTrait;
 use Guzzle\Stream\StreamInterface;
 
 /**
  * A CSV parser.
  */
-class Csv extends ParserBase implements ProgressInterface, ConfigurableInterface {
+class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
+
+  use HasTableFactoryTrait;
 
   protected $length = 0;
 
@@ -179,7 +182,7 @@ class Csv extends ParserBase implements ProgressInterface, ConfigurableInterface
   /**
    * {@inheritdoc}
    */
-  public function progress() {
+  public function progress(SourceInterface $source) {
     if ($this->fileLength) {
       return (float) $this->pointer / $this->fileLength;
     }

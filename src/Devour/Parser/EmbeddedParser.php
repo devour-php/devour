@@ -7,16 +7,18 @@
 
 namespace Devour\Parser;
 
-use Devour\Parser\ParserBase;
 use Devour\Source\SourceInterface;
 use Devour\Table\FixedTableFactory;
+use Devour\Table\HasTableFactoryTrait;
 use Guzzle\Stream\Stream;
 use Guzzle\Stream\StreamInterface;
 
 /**
  * A Parser that allows another parser to be used to parse the rows.
  */
-class EmbeddedParser extends ParserBase {
+class EmbeddedParser implements ParserInterface {
+
+  use HasTableFactoryTrait;
 
   protected $parser;
 
