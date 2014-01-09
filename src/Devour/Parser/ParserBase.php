@@ -8,6 +8,7 @@
 namespace Devour\Parser;
 
 use Devour\Table\TableFactory;
+use Devour\Table\TableFactoryInterface;
 
 /**
  * A base class for pasers that has helper methods.
@@ -24,7 +25,7 @@ abstract class ParserBase implements ParserInterface {
   /**
    * {@inheritdoc}
    */
-  public function setTableFactory(TableFactory $table_factory) {
+  public function setTableFactory(TableFactoryInterface $table_factory) {
     $this->tableFactory = $table_factory;
   }
 

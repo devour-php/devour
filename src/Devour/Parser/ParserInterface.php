@@ -8,7 +8,7 @@
 namespace Devour\Parser;
 
 use Devour\Source\SourceInterface;
-use Devour\Table\TableFactory;
+use Devour\Table\TableFactoryInterface;
 use Guzzle\Stream\StreamInterface;
 
 /**
@@ -35,7 +35,7 @@ interface ParserInterface {
    * @param \Devour\Table\TableFactory $table_factory
    *   The table factory.
    */
-  public function setTableFactory(TableFactory $table_factory);
+  public function setTableFactory(TableFactoryInterface $table_factory);
 
   /**
    * Returnds the table factory.
