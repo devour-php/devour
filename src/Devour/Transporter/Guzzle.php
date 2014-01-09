@@ -7,15 +7,15 @@
 
 namespace Devour\Transporter;
 
+use Devour\ClearableInterface;
 use Devour\Source\SourceInterface;
-use Guzzle\Http\Client;
+use Guzzle\Plugin\Cache\CachePlugin;
+use Guzzle\Service\Client;
 
 /**
  * A transport that returns a stream via HTTP.
  */
-class Guzzle extends Client implements TransporterInterface {
-
-  protected $streamToFile = TRUE;
+class Guzzle extends Client implements TransporterInterface, ClearableInterface {
 
   /**
    * {@inheritdoc}
@@ -25,8 +25,7 @@ class Guzzle extends Client implements TransporterInterface {
 
     // Guzzle use's php://temp as a temporary file. That is awesome, but for our
     // multiprocessing, we need a real file path.
-    // @todo Make this configurable.
-    if ($this->streamToFile) {
+    if ($this->getConfig('stream_to_file')) {
       $request->setResponseBody(tempnam(sys_get_temp_dir(), 'devour_'));
     }
 
@@ -37,7 +36,20 @@ class Guzzle extends Client implements TransporterInterface {
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
-    return new static(NULL, $configuration);
+    $configuration += array('stream_to_file' => TRUE);
+    return static::factory($configuration);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function clear(SourceInterface $source) {
+    foreach ($this->getEventDispatcher()->getListeners('request.before_send') as $listener) {
+      if ($listener instanceof CachePlugin) {
+        $this->createRequest('PURGE', $source->getSource())->send();
+        break;
+      }
+    }
   }
 
 }

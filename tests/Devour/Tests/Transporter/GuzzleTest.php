@@ -67,4 +67,12 @@ class GuzzleTest extends GuzzleTestCase {
     $transporter->transport(new Source('badurl'));
   }
 
+  /**
+   * @covers \Devour\Transporter\Guzzle::clear
+   */
+  public function testClear() {
+    $this->mockPlugin->addResponse(new Response(200, NULL, 'Good boy.'));
+    $this->transporter->clear(new Source('http://example.com'));
+  }
+
 }
