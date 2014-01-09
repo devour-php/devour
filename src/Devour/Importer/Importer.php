@@ -51,9 +51,21 @@ class Importer implements ImporterInterface {
    */
   public function import(SourceInterface $source) {
     do {
-      $stream = $this->transporter->transport($source);
-      $this->parse($source, $stream);
-    } while ($this->transporter instanceof ProgressInterface && $this->transporter->progress() != ProgressInterface::COMPLETE);
+      $result = $this->transporter->transport($source);
+
+      if ($result instanceof StreamInterface) {
+        $this->parse($source, $result);
+      }
+      elseif ($result instanceof TableInterface) {
+        $this->process($source, $result);
+      }
+
+      // Uh oh!
+      else {
+        throw new \DomainException(sprintf('The transporter %s returned an invalid value.', get_class($this->transporter)));
+      }
+
+    } while ($this->transporter instanceof ProgressInterface && $this->transporter->progress($source) != ProgressInterface::COMPLETE);
   }
 
   /**
@@ -63,7 +75,7 @@ class Importer implements ImporterInterface {
     do {
       $parser_result = $this->parser->parse($source, $stream);
       $this->process($source, $parser_result);
-    } while ($this->parser instanceof ProgressInterface && $this->parser->progress() != ProgressInterface::COMPLETE);
+    } while ($this->parser instanceof ProgressInterface && $this->parser->progress($source) != ProgressInterface::COMPLETE);
   }
 
   /**
@@ -72,7 +84,7 @@ class Importer implements ImporterInterface {
   protected function process(SourceInterface $source, TableInterface $table) {
     do {
       $this->processor->process($source, $table);
-    } while ($this->processor instanceof ProgressInterface && $this->processor->progress() != ProgressInterface::COMPLETE);
+    } while ($this->processor instanceof ProgressInterface && $this->processor->progress($source) != ProgressInterface::COMPLETE);
   }
 
   /**

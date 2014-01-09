@@ -55,7 +55,7 @@ class Directory implements TransporterInterface, ProgressInterface {
   /**
    * {@inheritdoc}
    */
-  public function progress() {
+  public function progress(SourceInterface $source) {
     if ($this->totalFileCount) {
       return (float) ($this->totalFileCount - count($this->files)) / $this->totalFileCount;
     }

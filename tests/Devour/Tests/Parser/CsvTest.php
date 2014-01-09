@@ -47,7 +47,7 @@ class CsvTest extends DevourTestCase {
   }
 
   public function testParse() {
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
 
     $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
     $this->assertInstanceOf('Devour\Table\Table', $result);
@@ -58,7 +58,7 @@ class CsvTest extends DevourTestCase {
       $this->assertSame($data, $result[$key]->getData());
     }
 
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
 
     // Test that an empty array is returned after parsing is complete.
     $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
@@ -67,7 +67,7 @@ class CsvTest extends DevourTestCase {
 
   public function testParseWithHeaders() {
     $this->csv->setHasHeader(TRUE);
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
 
     $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
     $this->assertInstanceOf('Devour\Table\Table', $result);
@@ -81,18 +81,18 @@ class CsvTest extends DevourTestCase {
       $this->assertSame(array_combine($header, $row), $result[$key]->getData());
     }
 
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
   }
 
   public function testLimit() {
     $this->csv->setProcessLimit(2);
 
     $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
-    $this->assertSame(.8, $this->csv->progress());
+    $this->assertSame(.8, $this->csv->progress(new Source(NULL)));
 
     // Complete parsing.
     $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress());
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
   }
 
   /**

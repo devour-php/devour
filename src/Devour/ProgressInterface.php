@@ -7,6 +7,8 @@
 
 namespace Devour;
 
+use Devour\Source\SourceInterface;
+
 /**
  * Allows progress reporting.
  *
@@ -28,7 +30,7 @@ interface ProgressInterface {
    * @return float
    *   A number between 0 and 1.
    */
-  public function progress();
+  public function progress(SourceInterface $source);
 
   /**
    * Sets the number of lines to parse at one time.

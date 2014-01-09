@@ -43,7 +43,7 @@ class DirectoryTest extends DevourTestCase {
     $source = new Source(static::DIRECTORY);
 
     // We haven't read any directories yet.
-    $this->assertEquals($this->directory->progress(), ProgressInterface::COMPLETE);
+    $this->assertEquals($this->directory->progress(new Source(NULL)), ProgressInterface::COMPLETE);
 
     // There are 2 files in the directory.
     foreach (array('file_2', 'file_1') as $key => $file) {
@@ -53,10 +53,10 @@ class DirectoryTest extends DevourTestCase {
       $this->assertEquals($stream->getUri(), static::DIRECTORY . '/' . $file);
 
       // Check progress.
-      $this->assertEquals($this->directory->progress(), ++$key / 2);
+      $this->assertEquals($this->directory->progress(new Source(NULL)), ++$key / 2);
     }
 
-    $this->assertEquals($this->directory->progress(), ProgressInterface::COMPLETE);
+    $this->assertEquals($this->directory->progress(new Source(NULL)), ProgressInterface::COMPLETE);
     // The third call will throw \RuntimeException.
     $this->directory->transport($source);
   }
