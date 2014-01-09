@@ -24,7 +24,6 @@ class DirectoryTest extends DevourTestCase {
   protected $directory;
 
   public function setUp() {
-    $this->cleanUpFiles();
     mkdir(static::DIRECTORY);
     touch(static::FILE_1);
     touch(static::FILE_2);

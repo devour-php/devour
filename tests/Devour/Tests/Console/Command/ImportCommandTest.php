@@ -21,7 +21,6 @@ class ImportCommandTest extends DevourTestCase {
   const FILE_PATH = 'tpm_config';
 
   public function setUp() {
-    $this->cleanUpFiles();
     $this->configuration = array(
       'importer' => array(
         'class' => 'Devour\Importer\Importer',

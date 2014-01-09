@@ -28,4 +28,7 @@
       <log type="junit" target="build/artifacts/logs/junit.xml" logIncompleteSkipped="false" />
     </logging>
 
+    <listeners>
+      <listener file="tests/Devour/Tests/FileCleaner.php" class="Devour\Tests\FileCleaner" />
+    </listeners>
 </phpunit>

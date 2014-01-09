@@ -21,7 +21,6 @@ class FileTest extends DevourTestCase {
   protected $file;
 
   public function setUp() {
-    $this->cleanUpFiles();
     $this->file = new File();
   }
 

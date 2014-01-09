@@ -18,11 +18,9 @@ class ImporterFactoryTest extends DevourTestCase {
 
   const FILE_PATH = 'tpm_config';
 
-  const EMPTY_FILE = 'empty_file';
+  const FILE_EMPTY = 'empty_file';
 
   public function setUp() {
-    $this->cleanUpFiles();
-
     $this->configuration = array(
       'importer' => array(
         'class' => 'Devour\Importer\Importer',
@@ -119,8 +117,8 @@ class ImporterFactoryTest extends DevourTestCase {
    * @expectedExceptionMessage The configuration file "empty_file" is invalid.
    */
   public function testImporterFactoryFailFromFileEmpy() {
-    touch(static::EMPTY_FILE);
-    ImporterFactory::fromConfigurationFile(static::EMPTY_FILE);
+    touch(static::FILE_EMPTY);
+    ImporterFactory::fromConfigurationFile(static::FILE_EMPTY);
   }
 
 }

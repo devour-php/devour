@@ -23,7 +23,6 @@ class CsvWriterTest extends DevourTestCase {
   const FILE_FULL = 'csv_dir/csv_file.csv';
 
   public function setUp() {
-    $this->cleanUpFiles();
     mkdir(static::DIRECTORY);
   }
 

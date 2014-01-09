@@ -25,7 +25,6 @@ class CsvTest extends DevourTestCase {
   protected $csvData;
 
   public function setUp() {
-    $this->cleanUpFiles();
     $this->csv = new Csv();
 
     $this->csvData = array(
@@ -47,9 +46,10 @@ class CsvTest extends DevourTestCase {
   }
 
   public function testParse() {
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
+    $source = new Source(NULL);
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress($source));
 
-    $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
+    $result = $this->csv->parse($source, new StreamStub(static::FILE_1));
     $this->assertInstanceOf('Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
@@ -58,19 +58,18 @@ class CsvTest extends DevourTestCase {
       $this->assertSame($data, $result[$key]->getData());
     }
 
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress($source));
 
     // Test that an empty array is returned after parsing is complete.
-    $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
+    $result = $this->csv->parse($source, new StreamStub(static::FILE_1));
     $this->assertSame(0, count($result));
   }
 
   public function testParseWithHeaders() {
+    $source = new Source(NULL);
     $this->csv->setHasHeader(TRUE);
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
 
-    $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
-    $this->assertInstanceOf('Devour\Table\Table', $result);
+    $result = $this->csv->parse($source, new StreamStub(static::FILE_1));
 
     // Check that rows were parsed correctly.
     // Remove header line.
@@ -80,19 +79,18 @@ class CsvTest extends DevourTestCase {
     foreach ($this->csvData as $key => $row) {
       $this->assertSame(array_combine($header, $row), $result[$key]->getData());
     }
-
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
   }
 
   public function testLimit() {
+    $source = new Source(NULL);
     $this->csv->setProcessLimit(2);
 
-    $result = $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
-    $this->assertSame(.8, $this->csv->progress(new Source(NULL)));
+    $result = $this->csv->parse($source, new StreamStub(static::FILE_1));
+    $this->assertSame(.8, $this->csv->progress($source));
 
     // Complete parsing.
-    $this->csv->parse(new Source(NULL), new StreamStub(static::FILE_1));
-    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress(new Source(NULL)));
+    $this->csv->parse($source, new StreamStub(static::FILE_1));
+    $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress($source));
   }
 
   /**
