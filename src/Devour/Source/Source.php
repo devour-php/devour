@@ -7,6 +7,8 @@
 
 namespace Devour\Source;
 
+use Devour\Common\State;
+
 /**
  * @todo
  */
@@ -18,6 +20,13 @@ class Source implements SourceInterface {
    * @var string
    */
   protected $source;
+
+  /**
+   * Holds the state for phases.
+   *
+   * @var array
+   */
+  protected $state;
 
   /**
    * Constructs a new source object.
@@ -41,6 +50,25 @@ class Source implements SourceInterface {
    */
   public function __toString() {
     return $this->getSource();
+  }
+
+  /**
+   * Tracks state for clients.
+   *
+   * @param object $client
+   *   The object that wants its state tracked.
+   *
+   * @return \Devour\Common\State
+   *   A state object.
+   */
+  public function getState($client) {
+    $class = get_class($client);
+
+    if (!isset($this->state[$class])) {
+      $this->state[$class] = new State();
+    }
+
+    return $this->state[$class];
   }
 
 }
