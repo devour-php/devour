@@ -30,8 +30,6 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
 
   protected $pointer = 0;
 
-  protected $header;
-
   protected $hasHeader = FALSE;
 
   protected $limit = 50;
@@ -39,8 +37,6 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
   protected $linesRead;
 
   protected $emptyLine;
-
-  protected $fileLength;
 
   /**
    * Constructs a new Csv object.
@@ -67,33 +63,36 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
    * @todo Handle encoding.
    */
   public function parse(SourceInterface $source, StreamInterface $stream) {
+    $state = $source->getState($this);
     $handle = $stream->getStream();
+
     // Resume where we left off.
-    fseek($handle, $this->pointer);
+    fseek($handle, $state->pointer);
+
+    // Initial load.
+    if ($state->isFirstRun()) {
+      $state->fileLength = $stream->getSize();
+    }
+
+    if ($this->hasHeader && !isset($state->header)) {
+      $state->header = $this->readLine($handle);
+    }
 
     // Reset our counter.
     $this->linesRead = 0;
-
-    // Initial load.
-    if ($this->fileLength === NULL) {
-      $this->fileLength = $stream->getSize();
-
-      if ($this->hasHeader) {
-        $this->header = $this->readLine($handle);
-      }
-    }
 
     $table = $this->getTableFactory()->create();
 
     while ($data = $this->getCsvLine($handle)) {
 
       if ($this->hasHeader) {
-        $data = array_combine($this->header, $data);
+        $data = array_combine($state->header, $data);
       }
       $table->getNewRow()->setData($data);
     }
 
-    $this->closeHandle($handle);
+    $state->pointer = ftell($handle);
+    fclose($handle);
 
     return $table;
   }
@@ -124,17 +123,6 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
   public function setProcessLimit($limit) {
     $this->limit = $limit;
     return $this;
-  }
-
-  /**
-   * Closes a file handle.
-   *
-   * @param resource $handle
-   *   An open file handle.
-   */
-  protected function closeHandle($handle) {
-    $this->pointer = ftell($handle);
-    fclose($handle);
   }
 
   /**
@@ -183,8 +171,10 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
    * {@inheritdoc}
    */
   public function progress(SourceInterface $source) {
-    if ($this->fileLength) {
-      return (float) $this->pointer / $this->fileLength;
+    $state = $source->getState($this);
+
+    if (!empty($state->fileLength)) {
+      return (float) $state->pointer / $state->fileLength;
     }
 
     return ProgressInterface::COMPLETE;

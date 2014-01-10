@@ -75,14 +75,13 @@ class Database implements TransporterInterface, HasTableFactoryInterface, Config
     $table = $this->escapeTable($source);
     $state = $source->getState($this);
 
-    if (!isset($state->pointer)) {
-      $state->pointer = 0;
-      $total = $this->connection->query("SELECT COUNT(*) AS total FROM my_table")->fetch();
+    if (!isset($state->total)) {
+      $total = $this->connection->query("SELECT COUNT(*) AS total FROM $table")->fetch();
       $state->total = $total['total'];
     }
 
     // Prepare our statement.
-    $statement = $this->connection->prepare("SELECT * FROM $table LIMIT {$state->pointer}, {$this->batchSize}");
+    $statement = $this->connection->prepare("SELECT * FROM $table LIMIT {$this->batchSize} OFFSET {$state->pointer}");
     $state->pointer += $this->batchSize;
 
     return $statement;
@@ -119,12 +118,20 @@ class Database implements TransporterInterface, HasTableFactoryInterface, Config
     return new static($connection);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setProcessLimit($limit) {
     $this->batchSize = $limit;
+    return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function progress(SourceInterface $source) {
     $state = $source->getState($this);
+
     if (empty($state->total) || $state->pointer >= $state->total) {
       return ProgressInterface::COMPLETE;
     }
