@@ -34,7 +34,7 @@ class ImporterFactoryTest extends DevourTestCase {
         'configuration' => array('has_header' => TRUE),
       ),
       'processor' => array(
-        'class' => 'Devour\Tests\Processor\StubProcessor',
+        'class' => 'Devour\Tests\Processor\ProcessorStub',
       ),
     );
 
@@ -59,9 +59,8 @@ class ImporterFactoryTest extends DevourTestCase {
     $importer = ImporterFactory::fromConfiguration($this->configuration);
     $this->assertInstanceOf($this->configuration['importer']['class'], $importer);
 
-    $this->configuration['map']['class'] = 'Devour\Map\NoopMap';
-    $importer = ImporterFactory::fromConfiguration($this->configuration);
-    $this->assertInstanceOf($this->configuration['importer']['class'], $importer);
+    // $importer = ImporterFactory::fromConfiguration($this->configuration);
+    // $this->assertInstanceOf($this->configuration['importer']['class'], $importer);
   }
 
   public function testImporterFactoryWithTableClass() {
@@ -85,7 +84,7 @@ class ImporterFactoryTest extends DevourTestCase {
    * @covers \Devour\Importer\ImporterFactory::fromConfiguration
    *
    * @expectedException \RuntimeException
-   * @expectedExceptionMessage The "IDONTEXISTCLASS" class is unavailable.
+   * @expectedExceptionMessage The "IDONTEXISTCLASS" class does not exist.
    */
   public function testImporterFactoryWithInvalidPartClass() {
     $this->configuration['transporter']['class'] = 'IDONTEXISTCLASS';

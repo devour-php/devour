@@ -7,9 +7,11 @@
 
 namespace Devour\Importer;
 
+use Devour\Common\ValidatorInterface;
 use Devour\Importer\Importer;
 use Devour\Map\MapInterface;
 use Devour\Parser\ParserInterface;
+use Devour\Processor\MappableInterface;
 use Devour\Processor\ProcessorInterface;
 use Devour\ProgressInterface;
 use Devour\Table\HasTableFactoryInterface;
@@ -122,7 +124,6 @@ class ImporterBuilder {
    */
   public function setImporter($importer, array $configuration = array()) {
     $this->importer = $this->buildClient($importer, $configuration);
-
     return $this;
   }
 
@@ -141,9 +142,6 @@ class ImporterBuilder {
    */
   public function setTransporter($transporter, array $configuration = array()) {
     $transporter = $this->buildClient($transporter, $configuration);
-
-    // Transports that skip parsing.
-    $this->parserRequired = !$transporter instanceof HasTableFactoryInterface;
     $this->recordCommand(static::PRIMARY, __FUNCTION__, $transporter);
 
     return $this;
@@ -289,39 +287,19 @@ class ImporterBuilder {
     $this->hasBeenExecuted = TRUE;
 
     // Hello old faithful.
-    if (!isset($this->importer)) {
-      $this->importer = new Importer();
+    if (!$this->importer) {
+      $this->setImporter(new Importer());
     }
 
     $this->replayCommands();
-    $this->validate();
+    $this->importer->validate();
 
     // Since this is potentially a long running process, we need to make an
     // effort to clean up after ourselves.
     $importer = $this->importer;
-    unset($this->importer, $this->clients);
+    unset($this->importer, $this->commands, $this->clients);
 
     return $importer;
-  }
-
-  /**
-   * Validates the importer.
-   *
-   * @throws \LogicException
-   *   Thrown if the importer configuration is invalid.
-   *
-   * @todo I don't like this. Should we add a validate() method to the importer?
-   */
-  protected function validate() {
-    if (!$this->importer->getTransporter()) {
-      throw new \LogicException('The importer does not have a transporter!');
-    }
-    if ($this->parserRequired && !$this->importer->getParser()) {
-      throw new \LogicException('The importer does not have a parser!');
-    }
-    if (!$this->importer->getProcessor()) {
-      throw new \LogicException('The importer does not have a processor!');
-    }
   }
 
   /**
@@ -416,10 +394,9 @@ class ImporterBuilder {
    *   The map to use for this importer.
    */
   protected function doSetMap(MapInterface $map) {
-    foreach ($this->clients as $client) {
-      if ($client instanceof HasTableFactoryInterface) {
-        $client->getTableFactory()->setMap($map);
-      }
+    $processor = $this->importer->getProcessor();
+    if ($processor instanceof MappableInterface) {
+      $processor->setMap($map);
     }
   }
 

@@ -8,15 +8,15 @@
 namespace Devour\Importer;
 
 use Devour\ClearableInterface;
+use Devour\Common\ValidatorInterface;
 use Devour\Parser\ParserInterface;
 use Devour\Processor\ProcessorInterface;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
+use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\TableInterface;
 use Devour\Transporter\TransporterInterface;
 use Guzzle\Stream\StreamInterface;
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * This is a dumb importer that doesn't handle batching, or parallel processing
@@ -24,34 +24,22 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Importer implements ImporterInterface {
 
-  public $transporter;
+  protected $transporter;
 
   protected $parser;
 
   protected $processor;
 
-  /**
-   * Constructs a new Importer object.
-   */
-  public function __construct(TransporterInterface $transporter, ParserInterface $parser, ProcessorInterface $processor, array $configuration = array()) {
-    $this->transporter = $transporter;
-    $this->parser = $parser;
-    $this->processor = $processor;
-  }
+  protected $group = array();
 
-  /**
-   * {@inheritdoc}
-   */
-  public function transport(SourceInterface $source) {
-    return $this->transporter->transport($source);
-  }
+  protected $parserRequired = TRUE;
 
   /**
    * {@inheritdoc}
    */
   public function import(SourceInterface $source) {
     do {
-      $result = $this->transporter->transport($source);
+      $result = $this->transport($source);
 
       if ($result instanceof StreamInterface) {
         $this->parse($source, $result);
@@ -69,7 +57,14 @@ class Importer implements ImporterInterface {
   }
 
   /**
-   * Executes the parsing step.
+   * {@inheritdoc}
+   */
+  public function transport(SourceInterface $source) {
+    return $this->transporter->transport($source);
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function parse(SourceInterface $source, StreamInterface $stream) {
     do {
@@ -79,9 +74,9 @@ class Importer implements ImporterInterface {
   }
 
   /**
-   * Executes the processing step.
+   * {@inheritdoc}
    */
-  protected function process(SourceInterface $source, TableInterface $table) {
+  public function process(SourceInterface $source, TableInterface $table) {
     do {
       $this->processor->process($source, $table);
     } while ($this->processor instanceof ProgressInterface && $this->processor->progress($source) != ProgressInterface::COMPLETE);
@@ -91,11 +86,83 @@ class Importer implements ImporterInterface {
    * {@inheritdoc}
    */
   public function clear(SourceInterface $source) {
-    foreach (array('transporter', 'parser', 'processor') as $part) {
-      if ($this->$part instanceof ClearableInterface) {
-        $this->$part->clear($source);
+    foreach ($this->group as $part) {
+      if ($part instanceof ClearableInterface) {
+        $part->clear($source);
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validate() {
+    if (!$this->getTransporter()) {
+      throw new \DomainException('The importer does not have a transporter!');
+    }
+    if ($this->parserRequired && !$this->getParser()) {
+      throw new \DomainException('The importer does not have a parser!');
+    }
+    if (!$this->getProcessor()) {
+      throw new \DomainException('The importer does not have a processor!');
+    }
+
+    // foreach ($this->group as $part) {
+    //   if ($part instanceof ValidatorInterface) {
+    //     $part->validate();
+    //   }
+    // }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTransporter() {
+    return $this->transporter;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getParser() {
+    return $this->parser;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getProcessor() {
+    return $this->processor;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setTransporter(TransporterInterface $transporter) {
+    $this->transporter = $transporter;
+    $this->group['transporter'] = $transporter;
+
+    // This transporter may skip the parsing step.
+    $this->parserRequired = !$transporter instanceof HasTableFactoryInterface;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setParser(ParserInterface $parser) {
+    $this->parser = $parser;
+    $this->group['parser'] = $parser;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setProcessor(ProcessorInterface $processor) {
+    $this->processor = $processor;
+    $this->group['processor'] = $processor;
+    return $this;
   }
 
 }

@@ -9,4 +9,5 @@ namespace Devour\Common;
 
 class State {
 
+  public $pointer = 0;
 }

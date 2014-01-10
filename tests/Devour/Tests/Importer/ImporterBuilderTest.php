@@ -73,15 +73,6 @@ class ImporterBuilderTest extends DevourTestCase {
    */
   public function testSetImporter() {
     $importer = $this->getMock('Devour\Importer\ImporterInterface');
-    $importer->expects($this->once())
-             ->method('getTransporter')
-             ->will($this->returnValue(TRUE));
-    $importer->expects($this->once())
-             ->method('getParser')
-             ->will($this->returnValue(TRUE));
-    $importer->expects($this->once())
-            ->method('getProcessor')
-            ->will($this->returnValue(TRUE));
 
     $result = ImporterBuilder::get()
       ->setTransporter('Devour\Tests\Transporter\TransporterStub')
@@ -114,40 +105,11 @@ class ImporterBuilderTest extends DevourTestCase {
     $importer = ImporterBuilder::get()
       ->setTransporter('Devour\Tests\Transporter\TransporterStub')
       ->setParser('Devour\Tests\Parser\ParserStub')
-      ->setProcessor('Devour\Tests\Processor\ProcessorStub')
+      ->setProcessor('Devour\Processor\Pdo', array('dsn' => 'sqlite::memory:', 'table' => 'beep'))
       ->setMap($map)
       ->build();
 
-    $this->assertSame($map, $importer->getParser()->getTableFactory()->getMap());
-  }
-
-  /**
-   * @expectedException \LogicException
-   * @expectedExceptionMessage The importer does not have a transporter!
-   */
-  public function testTransporterValidation() {
-    ImporterBuilder::get()->build();
-  }
-
-  /**
-   * @expectedException \LogicException
-   * @expectedExceptionMessage The importer does not have a parser!
-   */
-  public function testParserValidation() {
-    ImporterBuilder::get()
-      ->setTransporter($this->getMock('Devour\Transporter\TransporterInterface'))
-      ->build();
-  }
-
-  /**
-   * @expectedException \LogicException
-   * @expectedExceptionMessage The importer does not have a processor!
-   */
-  public function testProcessorValidation() {
-    ImporterBuilder::get()
-      ->setTransporter($this->getMock('Devour\Transporter\TransporterInterface'))
-      ->setParser($this->getMock('Devour\Parser\ParserInterface'))
-      ->build();
+    $this->assertSame($map, $importer->getProcessor()->getMap());
   }
 
   /**

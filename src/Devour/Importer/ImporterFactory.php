@@ -7,8 +7,7 @@
 
 namespace Devour\Importer;
 
-use Devour\ConfigurableInterface;
-use Devour\Table\TableFactory;
+use Devour\Importer\ImporterBuilder;
 use Devour\Util\FileSystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -45,99 +44,73 @@ class ImporterFactory {
   /**
    * Builds an import from a configuration array.
    *
-   * @param array $configuration
+   * @param array $config
    *   The configuration array.
    *
    * @return \Devour\Importer\ImporterInterface
    *   A new importer.
    *
    * @throws \RuntimeException
-   *   Thrown if the configuration file is not readable.
-   * @throws \Symfony\Component\Yaml\Exception\ParseException
-   *   Thrown if the configuration file cannot be parsed.
-   *
-   * @todo Normalize Exceptions.
+   *   Thrown if the configuration file is invalid.
    */
-  public static function fromConfiguration(array $configuration) {
-    $parts = array();
+  public static function fromConfiguration(array $config) {
 
-    foreach (array('transporter', 'parser', 'processor') as $part) {
-      if (empty($configuration[$part]['class'])) {
+    // We will get an exception anyway if these do not exist, but this is a more
+    // user-friendly way to do it.
+    foreach (array('transporter', 'processor') as $part) {
+      if (empty($config[$part]['class'])) {
         throw new \RuntimeException(sprintf('The %s class is required.', $part));
       }
-
-      $part_class = $configuration[$part]['class'];
-
-      if (!class_exists($part_class)) {
-        throw new \RuntimeException(sprintf('The "%s" class is unavailable.', $part_class));
-      }
-
-      if (is_subclass_of($part_class, 'Devour\ConfigurableInterface')) {
-        $configuration[$part] += array('configuration' => array());
-        $parts[$part] = $part_class::fromConfiguration($configuration[$part]['configuration']);
-      }
-      else {
-        $parts[$part] = new $part_class();
-      }
     }
 
-    $parts['parser']->setTableFactory(static::getTableFactory($configuration));
+    $config = array_replace_recursive(static::defaultConfiguration(), $config);
 
-    $importer_class = 'Devour\Importer\Importer';
-    if (!empty($configuration['importer']['class'])) {
-      $importer_class = $configuration['importer']['class'];
+    $builder = ImporterBuilder::get($config['importer']['configuration'], $config['importer']['class'])
+      ->setTransporter($config['transporter']['class'], $config['transporter']['configuration'])
+      ->setProcessor($config['processor']['class'], $config['processor']['configuration'])
+      ->setTableClass($config['table']['class']);
+
+    if (!empty($config['map']['class']) || $config['map']['configuration']) {
+      $config['map'] += array('class' => 'Devour\Map\Map');
+      $builder->setMap($config['map']['class'], $config['map']['configuration']);
     }
 
-    $importer_configuration = array();
-    if (!empty($configuration['importer']['configuration'])) {
-      $importer_configuration = $configuration['importer']['configuration'];
+    if ($config['parser']['class']) {
+      $builder->setParser($config['parser']['class'], $config['parser']['configuration']);
     }
 
-    return new $importer_class($parts['transporter'], $parts['parser'], $parts['processor'], $configuration);
+    return $builder->build();
   }
 
   /**
-   * Returns a table factory based on configuration.
+   * Returns the default configuration array.
    *
-   * @param array $configuration
-   *   The configuration.
-   *
-   * @return \Devour\Table\TableFactory
-   *   A new table factory object.
+   * @return array
+   *   The configuration defaults.
    */
-  protected static function getTableFactory(array $configuration) {
-    $factory = new TableFactory();
-
-    if (!empty($configuration['table']) && !empty($configuration['table']['class'])) {
-      $factory->setTableClass($configuration['table']['class']);
-    }
-
-    if ($map = static::buildMap($configuration)) {
-      $factory->setMap($map);
-    }
-
-    return $factory;
-  }
-
-  /**
-   * Returns a map object based on configuration.
-   *
-   * @param array $configuration
-   *   The configuration.
-   *
-   * @return \Devour\Map\MapInterface|bool
-   *   A new map, or false if there is no map configuration.
-   */
-  protected static function buildMap(array $configuration) {
-    if (empty($configuration['map'])) {
-      return FALSE;
-    }
-
-    $class = 'Devour\Map\Map';
-    if (!empty($configuration['map']['class'])) {
-      $class = $configuration['map']['class'];
-    }
-    return new $class($configuration['map']['configuration']);
+  protected static function defaultConfiguration() {
+    return array(
+      'importer' => array(
+        'class' => 'Devour\Importer\Importer',
+        'configuration' => array(),
+      ),
+      'transporter' => array(
+        'configuration' => array(),
+      ),
+      'parser' => array(
+        'class' => '',
+        'configuration' => array(),
+      ),
+      'processor' => array(
+        'configuration' => array(),
+      ),
+      'table' => array(
+        'class' => 'Devour\Table\Table',
+      ),
+      'map' => array(
+        'configuration' => array(),
+      ),
+    );
   }
 
 }

@@ -32,7 +32,7 @@ class ImportCommandTest extends DevourTestCase {
         'class' => 'Devour\Tests\Parser\ParserStub',
       ),
       'processor' => array(
-        'class' => 'Devour\Tests\Processor\StubProcessor',
+        'class' => 'Devour\Tests\Processor\ProcessorStub',
       ),
     );
 
