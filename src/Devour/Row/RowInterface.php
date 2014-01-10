@@ -7,7 +7,6 @@
 
 namespace Devour\Row;
 
-use Devour\Map\MapInterface;
 use Devour\Table\TableInterface;
 
 /**
@@ -17,7 +16,7 @@ interface RowInterface {
   /**
    *
    */
-  public function __construct(TableInterface $table, MapInterface $map);
+  public function __construct(TableInterface $table);
 
   /**
    * Returns the value for a target field.

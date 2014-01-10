@@ -16,14 +16,6 @@ use Devour\Row\RowInterface;
 interface TableInterface extends \Iterator, \ArrayAccess, \Countable {
 
   /**
-   * Constructs a new TableInterface object.
-   *
-   * @param \Devour\Map\MapInterface $map
-   *   The map this table will use.
-   */
-  public function __construct(MapInterface $map);
-
-  /**
    * Returns a new row.
    *
    * Rows cannot be created independently from the table, this method must be

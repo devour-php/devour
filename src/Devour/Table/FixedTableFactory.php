@@ -17,11 +17,4 @@ class FixedTableFactory implements TableFactoryInterface {
     return $this->table;
   }
 
-  public function setMap(MapInterface $map) {
-  }
-
-  public function getMap() {
-    return $this->table->getMap();
-  }
-
 }

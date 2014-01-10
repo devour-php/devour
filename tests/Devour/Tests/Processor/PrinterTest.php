@@ -7,7 +7,6 @@
 
 namespace Devour\Tests\Processor;
 
-use Devour\Map\NoopMap;
 use Devour\Processor\Printer;
 use Devour\Source\Source;
 use Devour\Table\Table;
@@ -20,8 +19,7 @@ class PrinterTest extends DevourTestCase {
 
   public function testPrinter() {
 
-    $map = new NoopMap();
-    $table = new Table($map);
+    $table = new Table();
     $data = array(
       array('a' => 'a1','b' => 'b1','c' => 'c1'),
       array('a' => 'a2','b' => 'b2','c' => 'c2'),

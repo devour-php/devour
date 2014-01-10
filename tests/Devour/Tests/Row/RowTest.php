@@ -7,7 +7,6 @@
 
 namespace Devour\Tests\Row;
 
-use Devour\Map\NoopMap;
 use Devour\Row\Row;
 use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
@@ -29,8 +28,7 @@ class RowTest extends DevourTestCase {
   }
 
   public function testRow() {
-    $map = new NoopMap();
-    $row = new Row($this->getMockTable('does not exist', 9876), $map);
+    $row = new Row($this->getMockTable('does not exist', 9876));
 
     $this->assertSame(9876, $row->get('does not exist'));
 

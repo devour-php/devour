@@ -7,7 +7,6 @@
 
 namespace Devour\Tests\Table;
 
-use Devour\Map\Map;
 use Devour\Table\TableFactory;
 use Devour\Tests\DevourTestCase;
 
@@ -24,21 +23,14 @@ class TableFactoryTest extends DevourTestCase {
     $table = $factory->create();
 
     $this->assertInstanceOf($stub_class, $table);
-
-    // Check Map handling.
-    $this->assertInstanceOf('Devour\Map\NoopMap', $factory->getMap());
-
-    $map = new Map(array());
-    $factory->setMap($map);
-    $this->assertSame($map, $factory->getMap());
   }
 
   /**
    * @expectedException \InvalidArgumentException
-   * @expectedExceptionMessage Class "Devour\Map\NoopMap" needs to implement \Devour\Table\TableInterface
+   * @expectedExceptionMessage Class "Devour\Map\Map" needs to implement \Devour\Table\TableInterface
    */
   public function testTableFactoryException() {
-    $stub_class = 'Devour\Map\NoopMap';
+    $stub_class = 'Devour\Map\Map';
     $factory = new TableFactory();
     $factory->setTableClass($stub_class);
   }

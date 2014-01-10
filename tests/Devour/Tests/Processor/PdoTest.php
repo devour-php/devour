@@ -7,7 +7,7 @@
 
 namespace Devour\Tests\Processor;
 
-use Devour\Map\NoopMap;
+use Devour\Map\Map;
 use Devour\Processor\Pdo as PdoProcessor;
 use Devour\Source\Source;
 use Devour\Table\Table;
@@ -42,12 +42,21 @@ class PdoTest extends DevourTestCase {
       array('a' => 'a2','b' => 'b2','c' => 'c2'),
       array('a' => 'a3','b' => 'b3','c' => 'c3'),
     );
+
+    $this->map = array(
+      array('a', 'a'),
+      array('b', 'b'),
+      array('c', 'c'),
+    );
+
+    $this->map = new Map($this->map);
   }
 
   public function testProcess() {
     $source = new Source(NULL);
 
     $table = $this->getStubTable($this->pdoData);
+    $this->pdo->setMap($this->map);
     $this->pdo->process($source, $table);
 
     $result = $this->connection->query("SELECT * FROM my_table");
@@ -62,6 +71,7 @@ class PdoTest extends DevourTestCase {
     $source = new Source(NULL);
 
     $pdo = new PdoProcessor($this->connection, '~my_table', array('a'));
+    $pdo->setMap($this->map);
     $pdo->process($source, $this->getStubTable($this->pdoData));
 
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();
@@ -79,6 +89,7 @@ class PdoTest extends DevourTestCase {
     $source = new Source(NULL);
 
     $pdo = new PdoProcessor($this->connection, '~my_table', array('a'), TRUE);
+    $pdo->setMap($this->map);
     $pdo->process($source, $this->getStubTable($this->pdoData));
 
     $result = $this->connection->query("SELECT COUNT(*) FROM my_table")->fetch();

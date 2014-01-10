@@ -7,12 +7,9 @@
 
 namespace Devour\Row;
 
-use Devour\Map\MapInterface;
 use Devour\Table\TableInterface;
 
 class Row implements RowInterface {
-
-  protected $map;
 
   protected $table;
 
@@ -21,29 +18,26 @@ class Row implements RowInterface {
   /**
    * {@inheritdoc}
    */
-  public function __construct(TableInterface $table, MapInterface $map) {
+  public function __construct(TableInterface $table) {
     $this->table = $table;
-    $this->map = $map;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function get($target_field) {
-    $source_field = $this->map->getSourceField($target_field);
-
-    if (isset($this->data[$source_field])) {
-      return $this->data[$source_field];
+  public function get($field) {
+    if (isset($this->data[$field])) {
+      return $this->data[$field];
     }
 
-    return $this->table->getField($source_field);
+    return $this->table->getField($field);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function set($source_field, $value) {
-    $this->data[$source_field] = $value;
+  public function set($field, $value) {
+    $this->data[$field] = $value;
     return $this;
   }
 

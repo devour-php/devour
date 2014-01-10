@@ -7,7 +7,6 @@
 
 namespace Devour\Tests\Processor;
 
-use Devour\Map\NoopMap;
 use Devour\Source\Source;
 use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;

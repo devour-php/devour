@@ -6,21 +6,21 @@
 
 namespace Devour\Map;
 
-class Map implements MapInterface {
+use Devour\ConfigurableInterface;
+
+class Map implements MapInterface, ConfigurableInterface {
 
   /**
-   * A map from target to source.
+   * A list of arrays from source => target.
    *
    * @var array
    */
-  protected $targetToSource;
+  protected $map;
 
   /**
-   * A map from source to target.
-   *
-   * @var array
+   * The position in the map.
    */
-  protected $sourceToTarget;
+  protected $position = 0;
 
   /**
    * Constructs a Map object.
@@ -29,26 +29,49 @@ class Map implements MapInterface {
    *   An array keyed from source => target.
    */
   public function __construct(array $map) {
-    $this->sourceToTarget = $map;
-    $this->targetToSource = array_flip($map);
+    $this->map = $map;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getSourceField($target_field) {
-    if (isset($this->targetToSource[$target_field])) {
-      return $this->targetToSource[$target_field];
-    }
+  public static function fromConfiguration(array $configuration) {
+    return new static($configuration);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getTargetField($source_field) {
-    if (isset($this->sourceToTarget[$source_field])) {
-      return $this->sourceToTarget[$source_field];
-    }
+  public function current() {
+    return $this->map[$this->position][1];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function key() {
+    return $this->map[$this->position][0];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function next() {
+    $this->position++;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function rewind() {
+    $this->position = 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function valid() {
+    return isset($this->map[$this->position]);
   }
 
 }

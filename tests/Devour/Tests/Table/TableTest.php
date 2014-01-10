@@ -7,7 +7,6 @@
 
 namespace Devour\Tests\Table;
 
-use Devour\Map\NoopMap;
 use Devour\Table\Table;
 use Devour\Tests\DevourTestCase;
 
@@ -20,7 +19,7 @@ class TableTest extends DevourTestCase {
   protected $rows;
 
   public function setUp() {
-    $this->table = new Table(new NoopMap());
+    $this->table = new Table();
     $this->rows = array(
       array('a1', 'b1', 'c1'),
       array('a2', 'b2', 'c2'),

@@ -7,7 +7,6 @@
 
 namespace Devour\Tests;
 
-use Devour\Map\NoopMap;
 use Devour\Table\Table;
 
 /**
@@ -16,8 +15,7 @@ use Devour\Table\Table;
 abstract class DevourTestCase extends \PHPUnit_Framework_TestCase {
 
   protected function getStubTable(array $rows = array()) {
-    $map = new NoopMap();
-    $table = new Table($map);
+    $table = new Table();
     foreach ($rows as $row) {
       $table->getNewRow()->setData($row);
     }

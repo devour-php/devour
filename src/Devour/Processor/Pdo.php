@@ -10,12 +10,14 @@ namespace Devour\Processor;
 use Aura\Sql_Schema\ColumnFactory;
 use Devour\ConfigurableInterface;
 use Devour\Exception\ConfigurationException;
+use Devour\Map\MapInterface;
+use Devour\Processor\MappableInterface;
 use Devour\Row\RowInterface;
 
 /**
  * A simple PDO database processor.
  */
-class Pdo extends ProcessorBase implements ConfigurableInterface {
+class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterface {
 
   /**
    * The database connection.
@@ -81,6 +83,13 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
   protected $updateStatement;
 
   /**
+   * The map.
+   *
+   * @var \Devour\Processor\MappableInterface
+   */
+  protected $map;
+
+  /**
    * Constructs a new Pdo object.
    *
    * @param \PDO $connection
@@ -128,8 +137,8 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
 
     $item = array();
 
-    foreach ($this->columns as $field) {
-      $item[$field] = $row->get($field);
+    foreach ($this->map as $source_field => $target_field) {
+      $item[$target_field] = $row->get($source_field);
     }
 
     if ($this->uniqueColumns && $this->itemIsUnique($item)) {
@@ -261,6 +270,14 @@ class Pdo extends ProcessorBase implements ConfigurableInterface {
     $class = '\\Aura\\Sql_Schema\\' . ucfirst($driver) . 'Schema';
     $schema = new $class($this->connection, new ColumnFactory());
     return array_keys($schema->fetchTableCols($this->table));
+  }
+
+  public function getMap() {
+    return $this->map;
+  }
+
+  public function setMap(MapInterface $map) {
+    $this->map = $map;
   }
 
 }

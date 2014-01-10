@@ -16,15 +16,19 @@ use Devour\Tests\DevourTestCase;
 class MapTest extends DevourTestCase {
 
   public function testMap() {
+    $map_array = array(
+      array('a', '1'),
+      array('b', '2'),
+      array('c', '3'),
+    );
 
-    $map_array = array('a' => 'b');
-    $map = new Map($map_array);
-
-    $this->assertSame('b', $map->getTargetField('a'));
-    $this->assertSame('a', $map->getSourceField('b'));
-
-    $this->assertNull($map->getTargetField('c'));
-    $this->assertNull($map->getSourceField('c'));
+    $map = Map::fromConfiguration($map_array);
+    $row = 0;
+    foreach ($map as $source => $target) {
+      $this->assertSame($map_array[$row][0], $source);
+      $this->assertSame($map_array[$row][1], $target);
+      $row++;
+    }
   }
 
 }

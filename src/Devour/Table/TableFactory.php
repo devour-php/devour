@@ -3,13 +3,10 @@
 namespace Devour\Table;
 
 use Devour\Map\MapInterface;
-use Devour\Map\NoopMap;
 
 class TableFactory implements TableFactoryInterface {
 
   protected $tableClass = 'Devour\Table\Table';
-
-  protected $map;
 
   public function setTableClass($class) {
     if (!is_subclass_of($class, 'Devour\Table\TableInterface')) {
@@ -20,19 +17,7 @@ class TableFactory implements TableFactoryInterface {
 
   public function create() {
     $class = $this->tableClass;
-    return new $class($this->getMap());
-  }
-
-  public function setMap(MapInterface $map) {
-    $this->map = $map;
-  }
-
-  public function getMap() {
-    if (!$this->map) {
-      $this->map = new NoopMap();
-    }
-
-    return $this->map;
+    return new $class();
   }
 
 }

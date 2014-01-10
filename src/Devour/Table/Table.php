@@ -7,7 +7,6 @@
 
 namespace Devour\Table;
 
-use Devour\Map\MapInterface;
 use Devour\Row\Row;
 use Devour\Row\RowInterface;
 
@@ -24,21 +23,9 @@ class Table extends \SplQueue implements TableInterface {
   protected $fields = array();
 
   /**
-   * The map for this table.
-   *
-   * @var \Devour\Map\MapInterface
-   */
-  protected $map;
-
-  /**
    * Constructs a new Table.
-   *
-   * @param \Devour\Map\MapInterface $map
-   *   The map this table will use.
    */
-  public function __construct(MapInterface $map) {
-    $this->map = $map;
-
+  public function __construct() {
     // Default to delete to save memory when possible.
     $this->setIteratorMode(\SplDoublyLinkedList::IT_MODE_DELETE);
   }
@@ -63,7 +50,7 @@ class Table extends \SplQueue implements TableInterface {
    * {@inheritodc}
    */
   public function getNewRow() {
-    $row = new Row($this, $this->map);
+    $row = new Row($this);
     $this->push($row);
     return $row;
   }
