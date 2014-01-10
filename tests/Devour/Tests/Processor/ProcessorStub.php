@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Devour\Tests\Processor\StubProcessor.
+ * Contains \Devour\Tests\Processor\ProcessorStub.
  */
 
 namespace Devour\Tests\Processor;
@@ -14,7 +14,7 @@ use Devour\Table\TableInterface;
 /**
  * A stub processor for mocking.
  */
-class StubProcessor implements ProcessorInterface {
+class ProcessorStub implements ProcessorInterface {
 
   /**
    * {@inheritdoc}
