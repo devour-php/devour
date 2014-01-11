@@ -10,9 +10,10 @@
 
     "require-dev": {
         "aura/sql-schema": "2.*@dev",
-        "doctrine/orm": "2.4.*",
-        "fusesource/stomp-php" : "2.1.*",
+        "doctrine/orm": "~2.4",
+        "fusesource/stomp-php" : "~2.1",
         "guzzle/guzzle": "3.*",
+        "psr/log": "~1.0",
         "simplepie/simplepie": "dev-master",
         "symfony/console": "2.*",
         "symfony/event-dispatcher": "2.*",
