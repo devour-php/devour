@@ -83,7 +83,7 @@ class DatabaseTest extends DevourTestCase {
   }
 
   /**
-   * @expectedException \Devour\Exception\ConfigurationException
+   * @expectedException \Devour\Common\Exception\ConfigurationException
    * @expectedExceptionMessage The field "dsn" is required.
    */
   public function testFactoryNoDsn() {

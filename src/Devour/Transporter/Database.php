@@ -7,8 +7,8 @@
 
 namespace Devour\Transporter;
 
+use Devour\Common\Exception\ConfigurationException;
 use Devour\ConfigurableInterface;
-use Devour\Exception\ConfigurationException;
 use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryInterface;
@@ -137,6 +137,13 @@ class Database implements TransporterInterface, HasTableFactoryInterface, Config
     }
 
     return (float) $state->pointer / $state->total;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function runInNewProcess() {
+    return TRUE;
   }
 
 }

@@ -11,15 +11,16 @@
 
     <testsuites>
       <testsuite>
-        <directory>./tests/Devour/Tests</directory>
+        <directory>tests/Devour/Tests</directory>
       </testsuite>
     </testsuites>
 
     <filter>
       <whitelist>
-        <directory suffix=".php">./src/Devour</directory>
+        <directory suffix=".php">src/Devour</directory>
         <exclude>
-          <directory suffix="Interface.php">./src/Devour</directory>
+          <directory suffix="Interface.php">src/Devour</directory>
+          <file>src/Devour/Common/Exception/ConfigurationException.php</file>
         </exclude>
       </whitelist>
       <blacklist>

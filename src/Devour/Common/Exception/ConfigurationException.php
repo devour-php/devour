@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Devour\Exception\ConfigurationException.
+ * Contains \Devour\Common\Exception\ConfigurationException.
  */
 
-namespace Devour\Exception;
+namespace Devour\Common\Exception;
 
 /**
  * Thrown when there is a fatal configuration error.
