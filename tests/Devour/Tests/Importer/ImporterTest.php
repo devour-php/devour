@@ -47,6 +47,9 @@ class ImporterTest extends DevourTestCase {
     $importer->setParser($parser);
     $importer->setProcessor($processor);
 
+    $logger = $this->getMockLogger();
+    $importer->setLogger($logger);
+    $this->assertSame($logger, $importer->getLogger());
     $importer->validate();
 
     $importer->import($source);

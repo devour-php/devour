@@ -17,6 +17,8 @@ use Devour\Processor\ProcessorInterface;
 use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\TableFactoryInterface;
 use Devour\Transporter\TransporterInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Provides a fluent API for building importers.
@@ -269,6 +271,26 @@ class ImporterBuilder {
   }
 
   /**
+   * Sets the logger for clients to use.
+   *
+   * @param \Psr\Log\LoggerInterface|string $logger
+   *   The logger class or object.
+   * @param array $configuration
+   *   (optional) If $logger is a class string, and implements
+   *   \Devour\Common\ConfigurableInterface, this configuration will be passed
+   *   in on creation. Defaults to an empty array.
+   *
+   * @return self
+   *   The builder to use for chaining.
+   */
+  public function setLogger($logger, array $configuration = array()) {
+    $logger = $this->buildClient($logger, $configuration);
+    $this->recordCommand(static::TERTIARY, __FUNCTION__, $logger);
+
+    return $this;
+  }
+
+  /**
    * Returns the newly minted importer.
    *
    * This method must be called last, and only once.
@@ -366,10 +388,14 @@ class ImporterBuilder {
    *   The table factory.
    */
   protected function doSetTableFactory(TableFactoryInterface $factory) {
-    foreach ($this->clients as $client) {
-      if ($client instanceof HasTableFactoryInterface) {
-        $client->setTableFactory($factory);
-      }
+    $transporter = $this->importer->getTransporter();
+    $parser = $this->importer->getParser();
+
+    if ($transporter instanceof HasTableFactoryInterface) {
+      $transporter->setTableFactory($factory);
+    }
+    if ($parser instanceof HasTableFactoryInterface) {
+      $parser->setTableFactory($factory);
     }
   }
 
@@ -380,10 +406,14 @@ class ImporterBuilder {
    *   The table class.
    */
   protected function doSetTableClass($table_class) {
-    foreach ($this->clients as $client) {
-      if ($client instanceof HasTableFactoryInterface) {
-        $client->getTableFactory()->setTableClass($table_class);
-      }
+    $transporter = $this->importer->getTransporter();
+    $parser = $this->importer->getParser();
+
+    if ($transporter instanceof HasTableFactoryInterface) {
+      $transporter->getTableFactory()->setTableClass($table_class);
+    }
+    if ($parser instanceof HasTableFactoryInterface) {
+      $parser->getTableFactory()->setTableClass($table_class);
     }
   }
 
@@ -397,6 +427,20 @@ class ImporterBuilder {
     $processor = $this->importer->getProcessor();
     if ($processor instanceof MappableInterface) {
       $processor->setMap($map);
+    }
+  }
+
+  /**
+   * Sets the logger instance on any clients.
+   *
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger object.
+   */
+  protected function doSetLogger(LoggerInterface $logger) {
+    foreach ($this->clients as $client) {
+      if ($client instanceof LoggerAwareInterface) {
+        $client->setLogger($logger);
+      }
     }
   }
 

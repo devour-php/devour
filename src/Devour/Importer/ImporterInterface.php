@@ -15,6 +15,7 @@ use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
 use Devour\Transporter\TransporterInterface;
 use Guzzle\Stream\StreamInterface;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * An importer is the manager the controls the import process. It consits of a
@@ -22,7 +23,7 @@ use Guzzle\Stream\StreamInterface;
  * returns a stream. The parser receives a stream and returns a table. Finally,
  * the processor processes the table.
  */
-interface ImporterInterface extends ValidatorInterface, ClearableInterface {
+interface ImporterInterface extends ValidatorInterface, ClearableInterface, LoggerAwareInterface {
 
   /**
    * Returns the current transporter.

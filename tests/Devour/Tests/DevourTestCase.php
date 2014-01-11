@@ -48,6 +48,8 @@ abstract class DevourTestCase extends \PHPUnit_Framework_TestCase {
     return $process;
   }
 
-
+  protected function getMockLogger() {
+    return $this->getMock('Psr\Log\LoggerInterface');
+  }
 
 }

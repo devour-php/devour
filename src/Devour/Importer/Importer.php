@@ -17,12 +17,15 @@ use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\TableInterface;
 use Devour\Transporter\TransporterInterface;
 use Guzzle\Stream\StreamInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * This is a dumb importer that doesn't handle batching, or parallel processing
  * in any intellgent manner.
  */
 class Importer implements ImporterInterface {
+
+  use LoggerAwareTrait;
 
   protected $transporter;
 
@@ -163,6 +166,18 @@ class Importer implements ImporterInterface {
     $this->processor = $processor;
     $this->group['processor'] = $processor;
     return $this;
+  }
+
+  /**
+   * Returns the logger the importer is using.
+   *
+   * This is really only used for testing.
+   *
+   * @return \Psr\Log\LoggerInterface
+   *   The logger.
+   */
+  public function getLogger() {
+    return $this->logger;
   }
 
 }

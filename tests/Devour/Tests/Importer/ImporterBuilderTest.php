@@ -10,6 +10,7 @@ namespace Devour\Tests\Importer;
 use Devour\Importer\ImporterBuilder;
 use Devour\Table\TableFactory;
 use Devour\Tests\DevourTestCase;
+use Psr\Log\LoggerAwareInterface;
 
 /**
  * @covers \Devour\Importer\ImporterBuilder
@@ -25,11 +26,14 @@ class ImporterBuilderTest extends DevourTestCase {
 
     $processor = $this->getMock('Devour\Processor\ProcessorInterface');
 
+    $logger = $this->getMockLogger();
+
     // Implicitly test command recording.
     $builder = ImporterBuilder::get()
       ->setProcessLimit(10)
       ->setTableFactory($table_factory)
-      ->setTransporter('Devour\Transporter\Guzzle')
+      ->setLogger($logger)
+      ->setTransporter('Devour\Transporter\Database', array('dsn' => 'sqlite::memory:'))
       ->setParser('Devour\Parser\Csv')
     ->setProcessor($processor);
 
@@ -38,9 +42,10 @@ class ImporterBuilderTest extends DevourTestCase {
 
     $parser = $importer->getParser();
     $this->assertInstanceOf('Devour\Parser\Csv', $parser);
-    $this->assertSame($table_factory, $parser->getTableFactory());
 
+    $this->assertSame($table_factory, $parser->getTableFactory());
     $this->assertSame($processor, $importer->getProcessor());
+    $this->assertSame($logger, $importer->getLogger());
 
     // Throws exception.
     $builder->build();
@@ -89,7 +94,7 @@ class ImporterBuilderTest extends DevourTestCase {
    */
   public function testSetTableClass() {
     $importer = ImporterBuilder::get()
-      ->setTransporter('Devour\Tests\Transporter\TransporterStub')
+      ->setTransporter('Devour\Transporter\Database', array('dsn' => 'sqlite::memory:'))
       ->setParser('Devour\Tests\Parser\ParserStub')
       ->setProcessor('Devour\Tests\Processor\ProcessorStub')
       ->setTableClass('Devour\Table\Table')
