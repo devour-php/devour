@@ -7,9 +7,9 @@
 
 namespace Devour\Transporter;
 
+use Devour\Common\ConfigurableInterface;
 use Devour\Common\Exception\ConfigurationException;
-use Devour\ConfigurableInterface;
-use Devour\ProgressInterface;
+use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\HasTableFactoryTrait;

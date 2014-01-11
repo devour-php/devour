@@ -6,7 +6,7 @@
 
 namespace Devour\Map;
 
-use Devour\ConfigurableInterface;
+use Devour\Common\ConfigurableInterface;
 
 class Map implements MapInterface, ConfigurableInterface {
 

@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Devour\ProgressInterface.
+ * Contains \Devour\Common\ProgressInterface.
  */
 
-namespace Devour;
+namespace Devour\Common;
 
 use Devour\Source\SourceInterface;
 

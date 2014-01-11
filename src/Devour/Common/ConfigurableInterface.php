@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Devour\ConfigurableInterface.
+ * Contains \Devour\Common\ConfigurableInterface.
  */
 
-namespace Devour;
+namespace Devour\Common;
 
 /**
  * Factory interface for configurable thingies.

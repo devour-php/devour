@@ -7,7 +7,7 @@
 
 namespace Devour\Tests\Transporter;
 
-use Devour\ProgressInterface;
+use Devour\Common\ProgressInterface;
 use Devour\Source\Source;
 use Devour\Tests\DevourTestCase;
 use Devour\Transporter\Database;

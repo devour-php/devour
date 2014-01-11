@@ -8,8 +8,8 @@
 namespace Devour\Processor;
 
 use Aura\Sql_Schema\ColumnFactory;
+use Devour\Common\ConfigurableInterface;
 use Devour\Common\Exception\ConfigurationException;
-use Devour\ConfigurableInterface;
 use Devour\Map\MapInterface;
 use Devour\Processor\MappableInterface;
 use Devour\Row\RowInterface;

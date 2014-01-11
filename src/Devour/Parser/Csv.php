@@ -7,8 +7,8 @@
 
 namespace Devour\Parser;
 
-use Devour\ConfigurableInterface;
-use Devour\ProgressInterface;
+use Devour\Common\ConfigurableInterface;
+use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryTrait;
 use Guzzle\Stream\StreamInterface;

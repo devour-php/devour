@@ -7,8 +7,8 @@
 
 namespace Devour\Tests\Parser;
 
+use Devour\Common\ProgressInterface;
 use Devour\Parser\Csv;
-use Devour\ProgressInterface;
 use Devour\Source\Source;
 use Devour\Tests\DevourTestCase;
 use Devour\Tests\Stream\StreamStub;

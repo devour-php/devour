@@ -7,7 +7,7 @@
 
 namespace Devour\Transporter;
 
-use Devour\ClearableInterface;
+use Devour\Common\ClearableInterface;
 use Devour\Source\SourceInterface;
 use Guzzle\Plugin\Cache\CachePlugin;
 use Guzzle\Service\Client;

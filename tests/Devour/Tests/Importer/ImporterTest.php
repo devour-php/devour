@@ -7,8 +7,8 @@
 
 namespace Devour\Tests\Importer;
 
+use Devour\Common\ProgressInterface;
 use Devour\Importer\Importer;
-use Devour\ProgressInterface;
 use Devour\Source\Source;
 use Devour\Tests\DevourTestCase;
 use Devour\Tests\Stream\StreamStub;

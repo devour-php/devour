@@ -10,7 +10,7 @@ namespace Devour\Common\Exception;
 /**
  * Thrown when there is a fatal configuration error.
  *
- * @see \Devour\ConfigurableInterface::fromConfiguration()
+ * @see \Devour\Common\ConfigurableInterface::fromConfiguration()
  */
 class ConfigurationException extends \RuntimeException {
 }

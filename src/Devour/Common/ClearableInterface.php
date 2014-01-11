@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Devour\ClearableInterface.
+ * Contains \Devour\Common\ClearableInterface.
  */
 
-namespace Devour;
+namespace Devour\Common;
 
 use Devour\Source\SourceInterface;
 

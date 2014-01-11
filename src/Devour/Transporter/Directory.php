@@ -7,7 +7,7 @@
 
 namespace Devour\Transporter;
 
-use Devour\ProgressInterface;
+use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Transporter\TransporterInterface;
 use Devour\Util\FileSystem;

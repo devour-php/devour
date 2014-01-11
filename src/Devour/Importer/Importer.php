@@ -7,11 +7,11 @@
 
 namespace Devour\Importer;
 
-use Devour\ClearableInterface;
+use Devour\Common\ClearableInterface;
+use Devour\Common\ProgressInterface;
 use Devour\Common\ValidatorInterface;
 use Devour\Parser\ParserInterface;
 use Devour\Processor\ProcessorInterface;
-use Devour\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\TableInterface;

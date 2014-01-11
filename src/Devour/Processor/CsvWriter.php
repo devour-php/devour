@@ -7,8 +7,8 @@
 
 namespace Devour\Processor;
 
-use Devour\ClearableInterface;
-use Devour\ConfigurableInterface;
+use Devour\Common\ClearableInterface;
+use Devour\Common\ConfigurableInterface;
 use Devour\Row\RowInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;

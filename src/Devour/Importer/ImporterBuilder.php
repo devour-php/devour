@@ -7,13 +7,13 @@
 
 namespace Devour\Importer;
 
+use Devour\Common\ProgressInterface;
 use Devour\Common\ValidatorInterface;
 use Devour\Importer\Importer;
 use Devour\Map\MapInterface;
 use Devour\Parser\ParserInterface;
 use Devour\Processor\MappableInterface;
 use Devour\Processor\ProcessorInterface;
-use Devour\ProgressInterface;
 use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\TableFactoryInterface;
 use Devour\Transporter\TransporterInterface;
@@ -116,8 +116,8 @@ class ImporterBuilder {
    *   The importer to use. This can be a class or pre-configured object.
    * @param array $configuration
    *   (optional) If $importer is a class string, and implements
-   *   \Devour\ConfigurableInterface, this configuration will be passed in on
-   *   creation. Defaults to an empty array.
+   *   \Devour\Common\ConfigurableInterface, this configuration will be passed
+   *   in on creation. Defaults to an empty array.
    *
    * @return self
    *   The builder to use for chaining.
@@ -134,8 +134,8 @@ class ImporterBuilder {
    *   The transporter to use. This can be a class or pre-configured object.
    * @param array $configuration
    *   (optional) If $transporter is a class string, and implements
-   *   \Devour\ConfigurableInterface, this configuration will be passed in on
-   *   creation. Defaults to an empty array.
+   *   \Devour\Common\ConfigurableInterface, this configuration will be passed
+   *   in on creation. Defaults to an empty array.
    *
    * @return self
    *   The builder to use for chaining.
@@ -154,8 +154,8 @@ class ImporterBuilder {
    *   The parser to use. This can be a class or pre-configured object.
    * @param array $configuration
    *   (optional) If $parser is a class string, and implements
-   *   \Devour\ConfigurableInterface, this configuration will be passed in on
-   *   creation. Defaults to an empty array.
+   *   \Devour\Common\ConfigurableInterface, this configuration will be passed
+   *   in on creation. Defaults to an empty array.
    *
    * @return self
    *   The builder to use for chaining.
@@ -174,8 +174,8 @@ class ImporterBuilder {
    *   The processor to use. This can be a class or pre-configured object.
    * @param array $configuration
    *   (optional) If $processor is a class string, and implements
-   *   \Devour\ConfigurableInterface, this configuration will be passed in on
-   *   creation. Defaults to an empty array.
+   *   \Devour\Common\ConfigurableInterface, this configuration will be passed
+   *   in on creation. Defaults to an empty array.
    *
    * @return self
    *   The builder to use for chaining.
@@ -196,7 +196,7 @@ class ImporterBuilder {
    * @return self
    *   The builder to use for chaining.
    *
-   * @see \Devour\ProgressInterface
+   * @see \Devour\Common\ProgressInterface
    */
   public function setProcessLimit($limit) {
     $this->recordCommand(static::SECONDARY, __FUNCTION__, $limit);
@@ -211,8 +211,8 @@ class ImporterBuilder {
    *   The table factory to use. This can be a class or configured object.
    * @param array $configuration
    *   (optional) If $factory is a class string, and implements
-   *   \Devour\ConfigurableInterface, this configuration will be passed in on
-   *   creation. Defaults to an empty array.
+   *   \Devour\Common\ConfigurableInterface, this configuration will be passed
+   *   in on creation. Defaults to an empty array.
    *
    * @return self
    *   The builder to use for chaining.
@@ -252,8 +252,8 @@ class ImporterBuilder {
    *   The map class or object.
    * @param array $configuration
    *   (optional) If $map is a class string, and implements
-   *   \Devour\ConfigurableInterface, this configuration will be passed in on
-   *   creation. Defaults to an empty array.
+   *   \Devour\Common\ConfigurableInterface, this configuration will be passed
+   *   in on creation. Defaults to an empty array.
    *
    * @return self
    *   The builder to use for chaining.
@@ -427,8 +427,8 @@ class ImporterBuilder {
    *   A class to configure, or an object to simply pass through.
    * @param array $configuration
    *   If $client_class is a class string, and implements
-   *   \Devour\ConfigurableInterface, this configuration will be passed in on
-   *   creation.
+   *   \Devour\Common\ConfigurableInterface, this configuration will be passed
+   *   in on creation.
    *
    * @todo This should be moved somewhere else since it's so useful.
    */
@@ -442,7 +442,7 @@ class ImporterBuilder {
       throw new \RuntimeException(sprintf('The "%s" class does not exist.', $client_class));
     }
 
-    if (is_subclass_of($client_class, 'Devour\ConfigurableInterface')) {
+    if (is_subclass_of($client_class, 'Devour\Common\ConfigurableInterface')) {
       return $client_class::fromConfiguration($configuration);
     }
 
@@ -458,8 +458,8 @@ class ImporterBuilder {
    *   A class to configure, or an object to simply pass through.
    * @param array $configuration
    *   If $client_class is a class string, and implements
-   *   \Devour\ConfigurableInterface, this configuration will be passed in on
-   *   creation.
+   *   \Devour\Common\ConfigurableInterface, this configuration will be passed
+   *   in on creation.
    *
    * @see \Devour\Importer\ImporterBuilder::buildClass()
    */

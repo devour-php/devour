@@ -7,7 +7,7 @@
 
 namespace Devour\Importer;
 
-use Devour\ClearableInterface;
+use Devour\Common\ClearableInterface;
 use Devour\Common\ValidatorInterface;
 use Devour\Parser\ParserInterface;
 use Devour\Processor\ProcessorInterface;
