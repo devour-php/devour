@@ -5,11 +5,12 @@ php:
   - 5.5
 
 before_script:
-  - composer install --dev --no-interaction
+  - composer install --prefer-dist --dev --no-interaction
+  - composer require --prefer-dist --no-interaction satooshi/php-coveralls:dev-master
 
 script:
   - mkdir -p build/logs
-  - phpunit --coverage-clover build/logs/clover.xml
+  - phpunit -c travis.phpunit.xml
 
 after_script:
- - php vendor/bin/coveralls -v
+ - php vendor/bin/coveralls -v --exclude-no-stmt
