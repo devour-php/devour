@@ -37,7 +37,7 @@ class Guzzle extends Client implements TransporterInterface, ClearableInterface 
    */
   public function clear(SourceInterface $source) {
     foreach ($this->getEventDispatcher()->getListeners('request.before_send') as $listener) {
-      if ($listener instanceof CachePlugin) {
+      if ($listener[0] instanceof CachePlugin) {
         $this->createRequest('PURGE', $source->getSource())->send();
         break;
       }

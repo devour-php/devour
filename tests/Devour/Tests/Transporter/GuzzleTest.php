@@ -10,6 +10,7 @@ namespace Devour\Tests\Transporter;
 use Devour\Source\Source;
 use Devour\Transporter\Guzzle;
 use Guzzle\Http\Message\Response;
+use Guzzle\Plugin\Cache\CachePlugin;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Tests\GuzzleTestCase;
 
@@ -73,7 +74,8 @@ class GuzzleTest extends GuzzleTestCase {
    * @covers \Devour\Transporter\Guzzle::clear
    */
   public function testClear() {
-    $this->mockPlugin->addResponse(new Response(200, NULL, 'Good boy.'));
+    $cache = new CachePlugin();
+    $this->transporter->addSubscriber($cache);
     $this->transporter->clear(new Source('http://example.com'));
   }
 
