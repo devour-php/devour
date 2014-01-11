@@ -1,7 +1,7 @@
-Devour - The PHP data consumption framework.
-============================================
+Devour - Data consumption with PHP.
+===================================
 
-[![Build Status](https://secure.travis-ci.org/Seldaek/monolog.png)](http://travis-ci.org/Seldaek/monolog)
+[![Build Status](https://travis-ci.org/twistor/devour.png?branch=master)](https://travis-ci.org/twistor/devour)
 
 Devour is a PHP framework for importing data.
 
