@@ -81,14 +81,7 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
    *
    * @var array
    */
-  protected $emptyLine;
-
-  /**
-   * Constructs a Csv object.
-   */
-  public function __construct() {
-    $this->emptyLine = array(NULL);
-  }
+  protected static $emptyLine = array(NULL);
 
   /**
    * {@inheritdoc}
@@ -122,7 +115,6 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
     if ($state->isFirstRun()) {
       $state->fileLength = $stream->getSize();
 
-
       if ($this->hasHeader) {
         $state->header = $this->readLine($handle);
       }
@@ -142,7 +134,6 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
     }
 
     $state->pointer = ftell($handle);
-    fclose($handle);
 
     return $table;
   }
@@ -184,7 +175,7 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
 
     do {
       $data = fgetcsv($handle, $this->length, $this->delimiter, $this->enclosure, $this->escape);
-    } while ($data === $this->emptyLine);
+    } while ($data === static::$emptyLine);
 
     return $data;
   }

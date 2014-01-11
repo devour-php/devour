@@ -41,15 +41,16 @@ class CsvTest extends DevourTestCase {
       $row = implode(',', $row);
     }
 
-    $csv_data = implode("\n", $csv_data);
-    file_put_contents(static::FILE_1, $csv_data);
+    $this->stringData = implode("\n", $csv_data);
+
+    $this->stream = new StreamStub($this->stringData, TRUE);
   }
 
   public function testParse() {
     $source = new Source(NULL);
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress($source));
 
-    $result = $this->csv->parse($source, new StreamStub(static::FILE_1));
+    $result = $this->csv->parse($source, $this->stream);
     $this->assertInstanceOf('Devour\Table\Table', $result);
 
     // Check that rows were parsed correctly.
@@ -61,15 +62,18 @@ class CsvTest extends DevourTestCase {
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress($source));
 
     // Test that an empty array is returned after parsing is complete.
-    $result = $this->csv->parse($source, new StreamStub(static::FILE_1));
+    $result = $this->csv->parse($source, $this->stream);
     $this->assertSame(0, count($result));
   }
 
+  /**
+   * @depends testParse
+   */
   public function testParseWithHeaders() {
     $source = new Source(NULL);
     $this->csv->setHasHeader(TRUE);
 
-    $result = $this->csv->parse($source, new StreamStub(static::FILE_1));
+    $result = $this->csv->parse($source, $this->stream);
 
     // Check that rows were parsed correctly.
     // Remove header line.
@@ -81,20 +85,24 @@ class CsvTest extends DevourTestCase {
     }
   }
 
+  /**
+   * @depends testParse
+   */
   public function testLimit() {
     $source = new Source(NULL);
     $this->csv->setProcessLimit(2);
 
-    $result = $this->csv->parse($source, new StreamStub(static::FILE_1));
+    $result = $this->csv->parse($source, $this->stream);
     $this->assertSame(.8, $this->csv->progress($source));
 
     // Complete parsing.
-    $this->csv->parse($source, new StreamStub(static::FILE_1));
+    $this->csv->parse($source, $this->stream);
     $this->assertSame(ProgressInterface::COMPLETE, $this->csv->progress($source));
   }
 
   /**
    * @covers \Devour\Parser\Csv::fromConfiguration
+   * @depends testParse
    */
   public function testFactory() {
     $parser = Csv::fromConfiguration(array('has_header' => TRUE));

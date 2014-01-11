@@ -19,7 +19,7 @@ class StreamStub extends Stream {
    */
   public function __construct($file = NULL, $raw = FALSE) {
     if ($file && $raw) {
-      $handle = fopen('php://temp', 'rw+');
+      $handle = fopen('php://temp', 'w+');
       fwrite($handle, $file);
 
       return $this->setStream($handle, strlen($file));
