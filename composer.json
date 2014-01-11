@@ -17,6 +17,7 @@
         "simplepie/simplepie": "dev-master",
         "symfony/console": "2.*",
         "symfony/event-dispatcher": "2.*",
+        "symfony/finder": "2.*",
         "symfony/process": "2.*",
         "symfony/yaml": "2.*"
     },

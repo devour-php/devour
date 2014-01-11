@@ -23,6 +23,12 @@ class DirectoryTest extends DevourTestCase {
 
   const DIRECTORY = 'directory_exists';
 
+  const FILE_3 = 'directory_exists_2/file_3';
+
+  const FILE_4 = 'directory_exists_2/file_4';
+
+  const DIRECTORY_2 = 'directory_exists_2';
+
   protected $directory;
 
   public function setUp() {
@@ -30,7 +36,11 @@ class DirectoryTest extends DevourTestCase {
     touch(static::FILE_1);
     touch(static::FILE_2);
 
-    $this->directory = new Directory();
+    mkdir(static::DIRECTORY_2);
+    touch(static::FILE_3);
+    touch(static::FILE_4);
+
+    $this->directory = Directory::fromConfiguration(array());
   }
 
   /**
@@ -44,30 +54,37 @@ class DirectoryTest extends DevourTestCase {
     $source = new Source(static::DIRECTORY);
 
     // We haven't read any directories yet.
-    $this->assertEquals($this->directory->progress(new Source(NULL)), ProgressInterface::COMPLETE);
+    $this->assertEquals($this->directory->progress($source), ProgressInterface::COMPLETE);
 
     // There are 2 files in the directory.
-    foreach (array('file_2', 'file_1') as $key => $file) {
+    foreach (array('file_1', 'file_2') as $key => $file) {
       $stream = $this->directory->transport($source);
 
       $this->assertInstanceOf('Guzzle\Stream\StreamInterface', $stream);
-      $this->assertEquals($stream->getUri(), static::DIRECTORY . '/' . $file);
+      $this->assertEquals($stream->getUri(), realpath(static::DIRECTORY . '/' . $file));
 
       // Check progress.
-      $this->assertEquals($this->directory->progress(new Source(NULL)), ++$key / 2);
+      $this->assertEquals($this->directory->progress($source), ++$key / 2);
     }
-
-    $this->assertEquals($this->directory->progress(new Source(NULL)), ProgressInterface::COMPLETE);
-
+    $this->assertEquals($this->directory->progress($source), ProgressInterface::COMPLETE);
     $this->assertFalse($this->directory->runInNewProcess());
+
+    // Verify that passing in multiple sources to the same transporter works.
+    $other_dir = new Source(static::DIRECTORY_2);
+    foreach (array('file_3', 'file_4') as $key => $file) {
+      $stream = $this->directory->transport($other_dir);
+      $this->assertEquals($stream->getUri(), realpath(static::DIRECTORY_2 . '/' . $file));
+      // Check progress.
+      $this->assertEquals($this->directory->progress($other_dir), ++$key / 2);
+    }
 
     // The third call will throw \RuntimeException.
     $this->directory->transport($source);
   }
 
   /**
-   * @expectedException \RuntimeException
-   * @expectedExceptionMessage The directory does not exist, or is not readable.
+   * @expectedException \InvalidArgumentException
+   * @expectedExceptionMessage The "directory_not_exists" directory does not exist.
    */
   public function testGetRawPayloadDirectoryNotExists() {
     $this->directory->transport(new Source('directory_not_exists'));

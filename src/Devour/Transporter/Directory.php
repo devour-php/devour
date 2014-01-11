@@ -7,46 +7,71 @@
 
 namespace Devour\Transporter;
 
+use Devour\Common\ConfigurableInterface;
 use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Transporter\TransporterInterface;
-use Devour\Util\FileSystem;
 use Guzzle\Stream\Stream;
+use Symfony\Component\Finder\Finder;
 
 /**
  * A transport that batches over a directory, returning each file individually.
  */
-class Directory implements TransporterInterface, ProgressInterface {
+class Directory implements TransporterInterface, ProgressInterface, ConfigurableInterface {
 
   /**
-   * The list of files in the directory.
+   * The finder to iterate with.
    *
-   * @var array
+   * @var \Symfony\Component\Finder\Finder
    */
-  protected $files;
+  protected $finder;
 
   /**
-   * The total number of files in the directory.
+   * Constructs a Directory object.
    *
-   * @var int
+   * @param \Symfony\Component\Finder\Finder $finder
+   *   The configured file iterator to use.
    */
-  protected $totalFileCount;
+  public function __construct(Finder $finder) {
+    $this->finder = $finder;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function fromConfiguration(array $configuration) {
+    // @todo
+    $finder = new Finder();
+    $finder->files()
+           ->ignoreUnreadableDirs();
+    return new static($finder);
+  }
 
   /**
    * {@inheritdoc}
    */
   public function transport(SourceInterface $source) {
-    $directory = $source->getSource();
+    $state = $source->getState($this);
 
-    // Initial pass.
-    if ($this->files === NULL) {
-      $this->files = $this->listFiles($directory);
-      $this->totalFileCount = count($this->files);
+    if ($state->isFirstRun()) {
+      // We have to clone it, other wise it will remember directories from
+      // different sources.
+      $finder = clone $this->finder;
+      $finder->in((string) $source);
+
+      $state->files = iterator_to_array($finder, FALSE);
+
+      // The list of full paths.
+      $state->files = array_map(function($file) {
+        return $file->getRealpath();
+      }, $state->files);
+
+      $state->total = count($state->files);
     }
 
-    if ($this->files) {
-      $file = array_pop($this->files);
-      return new Stream(fopen("$directory/$file", 'r+'));
+    if ($state->files) {
+      $file = array_pop($state->files);
+      return new Stream(fopen($file, 'r+'));
     }
 
     throw new \RuntimeException('There are no more files left to process.');
@@ -56,32 +81,12 @@ class Directory implements TransporterInterface, ProgressInterface {
    * {@inheritdoc}
    */
   public function progress(SourceInterface $source) {
-    if ($this->totalFileCount) {
-      return (float) ($this->totalFileCount - count($this->files)) / $this->totalFileCount;
+    $state = $source->getState($this);
+    if (!empty($state->total)) {
+      return (float) ($state->total - count($state->files)) / $state->total;
     }
 
     return ProgressInterface::COMPLETE;
-  }
-
-  /**
-   * Returns the list of files in a given directory.
-   *
-   * @return array
-   *   A list of file paths.
-   *
-   * @throws \RuntimeException
-   *   Thrown if the directory does not exist, or is not readable.
-   */
-  protected function listFiles($directory) {
-    if (!FileSystem::checkDirectory($directory)) {
-      throw new \RuntimeException('The directory does not exist, or is not readable.');
-    }
-
-    $files = array_diff(scandir($directory), array('.', '..'));
-
-    return array_filter($files, function($file) use ($directory) {
-      return FileSystem::checkFile("$directory/$file");
-    });
   }
 
   /**
