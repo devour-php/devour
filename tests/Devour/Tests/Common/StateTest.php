@@ -17,6 +17,8 @@ class StateTest extends DevourTestCase {
 
   public function test() {
     $state = new State();
+    $this->assertTrue($state->isFirstRun());
+    $this->assertFalse($state->isFirstRun());
   }
 
 }

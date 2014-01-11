@@ -22,13 +22,6 @@ class Guzzle extends Client implements TransporterInterface, ClearableInterface 
    */
   public function transport(SourceInterface $source) {
     $request = $this->get($source->getSource());
-
-    // Guzzle use's php://temp as a temporary file. That is awesome, but for our
-    // multiprocessing, we need a real file path.
-    if ($this->getConfig('stream_to_file')) {
-      $request->setResponseBody(tempnam(sys_get_temp_dir(), 'devour_'));
-    }
-
     return $request->send()->getBody();
   }
 
@@ -36,7 +29,6 @@ class Guzzle extends Client implements TransporterInterface, ClearableInterface 
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
-    $configuration += array('stream_to_file' => TRUE);
     return static::factory($configuration);
   }
 
@@ -50,6 +42,13 @@ class Guzzle extends Client implements TransporterInterface, ClearableInterface 
         break;
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function runInNewProcess() {
+    return TRUE;
   }
 
 }

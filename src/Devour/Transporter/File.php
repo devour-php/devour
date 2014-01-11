@@ -29,4 +29,11 @@ class File implements TransporterInterface {
     throw new \RuntimeException(sprintf('The file "%s" does not exist or is not readable.', $filename));
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function runInNewProcess() {
+    return TRUE;
+  }
+
 }

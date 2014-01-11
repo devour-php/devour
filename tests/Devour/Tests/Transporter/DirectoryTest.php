@@ -18,7 +18,9 @@ use Devour\Transporter\Directory;
 class DirectoryTest extends DevourTestCase {
 
   const FILE_1 = 'directory_exists/file_1';
+
   const FILE_2 = 'directory_exists/file_2';
+
   const DIRECTORY = 'directory_exists';
 
   protected $directory;
@@ -56,6 +58,9 @@ class DirectoryTest extends DevourTestCase {
     }
 
     $this->assertEquals($this->directory->progress(new Source(NULL)), ProgressInterface::COMPLETE);
+
+    $this->assertFalse($this->directory->runInNewProcess());
+
     // The third call will throw \RuntimeException.
     $this->directory->transport($source);
   }

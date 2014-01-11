@@ -33,6 +33,8 @@ class GuzzleTest extends GuzzleTestCase {
 
     $stream = $this->transporter->transport(new Source('http://example.com'));
     $this->assertSame('Good boy.', (string) $stream);
+
+    $this->assertTrue($this->transporter->runInNewProcess());
   }
 
   /**

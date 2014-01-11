@@ -23,4 +23,11 @@ class TransporterStub implements TransporterInterface {
     return new StreamStub();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function runInNewProcess() {
+    return FALSE;
+  }
+
 }

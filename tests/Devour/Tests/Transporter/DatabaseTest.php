@@ -52,6 +52,8 @@ class DatabaseTest extends DevourTestCase {
     foreach ($this->data as $delta => $data_row) {
       $this->assertSame($table[$delta]->getData(), $data_row);
     }
+
+    $this->assertTrue($this->transporter->runInNewProcess());
   }
 
   /**

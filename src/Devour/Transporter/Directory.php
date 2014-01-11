@@ -92,4 +92,11 @@ class Directory implements TransporterInterface, ProgressInterface {
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function runInNewProcess() {
+    return FALSE;
+  }
+
 }

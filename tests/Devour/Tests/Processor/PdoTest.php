@@ -57,6 +57,9 @@ class PdoTest extends DevourTestCase {
 
     $table = $this->getStubTable($this->pdoData);
     $this->pdo->setMap($this->map);
+
+    $this->assertSame($this->map, $this->pdo->getMap());
+
     $this->pdo->process($source, $table);
 
     $result = $this->connection->query("SELECT * FROM my_table");
