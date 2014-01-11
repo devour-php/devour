@@ -7,9 +7,18 @@ use Guzzle\Stream\Stream;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$importer = ImporterFactory::fromConfigurationFile($argv[1]);
-$source = new Source($argv[2]);
-$stream = new Stream(fopen($argv[3], 'r+'));
+$action = $argv[1];
+$importer = ImporterFactory::fromConfigurationFile($argv[2]);
+$source = new Source($argv[3]);
 
-// This will execute parse and process.
-$importer->parse($source, $stream);
+
+if ($action === 'transport') {
+  $importer->import($source);
+}
+elseif ($action === 'parse') {
+  $stream = new Stream(fopen($argv[4], 'r+'));
+  // This will parse and process.
+  $importer->parse($source, $stream);
+}
+
+exit(0);
