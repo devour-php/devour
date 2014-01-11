@@ -9,16 +9,16 @@
     },
 
     "require-dev": {
+        "aura/sql-schema": "2.*@dev",
         "doctrine/orm": "2.4.*",
         "fusesource/stomp-php" : "2.0.*",
+        "guzzle/guzzle": "3.*",
+        "satooshi/php-coveralls": "dev-master",
+        "simplepie/simplepie": "dev-master",
         "symfony/console": "2.*",
         "symfony/event-dispatcher": "2.*",
         "symfony/process": "2.*",
-        "symfony/yaml": "2.*",
-        "simplepie/simplepie": "dev-master",
-        "aura/sql-schema": "2.*@dev",
-        "guzzle/guzzle": "3.*",
-        "phpunit/phpunit": "3.7.*"
+        "symfony/yaml": "2.*"
     },
 
     "suggest": {
