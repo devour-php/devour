@@ -107,7 +107,7 @@ class ImportCommand extends Command {
       $process->start();
       $process_group->attach($process);
 
-    } while ($importer->getTransporter() instanceof ProgressInterface && $importer->getTransporter()->progress($source) != ProgressInterface::COMPLETE);
+    } while ($importer->getTransporter() instanceof ProgressInterface && $importer->getTransporter()->progress(new Source($source)) != ProgressInterface::COMPLETE);
   }
 
   /**

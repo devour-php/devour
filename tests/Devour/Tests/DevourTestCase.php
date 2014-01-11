@@ -30,6 +30,13 @@ abstract class DevourTestCase extends \PHPUnit_Framework_TestCase {
     return $method;
   }
 
+  protected static function getProperty($class, $name) {
+    $class = new \ReflectionClass($class);
+    $property = $class->getProperty($name);
+    $property->setAccessible(TRUE);
+    return $property;
+  }
+
   protected function getMockProcess($is_running, $expects) {
     $process = $this->getMockBuilder('Symfony\Component\Process\Process')
                     ->disableOriginalConstructor()
@@ -40,5 +47,7 @@ abstract class DevourTestCase extends \PHPUnit_Framework_TestCase {
 
     return $process;
   }
+
+
 
 }

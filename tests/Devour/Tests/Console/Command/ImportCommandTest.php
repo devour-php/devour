@@ -20,6 +20,12 @@ class ImportCommandTest extends DevourTestCase {
 
   const FILE_PATH = 'tpm_config';
 
+  const FILE_SOURCE = 'source_file';
+
+  const DIRECTORY = 'tmp_dir';
+
+  const FILE_IN_DIR = 'tmp_dir/file';
+
   public function setUp() {
     $this->configuration = array(
       'importer' => array(
@@ -38,6 +44,7 @@ class ImportCommandTest extends DevourTestCase {
 
     $dumper = new Dumper();
     file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
+    touch(static::FILE_SOURCE);
   }
 
   public function testCommand() {
@@ -47,6 +54,47 @@ class ImportCommandTest extends DevourTestCase {
     $command = $application->find('import');
     $commandTester = new CommandTester($command);
     $commandTester->execute(array('command' => $command->getName(), 'source' => array(''), '--config' => static::FILE_PATH, '--concurrency' => 1));
+  }
+
+  public function testCommandSourceFile() {
+    $application = new Application();
+    $application->add(new ImportCommand());
+    touch(static::FILE_SOURCE);
+
+    $command = $application->find('import');
+    $commandTester = new CommandTester($command);
+    $commandTester->execute(array('command' => $command->getName(), 'source' => array(static::FILE_SOURCE), '--config' => static::FILE_PATH, '--source_file' => TRUE));
+  }
+
+  public function testCommandSameProcess() {
+    mkdir(static::DIRECTORY);
+    touch(static::FILE_IN_DIR);
+    $this->configuration['transporter']['class'] = 'Devour\Transporter\Directory';
+
+    $dumper = new Dumper();
+    file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
+
+    $application = new Application();
+    $application->add(new ImportCommand());
+
+    $command = $application->find('import');
+    $commandTester = new CommandTester($command);
+    $commandTester->execute(array('command' => $command->getName(), 'source' => array(static::DIRECTORY), '--config' => static::FILE_PATH));
+  }
+
+  public function testCommandNewProcess() {
+    $this->configuration['transporter']['class'] = 'Devour\Transporter\File';
+
+    $dumper = new Dumper();
+    file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
+    touch(static::FILE_SOURCE);
+
+    $application = new Application();
+    $application->add(new ImportCommand());
+
+    $command = $application->find('import');
+    $commandTester = new CommandTester($command);
+    $commandTester->execute(array('command' => $command->getName(), 'source' => array(static::DIRECTORY), '--config' => static::FILE_PATH));
   }
 
   /**
@@ -84,6 +132,41 @@ class ImportCommandTest extends DevourTestCase {
 
     $method->invokeArgs($command, array($process_group, 5));
     $this->assertSame(4, count($process_group));
+  }
+
+  /**
+   * @covers \Devour\Console\Command\ImportCommand::printProcess
+   */
+  public function testprintProcess() {
+    $method = $this->getMethod('Devour\Console\Command\ImportCommand', 'printProcess');
+    $command = new ImportCommand();
+
+    $process = $this->getMockProcess(FALSE, $this->never());
+    $process->expects($this->once())
+            ->method('getErrorOutput')
+            ->will($this->returnValue(TRUE));
+
+    $method->invokeArgs($command, array($process));
+
+    $property = $this->getProperty('Devour\Console\Command\ImportCommand', 'errors');
+    $this->assertSame(1, count($property->getValue($command)));
+  }
+
+/**
+   * @covers \Devour\Console\Command\ImportCommand::executeParallel
+   * @expectedException \RuntimeException
+   * @expectedExceptionMessage hi
+   */
+  public function testexecuteParallelException() {
+    $property = $this->getProperty('Devour\Console\Command\ImportCommand', 'errors');
+    $command = new ImportCommand();
+
+    $property->setValue($command, array(array('message' => 'hi', 'code' => 1234)));
+    $method = $this->getMethod('Devour\Console\Command\ImportCommand', 'executeParallel');
+
+    $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+    $importer = $this->getMock('Devour\Importer\ImporterInterface');
+    $method->invokeArgs($command, array($output, $importer, array(), 1, 'beep'));
   }
 
 }
