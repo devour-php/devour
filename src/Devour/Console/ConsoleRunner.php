@@ -78,7 +78,7 @@ EOF;
    * {@inheritdoc}
    */
   public function run(InputInterface $input = NULL, OutputInterface $output = NULL) {
-    static::$runningApp = $this;
+    self::$runningApp = $this;
     return parent::run($input, $output);
   }
 
@@ -86,9 +86,9 @@ EOF;
    * Runs the console application.
    */
   public static function runApplication(InputInterface $input = NULL, OutputInterface $output = NULL, $auto_exit = TRUE) {
-    static::$runningApp = new static();
-    static::$runningApp->setAutoExit($auto_exit);
-    static::$runningApp->run($input, $output);
+    self::$runningApp = new static();
+    self::$runningApp->setAutoExit($auto_exit);
+    self::$runningApp->run($input, $output);
   }
 
   /**
@@ -99,7 +99,7 @@ EOF;
    * @return \Devour\Console\ConsoleRunner|false
    */
   public static function getApplication() {
-    return static::$runningApp;
+    return self::$runningApp;
   }
 
   public function getImporter() {
@@ -123,7 +123,7 @@ EOF;
    * {@inheritdoc}
    */
   public function getHelp() {
-    return static::$logo . parent::getHelp();
+    return self::$logo . parent::getHelp();
   }
 
   /**

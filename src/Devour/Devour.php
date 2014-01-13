@@ -67,7 +67,7 @@ final class Devour {
    *   The list of registered transporters.
    */
   public static function getRegisteredTransporters() {
-    return array_keys(static::$transporters);
+    return array_keys(self::$transporters);
   }
 
   /**
@@ -77,7 +77,7 @@ final class Devour {
    *   The list of registered parsers.
    */
   public static function getRegisteredParsers() {
-    return array_keys(static::$parsers);
+    return array_keys(self::$parsers);
   }
 
   /**
@@ -87,7 +87,7 @@ final class Devour {
    *   The list of registered processors.
    */
   public static function getRegisteredProcessors() {
-    return array_keys(static::$processors);
+    return array_keys(self::$processors);
   }
 
   /**
