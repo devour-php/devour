@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @file
  * Contains \Devour\Map\Map.
  */
 
@@ -8,10 +9,23 @@ namespace Devour\Map;
 
 use Devour\Common\ConfigurableInterface;
 
+/**
+ * Maps source fields to target fields. The map configuration structure:
+ *
+ * @code
+ * array(
+ *   array('source 1', 'target 1'),
+ *   array('source 2', 'target 2'),
+ * )
+ * @endcode
+ *
+ * This allows mapping the same source to multiple targets, or multiple sources
+ * to the same target.
+ */
 class Map implements MapInterface, ConfigurableInterface {
 
   /**
-   * A list of arrays from source => target.
+   * A list of arrays with array('source', 'target').
    *
    * @var array
    */
@@ -19,17 +33,28 @@ class Map implements MapInterface, ConfigurableInterface {
 
   /**
    * The position in the map.
+   *
+   * @var int
    */
   protected $position = 0;
+
+  /**
+   * The number of items in the map.
+   *
+   * @var int
+   */
+  protected $count;
 
   /**
    * Constructs a Map object.
    *
    * @param array $map
-   *   An array keyed from source => target.
+   *   A list of arrays with array('source', 'target').
    */
   public function __construct(array $map) {
-    $this->map = $map;
+    // Ensure we have a zero indexed array with no missing keys.
+    $this->map = array_values($map);
+    $this->count = count($this->map);
   }
 
   /**
@@ -71,7 +96,7 @@ class Map implements MapInterface, ConfigurableInterface {
    * {@inheritdoc}
    */
   public function valid() {
-    return isset($this->map[$this->position]);
+    return $this->position < $this->count;
   }
 
 }
