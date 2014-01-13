@@ -9,34 +9,90 @@ namespace Devour;
 
 final class Devour {
 
+  /**
+   * The registered transporters.
+   *
+   * @var array()
+   */
   private static $transporters = array();
+
+  /**
+   * The registered parsers.
+   *
+   * @var array()
+   */
   private static $parsers = array();
+
+  /**
+   * The registered processors.
+   *
+   * @var array()
+   */
   private static $processors = array();
 
+  /**
+   * Registers some transporter classes.
+   *
+   * @param array $classes
+   *   A list of transporter classes.
+   */
   public static function registerTransporterClasses(array $classes) {
-    static::$transporters += array_flip($classes);
+    self::$transporters += array_flip($classes);
   }
 
+  /**
+   * Registers some parser classes.
+   *
+   * @param array $classes
+   *   A list of parser classes.
+   */
   public static function registerParserClasses(array $classes) {
-    static::$parsers += array_flip($classes);
+    self::$parsers += array_flip($classes);
   }
 
+  /**
+   * Registers some processor classes.
+   *
+   * @param array $classes
+   *   A list of processor classes.
+   */
   public static function registerProcessorClasses(array $classes) {
-    static::$processors += array_flip($classes);
+    self::$processors += array_flip($classes);
   }
 
+  /**
+   * Returns the list of registered transporter classes.
+   *
+   * @return array
+   *   The list of registered transporters.
+   */
   public static function getRegisteredTransporters() {
     return array_keys(static::$transporters);
   }
 
+  /**
+   * Returns the list of registered parser classes.
+   *
+   * @return array
+   *   The list of registered parsers.
+   */
   public static function getRegisteredParsers() {
     return array_keys(static::$parsers);
   }
 
+  /**
+   * Returns the list of registered processor classes.
+   *
+   * @return array
+   *   The list of registered processors.
+   */
   public static function getRegisteredProcessors() {
     return array_keys(static::$processors);
   }
 
+  /**
+   * Registers the default classes that come with Devour.
+   */
   public static function registerDefaults() {
     static::registerTransporterClasses(array(
       'Devour\Transporter\Database',

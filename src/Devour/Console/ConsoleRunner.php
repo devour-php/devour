@@ -184,7 +184,7 @@ EOF;
     $commands = parent::getDefaultCommands();
     $commands[] = new ImportCommand();
     $commands[] = new ClearCommand();
-    $commands[] = new BuildCommand();
+    // $commands[] = new BuildCommand();
 
     return $commands;
   }
