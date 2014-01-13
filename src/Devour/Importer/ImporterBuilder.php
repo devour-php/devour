@@ -19,10 +19,10 @@ use Devour\Table\TableFactoryInterface;
 use Devour\Transporter\TransporterInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Provides a fluent API for building importers.
- *
  *
  * Example:
  * @code
@@ -314,6 +314,11 @@ class ImporterBuilder {
     }
 
     $this->replayCommands();
+
+    if (!$this->importer->getLogger()) {
+      $this->doSetLogger(new NullLogger());
+    }
+
     $this->importer->validate();
 
     // Since this is potentially a long running process, we need to make an
@@ -467,12 +472,15 @@ class ImporterBuilder {
   /**
    * Builds a client class.
    *
-   * @param mixed $client_class
+   * @param object|string $client_class
    *   A class to configure, or an object to simply pass through.
    * @param array $configuration
    *   If $client_class is a class string, and implements
    *   \Devour\Common\ConfigurableInterface, this configuration will be passed
    *   in on creation.
+   *
+   * @return object
+   *   The newly constructed object.
    *
    * @todo This should be moved somewhere else since it's so useful.
    */
@@ -498,7 +506,7 @@ class ImporterBuilder {
    *
    * We track client objects so that we can replay commands on them later.
    *
-   * @param mixed $client_class
+   * @param object|string $client_class
    *   A class to configure, or an object to simply pass through.
    * @param array $configuration
    *   If $client_class is a class string, and implements

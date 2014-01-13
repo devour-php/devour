@@ -169,12 +169,7 @@ class Importer implements ImporterInterface {
   }
 
   /**
-   * Returns the logger the importer is using.
-   *
-   * This is really only used for testing.
-   *
-   * @return \Psr\Log\LoggerInterface
-   *   The logger.
+   * {@inheritdoc}
    */
   public function getLogger() {
     return $this->logger;

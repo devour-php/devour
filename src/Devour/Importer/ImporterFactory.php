@@ -95,6 +95,7 @@ class ImporterFactory {
         'configuration' => array(),
       ),
       'transporter' => array(
+        'class' => '',
         'configuration' => array(),
       ),
       'parser' => array(
@@ -102,6 +103,7 @@ class ImporterFactory {
         'configuration' => array(),
       ),
       'processor' => array(
+        'class' => '',
         'configuration' => array(),
       ),
       'table' => array(

@@ -114,4 +114,12 @@ interface ImporterInterface extends ValidatorInterface, ClearableInterface, Logg
    */
   public function process(SourceInterface $source, TableInterface $table);
 
+  /**
+   * Returns the logger the importer is using.
+   *
+   * @return \Psr\Log\LoggerInterface
+   *   The logger.
+   */
+  public function getLogger();
+
 }
