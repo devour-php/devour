@@ -22,6 +22,8 @@ interface ProcessorInterface {
    *
    * @param \Devour\Table\TableInterface $table
    *   The table to process.
+   *
+   * @return void
    */
   public function process(SourceInterface $source, TableInterface $table);
 

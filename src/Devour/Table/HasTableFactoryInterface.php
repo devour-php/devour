@@ -17,6 +17,8 @@ interface HasTableFactoryInterface {
    *
    * @param \Devour\Table\TableFactoryInterface $table_factory
    *   The table factory.
+   *
+   * @return void
    */
   public function setTableFactory(TableFactoryInterface $table_factory);
 

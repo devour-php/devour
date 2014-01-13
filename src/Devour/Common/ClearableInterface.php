@@ -20,6 +20,8 @@ interface ClearableInterface {
    *
    * @param \Devour\Source\SourceInterface $source
    *   The source to clear state for.
+   *
+   * @return void
    */
   public function clear(SourceInterface $source);
 

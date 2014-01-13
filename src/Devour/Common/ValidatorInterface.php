@@ -17,6 +17,8 @@ interface ValidatorInterface {
    *
    * @throws \DomainException
    *   Thrown when something is wrong with the object's state.
+   *
+   * @return void
    */
   public function validate();
 

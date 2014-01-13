@@ -87,6 +87,8 @@ interface ImporterInterface extends ValidatorInterface, ClearableInterface, Logg
    *
    * @param \Devour\Source\SourceInterface $source
    *   The source to import from.
+   *
+   * @return void
    */
   public function import(SourceInterface $source);
 
@@ -95,6 +97,9 @@ interface ImporterInterface extends ValidatorInterface, ClearableInterface, Logg
    *
    * @param \Devour\Source\SourceInterface $source
    *   The source to import from.
+   *
+   * @return \Guzzle\Stream\StreamInterface|\Devour\Table\TableInterface
+   *   A stream or a table depending on what the transporter returned.
    */
   public function transport(SourceInterface $source);
 
@@ -103,6 +108,8 @@ interface ImporterInterface extends ValidatorInterface, ClearableInterface, Logg
    *
    * @param \Devour\Source\SourceInterface $source
    *   The source to import from.
+   *
+   * @return void
    */
   public function parse(SourceInterface $source, StreamInterface $table);
 
@@ -111,6 +118,8 @@ interface ImporterInterface extends ValidatorInterface, ClearableInterface, Logg
    *
    * @param \Devour\Source\SourceInterface $source
    *   The source to import from.
+   *
+   * @return void
    */
   public function process(SourceInterface $source, TableInterface $table);
 

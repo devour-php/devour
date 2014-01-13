@@ -30,6 +30,9 @@ interface TableInterface extends \Iterator, \ArrayAccess, \Countable {
    *   The name of the field.
    * @param mixed $value
    *   The value of the field.
+   *
+   * @return self
+   *   The table for chaining.
    */
   public function setField($field, $value);
 
@@ -39,15 +42,15 @@ interface TableInterface extends \Iterator, \ArrayAccess, \Countable {
    * @param string $field
    *   The name of the field.
    *
-   * @return mixed
-   *   The value of the field.
+   * @return mixed|null
+   *   The value of the field, or null if it does not exist.
    */
   public function getField($field);
 
   /**
    * Returns the first row, removing it.
    *
-   * Whether the row is actually removed is an implementation detaill.
+   * Whether the row is actually removed is an implementation detail.
    *
    * @return \Devour\Row\RowInterface
    *   A row object.
@@ -57,7 +60,7 @@ interface TableInterface extends \Iterator, \ArrayAccess, \Countable {
   /**
    * Returns the last row, removing it.
    *
-   * Whether the row is actually removed is an implementation detaill.
+   * Whether the row is actually removed is an implementation detail.
    *
    * @return \Devour\Row\RowInterface
    *   A row object.

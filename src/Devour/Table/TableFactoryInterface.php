@@ -17,6 +17,8 @@ interface TableFactoryInterface {
    *
    * @param string $class
    *   The table class to create.
+   *
+   * @return void
    */
   public function setTableClass($class);
 

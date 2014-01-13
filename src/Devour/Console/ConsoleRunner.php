@@ -7,7 +7,6 @@
 
 namespace Devour\Console;
 
-use Devour\Console\Command\BuildCommand;
 use Devour\Console\Command\ClearCommand;
 use Devour\Console\Command\ImportCommand;
 use Devour\Devour;
@@ -183,7 +182,6 @@ EOF;
     $commands = parent::getDefaultCommands();
     $commands[] = new ImportCommand();
     $commands[] = new ClearCommand();
-    // $commands[] = new BuildCommand();
 
     return $commands;
   }

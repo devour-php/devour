@@ -22,7 +22,7 @@ class Table extends \SplQueue implements TableInterface {
   protected $fields = array();
 
   /**
-   * Constructs a new Table.
+   * Constructs a Table object.
    */
   public function __construct() {
     // Default to delete to save memory when possible.
@@ -34,6 +34,7 @@ class Table extends \SplQueue implements TableInterface {
    */
   public function setField($field, $value) {
     $this->fields[$field] = $value;
+    return $this;
   }
 
   /**

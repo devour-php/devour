@@ -19,6 +19,8 @@ interface MappableInterface {
    *
    * @param \Devour\Map\MapInterface $map
    *   The map to set.
+   *
+   * @return void
    */
   public function setMap(MapInterface $map);
 
