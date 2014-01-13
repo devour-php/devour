@@ -8,7 +8,7 @@
 namespace Devour\Transporter;
 
 use Devour\Common\ClearableInterface;
-use Devour\Common\ProgressInterface;
+use Devour\Common\ProgressHelperTrait;
 use Devour\Source\SourceInterface;
 use Guzzle\Plugin\Cache\CachePlugin;
 use Guzzle\Service\Client;
@@ -17,6 +17,8 @@ use Guzzle\Service\Client;
  * A transport that returns a stream via HTTP.
  */
 class Guzzle extends Client implements TransporterInterface, ClearableInterface {
+
+  use ProgressHelperTrait;
 
   /**
    * {@inheritdoc}
@@ -50,20 +52,6 @@ class Guzzle extends Client implements TransporterInterface, ClearableInterface 
    */
   public function runInNewProcess() {
     return TRUE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function progress(SourceInterface $source) {
-    return ProgressInterface::COMPLETE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setProcessLimit($limit) {
-
   }
 
 }
