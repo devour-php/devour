@@ -8,52 +8,35 @@
 namespace Devour\Tests\Console\Command;
 
 use Devour\Console\Command\ClearCommand;
+use Devour\Console\ConsoleRunner;
+use Devour\Importer\Importer;
 use Devour\Tests\DevourTestCase;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Yaml\Dumper;
 
 /**
  * @covers \Devour\Console\Command\ClearCommand
  */
 class ClearCommandTest extends DevourTestCase {
 
-  const FILE_PATH = 'tpm_config';
+  protected $app;
 
-  const FILE_SOURCE = 'source_file';
+  protected $importer;
 
-  const DIRECTORY = 'tmp_dir';
-
-  const FILE_IN_DIR = 'tmp_dir/file';
+  protected $command;
 
   public function setUp() {
-    $this->configuration = array(
-      'importer' => array(
-        'class' => 'Devour\Importer\Importer',
-      ),
-      'transporter' => array(
-        'class' => 'Devour\Tests\Transporter\TransporterStub',
-      ),
-      'parser' => array(
-        'class' => 'Devour\Tests\Parser\ParserStub',
-      ),
-      'processor' => array(
-        'class' => 'Devour\Tests\Processor\ProcessorStub',
-      ),
-    );
-
-    $dumper = new Dumper();
-    file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
-    touch(static::FILE_SOURCE);
+    $this->app = new ConsoleRunner();
+    $this->importer = new Importer();
+    $this->app->setImporter($this->importer);
+    $this->command = new ClearCommand();
+    $this->app->add($this->command);
   }
 
-  public function testCommand() {
-    $application = new Application();
-    $application->add(new ClearCommand());
 
-    $command = $application->find('clear');
+  public function testCommand() {
+    $command = $this->app->find('clear');
     $commandTester = new CommandTester($command);
-    $commandTester->execute(array('command' => $command->getName(), 'source' => array(''), '--config' => static::FILE_PATH));
+    $commandTester->execute(array('command' => $command->getName(), 'source' => array('http://example.com')));
   }
 
 }

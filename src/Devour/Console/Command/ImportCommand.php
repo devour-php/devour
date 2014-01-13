@@ -10,10 +10,8 @@ namespace Devour\Console\Command;
 use Devour\Common\ProgressInterface;
 use Devour\Importer\ImporterFactory;
 use Devour\Importer\ImporterInterface;
-use Devour\Source\Source;
 use Devour\Source\SourceInterface;
 use Devour\Util\FileSystem;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -24,8 +22,13 @@ use Symfony\Component\Process\ProcessBuilder;
 /**
  * Command to execute an import.
  */
-class ImportCommand extends Command {
+class ImportCommand extends DevourCommand {
 
+  /**
+   * Any errors collected during execution.
+   *
+   * @var array.
+   */
   protected $errors = array();
 
   /**
@@ -33,10 +36,9 @@ class ImportCommand extends Command {
    */
   protected function configure() {
     $this->setName('import')
+         ->setImporterRequired()
+         ->addSourceArgument()
          ->setDescription('Execute an import.')
-         ->addArgument('source', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The source of the import.')
-         ->addOption('config', 'c', InputOption::VALUE_OPTIONAL, 'The source of the import.', 'devour.yml')
-         ->addOption('source_file', NULL, InputOption::VALUE_NONE, 'Specifies a file that contains a list of sources, one per line.')
          ->addOption('concurrency', NULL, InputOption::VALUE_OPTIONAL, 'The number of parallel proceses to execute.', 1);
   }
 
@@ -44,17 +46,14 @@ class ImportCommand extends Command {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    $config = $input->getOption('config');
-    $sources = $input->getArgument('source');
+    $importer = $this->getImporter();
+
     $concurrency = $input->getOption('concurrency');
 
-    // Sources could be a file that contains a list of sources.
-    if ($input->getOption('source_file') && FileSystem::checkFile($sources[0])) {
-      $sources = file_get_contents($sources[0]);
-      $sources = array_filter(array_map('trim', explode("\n", $sources)));
-    }
+    $sources = $this->getSources($input);
 
-    $importer = ImporterFactory::fromConfigurationFile($config);
+    $config = $this->getApplication()->getImporterConfigurationFile();
+
     $this->executeParallel($output, $importer, $sources, $concurrency, $config);
   }
 
@@ -65,9 +64,7 @@ class ImportCommand extends Command {
     $process_group = new \SplObjectStorage();
 
     foreach ($sources as $source) {
-      if (!$output->isQuiet()) {
-        $output->writeln(sprintf("<info>Importing: %s</info>", $source));
-      }
+      $output->writeln(sprintf("<info>Importing: %s</info>", $source));
       $this->doExecute($process_group, $importer, $source, $num_processes, $config);
     }
 
@@ -81,7 +78,7 @@ class ImportCommand extends Command {
     }
   }
 
-  protected function doExecute(\SplObjectStorage $process_group, ImporterInterface $importer, $source, $num_processes, $config) {
+  protected function doExecute(\SplObjectStorage $process_group, ImporterInterface $importer, SourceInterface $source, $num_processes, $config) {
     $script_path = DEVOUR_COMMAND_START_DIR . '/batch.php';
 
     do {
@@ -97,7 +94,7 @@ class ImportCommand extends Command {
         return;
       }
       else {
-        $stream = $importer->transport(new Source($source));
+        $stream = $importer->transport($source);
         $args = array('php', $script_path, 'parse', $config, $source, $stream->getUri());
       }
 
@@ -107,7 +104,7 @@ class ImportCommand extends Command {
       $process->start();
       $process_group->attach($process);
 
-    } while ($importer->getTransporter() instanceof ProgressInterface && $importer->getTransporter()->progress(new Source($source)) != ProgressInterface::COMPLETE);
+    } while ($importer->getTransporter() instanceof ProgressInterface && $importer->getTransporter()->progress($source) != ProgressInterface::COMPLETE);
   }
 
   /**

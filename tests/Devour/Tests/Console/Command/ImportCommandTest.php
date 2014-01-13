@@ -8,106 +8,55 @@
 namespace Devour\Tests\Console\Command;
 
 use Devour\Console\Command\ImportCommand;
+use Devour\Console\ConsoleRunner;
+use Devour\Importer\Importer;
 use Devour\Tests\DevourTestCase;
-use Symfony\Component\Console\Application;
+use Devour\Tests\Stream\StreamStub;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Yaml\Dumper;
 
 /**
  * @covers \Devour\Console\Command\ImportCommand
  */
 class ImportCommandTest extends DevourTestCase {
 
-  const FILE_PATH = 'tpm_config';
+  protected $app;
 
-  const FILE_SOURCE = 'source_file';
+  protected $importer;
 
-  const DIRECTORY = 'tmp_dir';
-
-  const FILE_IN_DIR = 'tmp_dir/file';
+  protected $command;
 
   public function setUp() {
-    $this->configuration = array(
-      'importer' => array(
-        'class' => 'Devour\Importer\Importer',
-      ),
-      'transporter' => array(
-        'class' => 'Devour\Tests\Transporter\TransporterStub',
-      ),
-      'parser' => array(
-        'class' => 'Devour\Tests\Parser\ParserStub',
-      ),
-      'processor' => array(
-        'class' => 'Devour\Tests\Processor\ProcessorStub',
-      ),
-    );
+    $this->app = new ConsoleRunner();
+    $this->importer = new Importer();
 
-    $dumper = new Dumper();
-    file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
-    touch(static::FILE_SOURCE);
+    $transporter = $this->getMock('Devour\Transporter\TransporterInterface');
+    $transporter->expects($this->any())
+                ->method('transport')
+                ->will($this->returnValue(new StreamStub()));
+    $this->importer->setTransporter($transporter);
+
+    $this->app->setImporter($this->importer);
+    $this->command = new ImportCommand();
+    $this->app->add($this->command);
   }
 
   public function testCommand() {
-    $application = new Application();
-    $application->add(new ImportCommand());
-
-    $command = $application->find('import');
+    $command = $this->app->find('import');
     $commandTester = new CommandTester($command);
-    $commandTester->execute(array('command' => $command->getName(), 'source' => array(''), '--config' => static::FILE_PATH, '--concurrency' => 1));
-  }
-
-  public function testCommandSourceFile() {
-    $application = new Application();
-    $application->add(new ImportCommand());
-    touch(static::FILE_SOURCE);
-
-    $command = $application->find('import');
-    $commandTester = new CommandTester($command);
-    $commandTester->execute(array('command' => $command->getName(), 'source' => array(static::FILE_SOURCE), '--config' => static::FILE_PATH, '--source_file' => TRUE));
-  }
-
-  public function testCommandSameProcess() {
-    mkdir(static::DIRECTORY);
-    touch(static::FILE_IN_DIR);
-    $this->configuration['transporter']['class'] = 'Devour\Transporter\Directory';
-
-    $dumper = new Dumper();
-    file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
-
-    $application = new Application();
-    $application->add(new ImportCommand());
-
-    $command = $application->find('import');
-    $commandTester = new CommandTester($command);
-    $commandTester->execute(array('command' => $command->getName(), 'source' => array(static::DIRECTORY), '--config' => static::FILE_PATH));
+    $commandTester->execute(array('source' => array('http://example.com')));
   }
 
   public function testCommandNewProcess() {
-    $this->configuration['transporter']['class'] = 'Devour\Transporter\File';
+    $transporter = $this->getMock('Devour\Transporter\TransporterInterface');
+    $transporter->expects($this->once())
+                ->method('runInNewProcess')
+                ->will($this->returnValue(TRUE));
 
-    $dumper = new Dumper();
-    file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
-    touch(static::FILE_SOURCE);
+    $this->importer->setTransporter($transporter);
 
-    $application = new Application();
-    $application->add(new ImportCommand());
-
-    $command = $application->find('import');
+    $command = $this->app->find('import');
     $commandTester = new CommandTester($command);
-    $commandTester->execute(array('command' => $command->getName(), 'source' => array(static::DIRECTORY), '--config' => static::FILE_PATH));
-  }
-
-  /**
-   * @expectedException \RuntimeException
-   * @expectedExceptionMessage The configuration file "devour.yml" does not exist or is not readable.
-   */
-  public function testCommandNoConfig() {
-    $application = new Application();
-    $application->add(new ImportCommand());
-
-    $command = $application->find('import');
-    $commandTester = new CommandTester($command);
-    $commandTester->execute(array('command' => $command->getName(), 'source' => ''));
+    $commandTester->execute(array('source' => array('http://example.com')));
   }
 
   /**
@@ -136,6 +85,7 @@ class ImportCommandTest extends DevourTestCase {
 
   /**
    * @covers \Devour\Console\Command\ImportCommand::printProcess
+   * @depends testCommand
    */
   public function testprintProcess() {
     $method = $this->getMethod('Devour\Console\Command\ImportCommand', 'printProcess');
@@ -156,6 +106,7 @@ class ImportCommandTest extends DevourTestCase {
    * @covers \Devour\Console\Command\ImportCommand::executeParallel
    * @expectedException \RuntimeException
    * @expectedExceptionMessage hi
+   * @depends testCommand
    */
   public function testexecuteParallelException() {
     $property = $this->getProperty('Devour\Console\Command\ImportCommand', 'errors');
