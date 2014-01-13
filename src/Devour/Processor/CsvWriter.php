@@ -12,12 +12,15 @@ use Devour\Common\ConfigurableInterface;
 use Devour\Row\RowInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
-use Devour\Util\FileSystem;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 /**
  * Writes data to a CSV file.
  */
-class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableInterface {
+class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableInterface, LoggerAwareInterface {
+
+  use LoggerAwareTrait;
 
   /**
    * The directory to store the files in.
@@ -76,7 +79,7 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
     $this->delimeter = $delimeter;
     $this->enclosure = $enclosure;
 
-    if (!FileSystem::checkDirectory($directory)) {
+    if (!is_dir($directory)) {
       mkdir($directory);
     }
   }
@@ -106,21 +109,45 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
     fclose($handle);
   }
 
+  /**
+   * Returns the file handle to write to.
+   *
+   * @param \Devour\Source\SourceInterface $source
+   *   The current source being processed.
+   *
+   * @return resouce
+   *   A file handle.
+   */
   protected function getHandle(SourceInterface $source) {
     $filename = $this->getFileName($source);
+    $last = error_reporting(0);
     $handle = fopen($filename, $this->mode);
+    error_reporting($last);
+
+    if ($handle === FALSE) {
+      throw new \RuntimeException(sprintf('Error opening %s.', $filename));
+    }
 
     if (!$this->header) {
       return $handle;
     }
 
     if (filesize($filename) === 0 || $this->mode != 'a') {
-      fputcsv($handle, $this->header);
+      fputcsv($handle, $this->header, $this->delimeter, $this->enclosure);
     }
 
     return $handle;
   }
 
+  /**
+   * Returns the name of the file to write to.
+   *
+   * @param \Devour\Source\SourceInterface $source
+   *   The current source.
+   *
+   * @return string
+   *   The file name.
+   */
   protected function getFileName(SourceInterface $source) {
     $source = str_replace('/', '_', $source);
     return "{$this->directory}/$source.csv";
@@ -138,8 +165,7 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
    */
   public function clear(SourceInterface $source) {
     $filename = $this->getFileName($source);
-
-    if (file_exists($filename)) {
+    if (is_file($filename)) {
       unlink($filename);
     }
   }

@@ -10,6 +10,7 @@ namespace Devour\Tests\Processor;
 use Devour\Processor\CsvWriter;
 use Devour\Source\Source;
 use Devour\Tests\DevourTestCase;
+use Psr\Log\NullLogger;
 
 /**
  * @covers \Devour\Processor\CsvWriter
@@ -78,18 +79,6 @@ class CsvWriterTest extends DevourTestCase {
   }
 
   /**
-   * @covers \Devour\Processor\CsvWriter::clear
-   * @depends testCsvWriter
-   */
-  public function testClear() {
-    touch(static::FILE_FULL);
-    $this->assertTrue(file_exists(static::FILE_FULL));
-    $csv_writer = new CsvWriter(static::DIRECTORY);
-    $csv_writer->clear(new Source(static::FILE));
-    $this->assertFalse(file_exists(static::FILE_FULL));
-  }
-
-  /**
    * @covers \Devour\Processor\CsvWriter::fromConfiguration
    *
    * @expectedException \RuntimeException
@@ -103,6 +92,30 @@ class CsvWriterTest extends DevourTestCase {
 
     // Throws an exception.
     CsvWriter::fromConfiguration(array());
+  }
+
+  /**
+   * @covers \Devour\Processor\CsvWriter::clear
+   * @depends testCsvWriter
+   */
+  public function testClear() {
+    touch(static::FILE_FULL);
+    $this->assertTrue(file_exists(static::FILE_FULL));
+    $csv_writer = new CsvWriter(static::DIRECTORY);
+    $csv_writer->clear(new Source(static::FILE));
+    $this->assertFalse(file_exists(static::FILE_FULL));
+  }
+
+  /**
+   * @expectedException \RuntimeException
+   * @expectedExceptionMessage Error opening csv_dir/beep.csv.
+   */
+  public function testProcessRow() {
+    $source = new Source('beep');
+    $table = $this->getStubTable();
+    $writer = new CsvWriter(static::DIRECTORY);
+    rmdir(static::DIRECTORY);
+    $writer->process($source, $table);
   }
 
 }
