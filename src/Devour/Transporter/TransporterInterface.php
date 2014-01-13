@@ -7,6 +7,7 @@
 
 namespace Devour\Transporter;
 
+use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 
 /**
@@ -16,7 +17,7 @@ use Devour\Source\SourceInterface;
  * be payload agnostic, meaning, they shouldn't care about the contents of the
  * stream.
  */
-interface TransporterInterface {
+interface TransporterInterface extends ProgressInterface {
 
   /**
    * Returns a stream, or a table.

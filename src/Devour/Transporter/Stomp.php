@@ -9,7 +9,6 @@ namespace Devour\Transporter;
 
 use Devour\Common\ConfigurableInterface;
 use Devour\Common\Exception\ConfigurationException;
-use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\HasTableFactoryTrait;
@@ -19,7 +18,7 @@ use FuseSource\Stomp\Stomp as StompConnection;
 /**
  * Returns STOMP messages.
  */
-class Stomp implements TransporterInterface, HasTableFactoryInterface, ConfigurableInterface, ProgressInterface {
+class Stomp implements TransporterInterface, HasTableFactoryInterface, ConfigurableInterface {
 
   use HasTableFactoryTrait;
 

@@ -29,6 +29,11 @@ class ImporterTest extends DevourTestCase {
                 ->with($this->identicalTo($source))
                 ->will($this->returnValue($stream));
 
+    $transporter->expects($this->once())
+                ->method('progress')
+                ->with($this->identicalTo($source))
+                ->will($this->returnValue(ProgressInterface::COMPLETE));
+
     $parser = $this->getMock('Devour\Parser\ParserInterface');
     $parser->expects($this->once())
            ->method('parse')

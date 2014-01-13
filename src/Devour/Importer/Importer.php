@@ -56,7 +56,7 @@ class Importer implements ImporterInterface {
         throw new \DomainException(sprintf('The transporter %s returned an invalid value.', get_class($this->transporter)));
       }
 
-    } while ($this->transporter instanceof ProgressInterface && $this->transporter->progress($source) != ProgressInterface::COMPLETE);
+    } while ($this->transporter->progress($source) != ProgressInterface::COMPLETE);
   }
 
   /**

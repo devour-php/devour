@@ -7,6 +7,7 @@
 
 namespace Devour\Tests\Console\Command;
 
+use Devour\Common\ProgressInterface;
 use Devour\Console\Command\ImportCommand;
 use Devour\Console\ConsoleRunner;
 use Devour\Importer\Importer;
@@ -41,11 +42,24 @@ class ImportCommandTest extends DevourTestCase {
   }
 
   public function testCommand() {
+    $transporter = $this->getMock('Devour\Transporter\TransporterInterface');
+    $transporter->expects($this->once())
+                ->method('transport')
+                ->will($this->returnValue(new StreamStub()));
+    $transporter->expects($this->once())
+                ->method('progress')
+                ->will($this->returnValue(ProgressInterface::COMPLETE));
+
+    $this->importer->setTransporter($transporter);
     $command = $this->app->find('import');
     $commandTester = new CommandTester($command);
     $commandTester->execute(array('source' => array('http://example.com')));
   }
 
+  /**
+   * @covers \Devour\Console\Command\ImportCommand::printProcess
+   * @depends testCommand
+   */
   public function testCommandNewProcess() {
     $transporter = $this->getMock('Devour\Transporter\TransporterInterface');
     $transporter->expects($this->once())

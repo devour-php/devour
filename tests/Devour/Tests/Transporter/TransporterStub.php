@@ -7,6 +7,7 @@
 
 namespace Devour\Tests\Transporter;
 
+use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Tests\Stream\StreamStub;
 use Devour\Transporter\TransporterInterface;
@@ -28,6 +29,20 @@ class TransporterStub implements TransporterInterface {
    */
   public function runInNewProcess() {
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function progress(SourceInterface $source) {
+    return ProgressInterface::COMPLETE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setProcessLimit($limit) {
+
   }
 
 }

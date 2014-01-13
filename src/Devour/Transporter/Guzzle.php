@@ -8,6 +8,7 @@
 namespace Devour\Transporter;
 
 use Devour\Common\ClearableInterface;
+use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Guzzle\Plugin\Cache\CachePlugin;
 use Guzzle\Service\Client;
@@ -49,6 +50,20 @@ class Guzzle extends Client implements TransporterInterface, ClearableInterface 
    */
   public function runInNewProcess() {
     return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function progress(SourceInterface $source) {
+    return ProgressInterface::COMPLETE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setProcessLimit($limit) {
+
   }
 
 }

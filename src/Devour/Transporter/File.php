@@ -7,6 +7,7 @@
 
 namespace Devour\Transporter;
 
+use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Util\FileSystem;
 use Guzzle\Stream\Stream;
@@ -34,6 +35,20 @@ class File implements TransporterInterface {
    */
   public function runInNewProcess() {
     return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function progress(SourceInterface $source) {
+    return ProgressInterface::COMPLETE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setProcessLimit($limit) {
+
   }
 
 }

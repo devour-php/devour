@@ -18,7 +18,7 @@ use Devour\Transporter\TransporterInterface;
 /**
  * Returns rows from a database.
  */
-class Database implements TransporterInterface, HasTableFactoryInterface, ConfigurableInterface, ProgressInterface {
+class Database implements TransporterInterface, HasTableFactoryInterface, ConfigurableInterface {
 
   use HasTableFactoryTrait;
 

@@ -101,7 +101,7 @@ class ImportCommand extends DevourCommand {
       $process->start();
       $process_group->attach($process);
 
-    } while ($importer->getTransporter() instanceof ProgressInterface && $importer->getTransporter()->progress($source) != ProgressInterface::COMPLETE);
+    } while ($importer->getTransporter()->progress($source) != ProgressInterface::COMPLETE);
   }
 
   /**

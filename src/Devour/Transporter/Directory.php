@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * A transport that batches over a directory, returning each file individually.
  */
-class Directory implements TransporterInterface, ProgressInterface, ConfigurableInterface {
+class Directory implements TransporterInterface, ConfigurableInterface {
 
   /**
    * The finder to iterate with.
