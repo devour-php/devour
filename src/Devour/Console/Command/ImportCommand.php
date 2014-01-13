@@ -8,11 +8,8 @@
 namespace Devour\Console\Command;
 
 use Devour\Common\ProgressInterface;
-use Devour\Importer\ImporterFactory;
 use Devour\Importer\ImporterInterface;
 use Devour\Source\SourceInterface;
-use Devour\Util\FileSystem;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

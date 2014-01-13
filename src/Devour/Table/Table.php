@@ -8,7 +8,6 @@
 namespace Devour\Table;
 
 use Devour\Row\Row;
-use Devour\Row\RowInterface;
 
 /**
  * A simple table implementation.

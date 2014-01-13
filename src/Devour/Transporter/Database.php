@@ -65,8 +65,8 @@ class Database implements TransporterInterface, HasTableFactoryInterface, Config
   /**
    * Prepres the select statement.
    *
-   * @param string $table
-   *   The table we are selecting from.
+   * @param \Devour\Source\SourceInterface $source
+   *   The source being imported.
    *
    * @return \PDOStatement
    *   The select statement.

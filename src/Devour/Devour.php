@@ -33,7 +33,7 @@ final class Devour {
   /**
    * Registers some transporter classes.
    *
-   * @param array $classes
+   * @param string[] $classes
    *   A list of transporter classes.
    */
   public static function registerTransporterClasses(array $classes) {
@@ -43,7 +43,7 @@ final class Devour {
   /**
    * Registers some parser classes.
    *
-   * @param array $classes
+   * @param string[] $classes
    *   A list of parser classes.
    */
   public static function registerParserClasses(array $classes) {
@@ -53,7 +53,7 @@ final class Devour {
   /**
    * Registers some processor classes.
    *
-   * @param array $classes
+   * @param string[] $classes
    *   A list of processor classes.
    */
   public static function registerProcessorClasses(array $classes) {

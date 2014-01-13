@@ -40,8 +40,8 @@ class Stomp implements TransporterInterface, HasTableFactoryInterface, Configura
   /**
    * Constructs a Stomp object.
    *
-   * @param \PDO $connection
-   *   A PDO database connection.
+   * @param \FuseSource\Stomp\Stomp $connection
+   *   The stomp connection.
    */
   public function __construct(StompConnection $connection) {
     $this->connection = $connection;

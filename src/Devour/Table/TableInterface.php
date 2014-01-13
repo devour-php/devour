@@ -7,9 +7,6 @@
 
 namespace Devour\Table;
 
-use Devour\Map\MapInterface;
-use Devour\Row\RowInterface;
-
 /**
  * Tables get returned from parsers and passed into processors.
  */

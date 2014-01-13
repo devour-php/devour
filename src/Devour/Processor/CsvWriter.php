@@ -115,7 +115,7 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
    * @param \Devour\Source\SourceInterface $source
    *   The current source being processed.
    *
-   * @return resouce
+   * @return resource
    *   A file handle.
    */
   protected function getHandle(SourceInterface $source) {
@@ -164,7 +164,10 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
   }
 
   /**
-   * {@inheritdoc}
+   * @param resource $handle
+   *   The file handle to write to.
+   * @param \Devour\Row\RowInterface $row
+   *   The row to write to the file.
    */
   protected function processRow($handle, RowInterface $row) {
     fputcsv($handle, $row->getData(), $this->delimeter, $this->enclosure);

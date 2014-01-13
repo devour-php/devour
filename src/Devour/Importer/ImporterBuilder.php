@@ -8,7 +8,6 @@
 namespace Devour\Importer;
 
 use Devour\Common\ProgressInterface;
-use Devour\Common\ValidatorInterface;
 use Devour\Importer\Importer;
 use Devour\Map\MapInterface;
 use Devour\Parser\ParserInterface;

@@ -74,7 +74,7 @@ interface ImporterInterface extends ValidatorInterface, ClearableInterface, Logg
   /**
    * Sets the processor.
    *
-   * @param \Devour\Transporter\TransporterInterface $processor
+   * @param \Devour\Processor\ProcessorInterface $processor
    *   The processor to use for importing.
    *
    * @return self

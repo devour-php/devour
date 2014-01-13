@@ -2,8 +2,6 @@
 
 namespace Devour\Table;
 
-use Devour\Map\MapInterface;
-
 class TableFactory implements TableFactoryInterface {
 
   protected $tableClass = 'Devour\Table\Table';
