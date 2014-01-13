@@ -60,7 +60,7 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
   /**
    * Constructs a CsvWriter object.
    *
-   * @param $directory
+   * @param string $directory
    *   The directory to store the files in.
    * @param array $header
    *   (optional) A header array. Defaults to null.
@@ -128,15 +128,25 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
       throw new \RuntimeException(sprintf('Error opening %s.', $filename));
     }
 
-    if (!$this->header) {
-      return $handle;
-    }
-
-    if (filesize($filename) === 0 || $this->mode != 'a') {
-      fputcsv($handle, $this->header, $this->delimeter, $this->enclosure);
+    if ($this->header) {
+      $this->writeHeader($handle, $filename);
     }
 
     return $handle;
+  }
+
+  /**
+   * Writes the header to the csv file.
+   *
+   * @param resource $handle
+   *   The file handle to write to.
+   * @param string $filename
+   *   The filename to write to.
+   */
+  protected function writeHeader($handle, $filename) {
+    if (filesize($filename) === 0 || $this->mode != 'a') {
+      fputcsv($handle, $this->header, $this->delimeter, $this->enclosure);
+    }
   }
 
   /**
