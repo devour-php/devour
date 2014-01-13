@@ -85,7 +85,7 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
   /**
    * The map.
    *
-   * @var \Devour\Processor\MappableInterface
+   * @var \Devour\Map\MapInterface
    */
   protected $map;
 
@@ -94,6 +94,13 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
    *
    * @param \PDO $connection
    *   A PDO database connection.
+   * @param string $table
+   *   The table name.
+   * @param array $unique_columns
+   *   (optional) A list of columns that are considered unique. Defaults to
+   *   null.
+   * @param bool $update_existing
+   *   (optional) Whether to update existing rows. Defaults to false.
    */
   public function __construct(\PDO $connection, $table, array $unique_columns = NULL, $update_existing = FALSE) {
     $this->connection = $connection;
@@ -194,6 +201,9 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
 
   /**
    * Builds the prepared statement for inserting new rows.
+   *
+   * @return \PDOStatement
+   *   The prepared statement.
    */
   protected function prepareSaveStatement() {
     $fields = implode(',', $this->columns);
@@ -210,6 +220,9 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
 
   /**
    * Builds the prepared statement for finding existing rows.
+   *
+   * @return \PDOStatement
+   *   The prepared statement.
    */
   protected function prepareUniqueStatement() {
     $clauses = array();
@@ -225,6 +238,9 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
 
   /**
    * Builds the prepared statement for updating existing rows.
+   *
+   * @return \PDOStatement
+   *   The prepared statement.
    */
   protected function prepareUpdateStatement() {
     $clauses = array();
@@ -262,6 +278,9 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
 
   /**
    * Returns the column names of the table.
+   *
+   * @return array
+   *   A list of table column names.
    */
   protected function getColumns() {
     $driver = $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
@@ -272,10 +291,16 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
     return array_keys($schema->fetchTableCols($this->table));
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getMap() {
     return $this->map;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setMap(MapInterface $map) {
     $this->map = $map;
   }
