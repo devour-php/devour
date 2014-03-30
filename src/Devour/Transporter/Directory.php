@@ -13,6 +13,7 @@ use Devour\Source\SourceInterface;
 use Devour\Transporter\TransporterInterface;
 use Guzzle\Stream\Stream;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * A transport that batches over a directory, returning each file individually.
@@ -20,7 +21,7 @@ use Symfony\Component\Finder\Finder;
 class Directory implements TransporterInterface, ConfigurableInterface {
 
   /**
-   * The finder to iterate with.
+   * The finder to find files with.
    *
    * @var \Symfony\Component\Finder\Finder
    */
@@ -61,8 +62,8 @@ class Directory implements TransporterInterface, ConfigurableInterface {
 
       $state->files = iterator_to_array($finder, FALSE);
 
-      // The list of full paths.
-      $state->files = array_map(function($file) {
+      // Get the list of full paths.
+      $state->files = array_map(function(\SplFileInfo $file) {
         return $file->getRealpath();
       }, $state->files);
 
@@ -71,7 +72,7 @@ class Directory implements TransporterInterface, ConfigurableInterface {
 
     if ($state->files) {
       $file = array_pop($state->files);
-      return new Stream(fopen($file, 'r+'));
+      return new Stream(fopen($file, 'r'));
     }
 
     throw new \RuntimeException('There are no more files left to process.');
