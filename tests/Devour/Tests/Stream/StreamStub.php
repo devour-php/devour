@@ -7,7 +7,7 @@
 
 namespace Devour\Tests\Stream;
 
-use Guzzle\Stream\Stream;
+use GuzzleHttp\Stream\Stream;
 
 /**
  * A stub stream implementation.
@@ -22,14 +22,14 @@ class StreamStub extends Stream {
       $handle = fopen('php://temp', 'w+');
       fwrite($handle, $file);
 
-      return $this->setStream($handle, strlen($file));
+      return parent::__construct($handle, strlen($file));
     }
 
     if (!$file) {
       $file = 'php://temp';
     }
 
-    $this->setStream(fopen($file, 'r+'), NULL);
+    parent::__construct(fopen($file, 'r+'), NULL);
   }
 
 }

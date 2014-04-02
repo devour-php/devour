@@ -10,8 +10,8 @@ namespace Devour\Parser;
 use Devour\Source\SourceInterface;
 use Devour\Table\FixedTableFactory;
 use Devour\Table\HasTableFactoryTrait;
-use Guzzle\Stream\Stream;
-use Guzzle\Stream\StreamInterface;
+use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Stream\StreamInterface;
 
 /**
  * A Parser that allows another parser to be used to parse the rows.

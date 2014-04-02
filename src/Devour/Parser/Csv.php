@@ -11,7 +11,8 @@ use Devour\Common\ConfigurableInterface;
 use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryTrait;
-use Guzzle\Stream\StreamInterface;
+use GuzzleHttp\Stream\StreamInterface;
+use GuzzleHttp\Stream\PhpStream;
 
 /**
  * A CSV parser.
@@ -105,15 +106,16 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
    * {@inheritdoc}
    */
   public function parse(SourceInterface $source, StreamInterface $stream) {
+    $wrapper = new PhpStream($stream);
     $state = $source->getState($this);
-    $handle = $stream->getStream();
+    $handle = $wrapper->getResource();
 
     // Resume where we left off.
     fseek($handle, $state->pointer);
 
     // Initial load.
     if ($state->isFirstRun()) {
-      $state->fileLength = $stream->getSize();
+      $state->fileLength = $wrapper->getSize();
 
       if ($this->hasHeader) {
         $state->header = $this->readLine($handle);

@@ -5,14 +5,14 @@
 
     "require": {
         "php": ">=5.4",
-        "guzzle/stream": "3.*"
+        "guzzlehttp/streams": "~1.0"
     },
 
     "require-dev": {
         "aura/sql-schema": "2.*@dev",
         "doctrine/orm": "~2.4",
         "fusesource/stomp-php" : "~2.1",
-        "guzzle/guzzle": "3.*",
+        "guzzlehttp/guzzle": "~4.0",
         "psr/log": "~1.0",
         "simplepie/simplepie": "dev-master",
         "symfony/console": "2.*",

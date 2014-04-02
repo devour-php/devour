@@ -92,7 +92,7 @@ class ImportCommand extends DevourCommand {
       }
       else {
         $stream = $importer->transport($source);
-        $args = array('php', $script_path, 'parse', $config, $source, $stream->getUri());
+        $args = array('php', $script_path, 'parse', $config, $source, $stream->getMetadata('uri'));
       }
 
       $builder = new ProcessBuilder($args);

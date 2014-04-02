@@ -11,7 +11,7 @@ use Devour\Common\ConfigurableInterface;
 use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Transporter\TransporterInterface;
-use Guzzle\Stream\Stream;
+use GuzzleHttp\Stream\Stream;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 

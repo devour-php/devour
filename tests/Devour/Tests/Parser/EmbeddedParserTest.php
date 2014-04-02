@@ -13,7 +13,7 @@ use Devour\Table\TableFactoryInterface;
 use Devour\Tests\DevourTestCase;
 use Devour\Tests\Stream\StreamStub;
 use Devour\Tests\Table\TableStub;
-use Guzzle\Stream\StreamInterface;
+use GuzzleHttp\Stream\StreamInterface;
 
 /**
  * @covers \Devour\Parser\EmbeddedParser

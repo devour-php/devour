@@ -10,7 +10,7 @@ namespace Devour\Parser;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryTrait;
 use Devour\Table\TableInterface;
-use Guzzle\Stream\StreamInterface;
+use GuzzleHttp\Stream\StreamInterface;
 
 /**
  * Wraps SimplePie to parse RSS/Atom feeds.
