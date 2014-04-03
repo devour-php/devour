@@ -24,7 +24,7 @@ class DevourCommandTest extends DevourTestCase {
 
   public function setUp() {
     $this->app = new ConsoleRunner();
-    $this->command = $this->getMockForAbstractClass('Devour\Console\Command\DevourCommand', array('test_command'));
+    $this->command = $this->getMockForAbstractClass('Devour\Console\Command\DevourCommand', ['test_command']);
     $this->command->setApplication($this->app);
   }
 
@@ -59,17 +59,17 @@ class DevourCommandTest extends DevourTestCase {
     $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
     $input->expects($this->once())
           ->method('getArgument')
-          ->will($this->returnValue(array('http://example.com')));
+          ->will($this->returnValue(['http://example.com']));
     $return = $method->invoke($this->command, $input);
     $this->assertSame('http://example.com', (string) array_pop($return));
 
-    $sources = array('http://example.com', 'http://example.net');
+    $sources = ['http://example.com', 'http://example.net'];
     file_put_contents(static::FILE, implode("\n", $sources));
 
     $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
     $input->expects($this->once())
           ->method('getArgument')
-          ->will($this->returnValue(array(static::FILE)));
+          ->will($this->returnValue([static::FILE]));
     $input->expects($this->once())
           ->method('getOption')
           ->will($this->returnValue(TRUE));

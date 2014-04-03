@@ -40,7 +40,7 @@ class DirectoryTest extends DevourTestCase {
     touch(static::FILE_3);
     touch(static::FILE_4);
 
-    $this->directory = Directory::fromConfiguration(array());
+    $this->directory = Directory::fromConfiguration([]);
   }
 
   /**
@@ -57,8 +57,8 @@ class DirectoryTest extends DevourTestCase {
     $this->assertEquals($this->directory->progress($source), ProgressInterface::COMPLETE);
 
     // There are 2 files in the directory.
-    $found = array();
-    foreach (array('file_1', 'file_2') as $key => $file) {
+    $found = [];
+    foreach (['file_1', 'file_2'] as $key => $file) {
       $stream = $this->directory->transport($source);
       $found[] = $stream->getMetadata('uri');
       $this->assertInstanceOf('GuzzleHttp\Stream\StreamInterface', $stream);
@@ -66,7 +66,7 @@ class DirectoryTest extends DevourTestCase {
       $this->assertEquals($this->directory->progress($source), ++$key / 2);
     }
     // We can't count on the order for different systems.
-    $files = array(realpath(static::DIRECTORY . '/' . 'file_1'), realpath(static::DIRECTORY . '/' . 'file_2'));
+    $files = [realpath(static::DIRECTORY . '/' . 'file_1'), realpath(static::DIRECTORY . '/' . 'file_2')];
     $this->assertEmpty(array_diff($files, $found));
 
     $this->assertEquals($this->directory->progress($source), ProgressInterface::COMPLETE);
@@ -74,15 +74,15 @@ class DirectoryTest extends DevourTestCase {
 
     // Verify that passing in multiple sources to the same transporter works.
     $other_dir = new Source(static::DIRECTORY_2);
-    $found = array();
-    foreach (array('file_3', 'file_4') as $key => $file) {
+    $found = [];
+    foreach (['file_3', 'file_4'] as $key => $file) {
       $stream = $this->directory->transport($other_dir);
       $found[] = $stream->getMetadata('uri');
       // Check progress.
       $this->assertEquals($this->directory->progress($other_dir), ++$key / 2);
     }
     // We can't count on the order for different systems.
-    $files = array(realpath(static::DIRECTORY_2 . '/' . 'file_3'), realpath(static::DIRECTORY_2 . '/' . 'file_4'));
+    $files = [realpath(static::DIRECTORY_2 . '/' . 'file_3'), realpath(static::DIRECTORY_2 . '/' . 'file_4')];
     $this->assertEmpty(array_diff($files, $found));
 
     // The third call will throw \RuntimeException.

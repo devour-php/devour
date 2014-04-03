@@ -21,22 +21,22 @@ class ImporterFactoryTest extends DevourTestCase {
   const FILE_EMPTY = 'empty_file';
 
   public function setUp() {
-    $this->configuration = array(
-      'importer' => array(
+    $this->configuration = [
+      'importer' => [
         'class' => 'Devour\Importer\Importer',
-        'configuration' => array('thing' => 1),
-      ),
-      'transporter' => array(
+        'configuration' => ['thing' => 1],
+      ],
+      'transporter' => [
         'class' => 'Devour\Transporter\File',
-      ),
-      'parser' => array(
+      ],
+      'parser' => [
         'class' => 'Devour\Parser\Csv',
-        'configuration' => array('has_header' => TRUE),
-      ),
-      'processor' => array(
+        'configuration' => ['has_header' => TRUE],
+      ],
+      'processor' => [
         'class' => 'Devour\Tests\Processor\ProcessorStub',
-      ),
-    );
+      ],
+    ];
 
     $dumper = new Dumper();
     file_put_contents(static::FILE_PATH, $dumper->dump($this->configuration));
@@ -48,14 +48,14 @@ class ImporterFactoryTest extends DevourTestCase {
   }
 
   public function testImporterFactoryWithMap() {
-    $this->configuration += array(
-      'map' => array(
-        'configuration' => array(
+    $this->configuration += [
+      'map' => [
+        'configuration' => [
           '1' => 'a',
           '2' => 'b',
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
     $importer = ImporterFactory::fromConfiguration($this->configuration);
     $this->assertInstanceOf($this->configuration['importer']['class'], $importer);
 

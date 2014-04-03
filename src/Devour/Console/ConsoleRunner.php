@@ -149,7 +149,7 @@ EOF;
   }
 
   protected function getImporterConfigFile(InputInterface $input) {
-    $config = $input->getParameterOption(array('--config', '-c'));
+    $config = $input->getParameterOption(['--config', '-c']);
 
     if ($config !== FALSE) {
       if (FileSystem::checkFile($config)) {
@@ -166,7 +166,7 @@ EOF;
   }
 
   protected function getBootstrapFile(InputInterface $input) {
-    $bootstrap = $input->getParameterOption(array('--bootstrap', '-b'));
+    $bootstrap = $input->getParameterOption(['--bootstrap', '-b']);
 
     if ($bootstrap !== FALSE && !FileSystem::checkFile($bootstrap)) {
       throw new \RuntimeException('Invalid bootstrap file.');

@@ -123,7 +123,7 @@ class ImporterBuilder {
    * @return self
    *   The builder to use for chaining.
    */
-  public function setImporter($importer, array $configuration = array()) {
+  public function setImporter($importer, array $configuration = []) {
     $this->importer = $this->buildClient($importer, $configuration);
     return $this;
   }
@@ -141,7 +141,7 @@ class ImporterBuilder {
    * @return self
    *   The builder to use for chaining.
    */
-  public function setTransporter($transporter, array $configuration = array()) {
+  public function setTransporter($transporter, array $configuration = []) {
     $transporter = $this->buildClient($transporter, $configuration);
     $this->recordCommand(static::PRIMARY, __FUNCTION__, $transporter);
 
@@ -161,7 +161,7 @@ class ImporterBuilder {
    * @return self
    *   The builder to use for chaining.
    */
-  public function setParser($parser, array $configuration = array()) {
+  public function setParser($parser, array $configuration = []) {
     $parser = $this->buildClient($parser, $configuration);
     $this->recordCommand(static::PRIMARY, __FUNCTION__, $parser);
 
@@ -181,7 +181,7 @@ class ImporterBuilder {
    * @return self
    *   The builder to use for chaining.
    */
-  public function setProcessor($processor, array $configuration = array()) {
+  public function setProcessor($processor, array $configuration = []) {
     $processor = $this->buildClient($processor, $configuration);
     $this->recordCommand(static::PRIMARY, __FUNCTION__, $processor);
 
@@ -221,7 +221,7 @@ class ImporterBuilder {
    * @see \Devour\Table\HasTableFactoryInterface
    * @see \Devour\Table\TableFactoryInterface
    */
-  public function setTableFactory($factory, array $configuration = array()) {
+  public function setTableFactory($factory, array $configuration = []) {
     $factory = $this->buildClient($factory, $configuration);
     $this->recordCommand(static::SECONDARY, __FUNCTION__, $factory);
 
@@ -262,7 +262,7 @@ class ImporterBuilder {
    * @see \Devour\Table\TableFactoryInterface
    * @see \Devour\Table\TableInterface
    */
-  public function setMap($map, array $configuration = array()) {
+  public function setMap($map, array $configuration = []) {
     $map = $this->buildClient($map, $configuration);
     $this->recordCommand(static::TERTIARY, __FUNCTION__, $map);
 
@@ -282,7 +282,7 @@ class ImporterBuilder {
    * @return self
    *   The builder to use for chaining.
    */
-  public function setLogger($logger, array $configuration = array()) {
+  public function setLogger($logger, array $configuration = []) {
     $logger = $this->buildClient($logger, $configuration);
     $this->recordCommand(static::TERTIARY, __FUNCTION__, $logger);
 
@@ -337,7 +337,7 @@ class ImporterBuilder {
   protected function replayCommands() {
     foreach ($this->commands as $command) {
       $method = 'do' . ucfirst($command['method']);
-      call_user_func_array(array($this, $method), $command['arguments']);
+      call_user_func_array([$this, $method], $command['arguments']);
     }
   }
 
@@ -465,7 +465,7 @@ class ImporterBuilder {
     $args = func_get_args();
     array_shift($args);
     array_shift($args);
-    $this->commands->insert(array('method' => $method, 'arguments' => $args), $priority);
+    $this->commands->insert(['method' => $method, 'arguments' => $args], $priority);
   }
 
   /**

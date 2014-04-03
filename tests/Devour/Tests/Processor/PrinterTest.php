@@ -20,11 +20,11 @@ class PrinterTest extends DevourTestCase {
   public function testPrinter() {
 
     $table = new Table();
-    $data = array(
-      array('a' => 'a1','b' => 'b1','c' => 'c1'),
-      array('a' => 'a2','b' => 'b2','c' => 'c2'),
-      array('a' => 'a3','b' => 'b3','c' => 'c3'),
-    );
+    $data = [
+      ['a' => 'a1','b' => 'b1','c' => 'c1'],
+      ['a' => 'a2','b' => 'b2','c' => 'c2'],
+      ['a' => 'a3','b' => 'b3','c' => 'c3'],
+    ];
 
     foreach ($data as $row) {
       $table->getNewRow()->setData($row);
@@ -32,7 +32,7 @@ class PrinterTest extends DevourTestCase {
 
     $output = '';
     foreach ($data as $row) {
-      $line = array();
+      $line = [];
       foreach ($row as $key => $value) {
         $line[] = "$key: $value";
       }

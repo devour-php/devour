@@ -13,10 +13,10 @@ use Devour\Common\ConfigurableInterface;
  * Maps source fields to target fields. The map configuration structure:
  *
  * @code
- * array(
- *   array('source 1', 'target 1'),
- *   array('source 2', 'target 2'),
- * )
+ * [
+ *   ['source 1', 'target 1'],
+ *   ['source 2', 'target 2'],
+ * ]
  * @endcode
  *
  * This allows mapping the same source to multiple targets, or multiple sources
@@ -25,7 +25,7 @@ use Devour\Common\ConfigurableInterface;
 class Map implements MapInterface, ConfigurableInterface {
 
   /**
-   * A list of arrays with array('source', 'target').
+   * A list of arrays with ['source', 'target'].
    *
    * @var array
    */
@@ -49,7 +49,7 @@ class Map implements MapInterface, ConfigurableInterface {
    * Constructs a Map object.
    *
    * @param array $map
-   *   A list of arrays with array('source', 'target').
+   *   A list of arrays with ['source', 'target'].
    */
   public function __construct(array $map) {
     // Ensure we have a zero indexed array with no missing keys.

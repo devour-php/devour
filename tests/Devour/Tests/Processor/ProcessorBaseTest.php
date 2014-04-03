@@ -18,11 +18,11 @@ class ProcessorBaseTest extends DevourTestCase {
 
   public function testPrinter() {
 
-    $data = array(
-      array('a' => 'a1','b' => 'b1','c' => 'c1'),
-      array('a' => 'a2','b' => 'b2','c' => 'c2'),
-      array('a' => 'a3','b' => 'b3','c' => 'c3'),
-    );
+    $data = [
+      ['a' => 'a1','b' => 'b1','c' => 'c1'],
+      ['a' => 'a2','b' => 'b2','c' => 'c2'],
+      ['a' => 'a3','b' => 'b3','c' => 'c3'],
+    ];
 
     $processor = $this->getMockForAbstractClass('Devour\Processor\ProcessorBase');
     $processor->expects($this->exactly(3))

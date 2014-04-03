@@ -83,7 +83,7 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
    *
    * @var array
    */
-  protected static $emptyLine = array(NULL);
+  protected static $emptyLine = [NULL];
 
   /**
    * {@inheritdoc}
@@ -91,7 +91,7 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
   public static function fromConfiguration(array $configuration) {
     // If we wrap this array, PHPUnit says we didn't cover the last line.
     // @todo Figure out why.
-    $configuration += array('has_header' => FALSE, 'length' => 0, 'delimiter' => ',', 'enclosure' => '"', 'escape' => '\\');
+    $configuration += ['has_header' => FALSE, 'length' => 0, 'delimiter' => ',', 'enclosure' => '"', 'escape' => '\\'];
 
     $parser = new static();
     $parser->setHasHeader((bool) $configuration['has_header'])

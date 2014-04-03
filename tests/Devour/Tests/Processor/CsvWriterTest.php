@@ -31,19 +31,19 @@ class CsvWriterTest extends DevourTestCase {
 
     $source = new Source(static::FILE);
 
-    $data = array(
-      array('a' => 'a1','b' => 'b1','c' => 'c1'),
-      array('a' => 'a2','b' => 'b2','c' => 'c2'),
-      array('a' => 'a3','b' => 'b3','c' => 'c3'),
-    );
+    $data = [
+      ['a' => 'a1','b' => 'b1','c' => 'c1'],
+      ['a' => 'a2','b' => 'b2','c' => 'c2'],
+      ['a' => 'a3','b' => 'b3','c' => 'c3'],
+    ];
 
-    $output = array('a,b,c');
+    $output = ['a,b,c'];
     foreach ($data as $row) {
       $output[] = implode(',', $row);
     }
     $output = implode("\n", $output) . "\n";
 
-    $csv_writer = new CsvWriter(static::DIRECTORY, array('a', 'b', 'c'));
+    $csv_writer = new CsvWriter(static::DIRECTORY, ['a', 'b', 'c']);
     $csv_writer->process($source, $this->getStubTable($data));
 
     $this->assertSame($output, file_get_contents(static::FILE_FULL));
@@ -87,11 +87,11 @@ class CsvWriterTest extends DevourTestCase {
    * @depends testCsvWriter
    */
   public function testFromConfiguration() {
-    $config = array('directory' => static::DIRECTORY);
+    $config = ['directory' => static::DIRECTORY];
     $this->assertInstanceOf('Devour\Processor\CsvWriter', CsvWriter::fromConfiguration($config));
 
     // Throws an exception.
-    CsvWriter::fromConfiguration(array());
+    CsvWriter::fromConfiguration([]);
   }
 
   /**

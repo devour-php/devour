@@ -84,13 +84,13 @@ class Stomp implements TransporterInterface, HasTableFactoryInterface, Configura
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
-    foreach (array('broker') as $field) {
+    foreach (['broker'] as $field) {
       if (empty($configuration[$field])) {
         throw new ConfigurationException(sprintf('The field "%s" is required.', $field));
       }
     }
 
-    $configuration += array('username' => NULL, 'password' => NULL);
+    $configuration += ['username' => NULL, 'password' => NULL];
     $connection = new StompConnection($configuration['broker']);
 
     return new static($connection);

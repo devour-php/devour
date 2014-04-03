@@ -33,7 +33,7 @@ class Importer implements ImporterInterface {
 
   protected $processor;
 
-  protected $group = array();
+  protected $group = [];
 
   protected $parserRequired = TRUE;
 

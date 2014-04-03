@@ -25,7 +25,7 @@ class StompTest extends DevourTestCase {
   }
 
   public function testParse() {
-    $frame = new Frame('CONNECT', array('a' => '1'), 'beep');
+    $frame = new Frame('CONNECT', ['a' => '1'], 'beep');
 
     $connection = $this->getMockBuilder('FuseSource\Stomp\Stomp')
                        ->disableOriginalConstructor()
@@ -51,7 +51,7 @@ class StompTest extends DevourTestCase {
   }
 
   public function testFromConfiguration() {
-    $config = array('broker' => 'http://localhost:6163');
+    $config = ['broker' => 'http://localhost:6163'];
     $stomp = Stomp::fromConfiguration($config);
     $this->assertInstanceOf('Devour\Transporter\Stomp', $stomp);
   }
@@ -61,7 +61,7 @@ class StompTest extends DevourTestCase {
    * @expectedExceptionMessage The field "broker" is required.
    */
   public function testFromConfigurationException() {
-    $stomp = Stomp::fromConfiguration(array());
+    $stomp = Stomp::fromConfiguration([]);
   }
 
 }

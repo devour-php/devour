@@ -37,17 +37,17 @@ class PdoTest extends DevourTestCase {
     // Test table escape.
     $this->pdo = new PdoProcessor($this->connection, '~my_table');
 
-    $this->pdoData = array(
-      array('a' => 'a1','b' => 'b1','c' => 'c1'),
-      array('a' => 'a2','b' => 'b2','c' => 'c2'),
-      array('a' => 'a3','b' => 'b3','c' => 'c3'),
-    );
+    $this->pdoData = [
+      ['a' => 'a1','b' => 'b1','c' => 'c1'],
+      ['a' => 'a2','b' => 'b2','c' => 'c2'],
+      ['a' => 'a3','b' => 'b3','c' => 'c3'],
+    ];
 
-    $this->map = array(
-      array('a', 'a'),
-      array('b', 'b'),
-      array('c', 'c'),
-    );
+    $this->map = [
+      ['a', 'a'],
+      ['b', 'b'],
+      ['c', 'c'],
+    ];
 
     $this->map = new Map($this->map);
   }
@@ -73,7 +73,7 @@ class PdoTest extends DevourTestCase {
   public function testProcessUnique() {
     $source = new Source(NULL);
 
-    $pdo = new PdoProcessor($this->connection, '~my_table', array('a'));
+    $pdo = new PdoProcessor($this->connection, '~my_table', ['a']);
     $pdo->setMap($this->map);
     $pdo->process($source, $this->getStubTable($this->pdoData));
 
@@ -91,7 +91,7 @@ class PdoTest extends DevourTestCase {
   public function testProcessUpdate() {
     $source = new Source(NULL);
 
-    $pdo = new PdoProcessor($this->connection, '~my_table', array('a'), TRUE);
+    $pdo = new PdoProcessor($this->connection, '~my_table', ['a'], TRUE);
     $pdo->setMap($this->map);
     $pdo->process($source, $this->getStubTable($this->pdoData));
 
@@ -112,7 +112,7 @@ class PdoTest extends DevourTestCase {
    * @covers \Devour\Processor\Pdo::fromConfiguration
    */
   public function testFactory() {
-    $processor = PdoProcessor::fromConfiguration(array('dsn' => 'sqlite::memory:', 'table' => 'my_table'));
+    $processor = PdoProcessor::fromConfiguration(['dsn' => 'sqlite::memory:', 'table' => 'my_table']);
   }
 
   /**
@@ -120,7 +120,7 @@ class PdoTest extends DevourTestCase {
    * @expectedExceptionMessage The field "dsn" is required.
    */
   public function testFactoryNoDsn() {
-    $processor = PdoProcessor::fromConfiguration(array());
+    $processor = PdoProcessor::fromConfiguration([]);
   }
 
   /**
@@ -128,7 +128,7 @@ class PdoTest extends DevourTestCase {
    * @expectedExceptionMessage The field "table" is required.
    */
   public function testFactoryNoTable() {
-    $processor = PdoProcessor::fromConfiguration(array('dsn' => 'sqlite::memory:'));
+    $processor = PdoProcessor::fromConfiguration(['dsn' => 'sqlite::memory:']);
   }
 
 }

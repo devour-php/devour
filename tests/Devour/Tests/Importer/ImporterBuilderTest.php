@@ -33,7 +33,7 @@ class ImporterBuilderTest extends DevourTestCase {
       ->setProcessLimit(10)
       ->setTableFactory($table_factory)
       ->setLogger($logger)
-      ->setTransporter('Devour\Transporter\Database', array('dsn' => 'sqlite::memory:'))
+      ->setTransporter('Devour\Transporter\Database', ['dsn' => 'sqlite::memory:'])
       ->setParser('Devour\Parser\Csv')
     ->setProcessor($processor);
 
@@ -94,7 +94,7 @@ class ImporterBuilderTest extends DevourTestCase {
    */
   public function testSetTableClass() {
     $importer = ImporterBuilder::get()
-      ->setTransporter('Devour\Transporter\Database', array('dsn' => 'sqlite::memory:'))
+      ->setTransporter('Devour\Transporter\Database', ['dsn' => 'sqlite::memory:'])
       ->setParser('Devour\Tests\Parser\ParserStub')
       ->setProcessor('Devour\Tests\Processor\ProcessorStub')
       ->setTableClass('Devour\Table\Table')
@@ -110,7 +110,7 @@ class ImporterBuilderTest extends DevourTestCase {
     $importer = ImporterBuilder::get()
       ->setTransporter('Devour\Tests\Transporter\TransporterStub')
       ->setParser('Devour\Tests\Parser\ParserStub')
-      ->setProcessor('Devour\Processor\Pdo', array('dsn' => 'sqlite::memory:', 'table' => 'beep'))
+      ->setProcessor('Devour\Processor\Pdo', ['dsn' => 'sqlite::memory:', 'table' => 'beep'])
       ->setMap($map)
       ->build();
 

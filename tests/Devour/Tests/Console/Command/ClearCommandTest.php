@@ -36,7 +36,7 @@ class ClearCommandTest extends DevourTestCase {
   public function testCommand() {
     $command = $this->app->find('clear');
     $commandTester = new CommandTester($command);
-    $commandTester->execute(array('command' => $command->getName(), 'source' => array('http://example.com')));
+    $commandTester->execute(['command' => $command->getName(), 'source' => ['http://example.com']]);
   }
 
 }

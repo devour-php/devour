@@ -16,11 +16,11 @@ use Devour\Tests\DevourTestCase;
 class MapTest extends DevourTestCase {
 
   public function testMap() {
-    $map_array = array(
-      array('a', '1'),
-      array('b', '2'),
-      array('c', '3'),
-    );
+    $map_array = [
+      ['a', '1'],
+      ['b', '2'],
+      ['c', '3'],
+    ];
 
     $map = Map::fromConfiguration($map_array);
     $row = 0;

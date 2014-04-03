@@ -42,14 +42,14 @@ class GuzzleTest extends DevourTestCase {
    * @covers \Devour\Transporter\Guzzle::fromConfiguration
    */
   public function testFromConfiguration() {
-    $configuration['defaults'] = array(
+    $configuration['defaults'] = [
       'allow_redirects' => TRUE,
       'exceptions' => TRUE,
-      'headers' => array(
+      'headers' => [
         'X-Foo' => 'Bar',
         'User-Agent' => 'Devour',
-      ),
-    );
+      ],
+    ];
 
     $transporter = Guzzle::fromConfiguration($configuration);
     $config = $transporter->getDefaultOption();

@@ -19,7 +19,7 @@ class Table extends \SplQueue implements TableInterface {
    *
    * @var array
    */
-  protected $fields = array();
+  protected $fields = [];
 
   /**
    * Constructs a Table object.

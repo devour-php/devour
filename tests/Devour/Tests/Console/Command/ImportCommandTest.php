@@ -53,7 +53,7 @@ class ImportCommandTest extends DevourTestCase {
     $this->importer->setTransporter($transporter);
     $command = $this->app->find('import');
     $commandTester = new CommandTester($command);
-    $commandTester->execute(array('source' => array('http://example.com')));
+    $commandTester->execute(['source' => ['http://example.com']]);
   }
 
   /**
@@ -70,7 +70,7 @@ class ImportCommandTest extends DevourTestCase {
 
     $command = $this->app->find('import');
     $commandTester = new CommandTester($command);
-    $commandTester->execute(array('source' => array('http://example.com')));
+    $commandTester->execute(['source' => ['http://example.com']]);
   }
 
   /**
@@ -93,7 +93,7 @@ class ImportCommandTest extends DevourTestCase {
     $process = $this->getMockProcess(FALSE, $this->once());
     $process_group->attach($process);
 
-    $method->invokeArgs($command, array($process_group, 5));
+    $method->invokeArgs($command, [$process_group, 5]);
     $this->assertSame(4, count($process_group));
   }
 
@@ -110,7 +110,7 @@ class ImportCommandTest extends DevourTestCase {
             ->method('getErrorOutput')
             ->will($this->returnValue(TRUE));
 
-    $method->invokeArgs($command, array($process));
+    $method->invokeArgs($command, [$process]);
 
     $property = $this->getProperty('Devour\Console\Command\ImportCommand', 'errors');
     $this->assertSame(1, count($property->getValue($command)));
@@ -126,12 +126,12 @@ class ImportCommandTest extends DevourTestCase {
     $property = $this->getProperty('Devour\Console\Command\ImportCommand', 'errors');
     $command = new ImportCommand();
 
-    $property->setValue($command, array(array('message' => 'hi', 'code' => 1234)));
+    $property->setValue($command, [['message' => 'hi', 'code' => 1234]]);
     $method = $this->getMethod('Devour\Console\Command\ImportCommand', 'executeParallel');
 
     $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
     $importer = $this->getMock('Devour\Importer\ImporterInterface');
-    $method->invokeArgs($command, array($output, $importer, array(), 1, 'beep'));
+    $method->invokeArgs($command, [$output, $importer, [], 1, 'beep']);
   }
 
 }

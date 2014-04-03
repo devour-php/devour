@@ -20,11 +20,11 @@ class TableTest extends DevourTestCase {
 
   public function setUp() {
     $this->table = new Table();
-    $this->rows = array(
-      array('a1', 'b1', 'c1'),
-      array('a2', 'b2', 'c2'),
-      array('a3', 'b3', 'c3'),
-    );
+    $this->rows = [
+      ['a1', 'b1', 'c1'],
+      ['a2', 'b2', 'c2'],
+      ['a3', 'b3', 'c3'],
+    ];
   }
 
   public function testTable() {

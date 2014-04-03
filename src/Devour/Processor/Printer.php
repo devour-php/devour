@@ -19,7 +19,7 @@ class Printer extends ProcessorBase {
    */
   protected function processRow(RowInterface $row) {
 
-    $output = array();
+    $output = [];
 
     foreach ($row->getData() as $key => $value) {
       $output[] = "$key: $value";

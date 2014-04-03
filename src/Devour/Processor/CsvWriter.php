@@ -92,7 +92,7 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
       throw new \RuntimeException('The directory parameter is required for CsvWriter.');
     }
 
-    $config += array('header' => NULL, 'mode' => 'a', 'delimeter' => ',', 'enclosure' => '"');
+    $config += ['header' => NULL, 'mode' => 'a', 'delimeter' => ',', 'enclosure' => '"'];
     return new static($config['directory'], $config['header'], $config['mode'], $config['delimeter'], $config['enclosure']);
   }
 

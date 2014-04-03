@@ -106,13 +106,13 @@ class Database implements TransporterInterface, HasTableFactoryInterface, Config
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
-    foreach (array('dsn') as $field) {
+    foreach (['dsn'] as $field) {
       if (empty($configuration[$field])) {
         throw new ConfigurationException(sprintf('The field "%s" is required.', $field));
       }
     }
 
-    $configuration += array('username' => NULL, 'password' => NULL);
+    $configuration += ['username' => NULL, 'password' => NULL];
     $connection = new \PDO($configuration['dsn'], $configuration['username'], $configuration['password']);
 
     return new static($connection);

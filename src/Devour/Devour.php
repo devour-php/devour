@@ -12,23 +12,23 @@ final class Devour {
   /**
    * The registered transporters.
    *
-   * @var array()
+   * @var array
    */
-  private static $transporters = array();
+  private static $transporters = [];
 
   /**
    * The registered parsers.
    *
-   * @var array()
+   * @var array
    */
-  private static $parsers = array();
+  private static $parsers = [];
 
   /**
    * The registered processors.
    *
-   * @var array()
+   * @var array
    */
-  private static $processors = array();
+  private static $processors = [];
 
   /**
    * Registers some transporter classes.
@@ -94,22 +94,22 @@ final class Devour {
    * Registers the default classes that come with Devour.
    */
   public static function registerDefaults() {
-    static::registerTransporterClasses(array(
+    static::registerTransporterClasses([
       'Devour\Transporter\Database',
       'Devour\Transporter\Guzzle',
       'Devour\Transporter\Stomp',
       'Devour\Transporter\Directory',
       'Devour\Transporter\File',
-    ));
-    static::registerParserClasses(array(
+    ]);
+    static::registerParserClasses([
       'Devour\Parser\Csv',
       'Devour\Parser\SimplePie',
-    ));
-    static::registerProcessorClasses(array(
+    ]);
+    static::registerProcessorClasses([
       'Devour\Processor\Pdo',
       'Devour\Processor\Printer',
       'Devour\Processor\CsvWriter',
-    ));
+    ]);
   }
 
 }

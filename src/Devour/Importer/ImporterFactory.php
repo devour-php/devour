@@ -57,7 +57,7 @@ class ImporterFactory {
 
     // We will get an exception anyway if these do not exist, but this is a more
     // user-friendly way to do it.
-    foreach (array('transporter', 'processor') as $part) {
+    foreach (['transporter', 'processor'] as $part) {
       if (empty($config[$part]['class'])) {
         throw new \RuntimeException(sprintf('The %s class is required.', $part));
       }
@@ -71,7 +71,7 @@ class ImporterFactory {
       ->setTableClass($config['table']['class']);
 
     if (!empty($config['map']['class']) || $config['map']['configuration']) {
-      $config['map'] += array('class' => 'Devour\Map\Map');
+      $config['map'] += ['class' => 'Devour\Map\Map'];
       $builder->setMap($config['map']['class'], $config['map']['configuration']);
     }
 
@@ -89,30 +89,30 @@ class ImporterFactory {
    *   The configuration defaults.
    */
   protected static function defaultConfiguration() {
-    return array(
-      'importer' => array(
+    return [
+      'importer' => [
         'class' => 'Devour\Importer\Importer',
-        'configuration' => array(),
-      ),
-      'transporter' => array(
+        'configuration' => [],
+      ],
+      'transporter' => [
         'class' => '',
-        'configuration' => array(),
-      ),
-      'parser' => array(
+        'configuration' => [],
+      ],
+      'parser' => [
         'class' => '',
-        'configuration' => array(),
-      ),
-      'processor' => array(
+        'configuration' => [],
+      ],
+      'processor' => [
         'class' => '',
-        'configuration' => array(),
-      ),
-      'table' => array(
+        'configuration' => [],
+      ],
+      'table' => [
         'class' => 'Devour\Table\Table',
-      ),
-      'map' => array(
-        'configuration' => array(),
-      ),
-    );
+      ],
+      'map' => [
+        'configuration' => [],
+      ],
+    ];
   }
 
 }

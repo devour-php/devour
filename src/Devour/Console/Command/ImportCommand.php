@@ -26,7 +26,7 @@ class ImportCommand extends DevourCommand {
    *
    * @var array.
    */
-  protected $errors = array();
+  protected $errors = [];
 
   /**
    * {@inheritdoc}
@@ -82,7 +82,7 @@ class ImportCommand extends DevourCommand {
       $this->limitProcess($process_group, $num_processes);
 
       if ($importer->getTransporter()->runInNewProcess()) {
-        $args = array('php', $script_path, 'transport', $config, $source);
+        $args = ['php', $script_path, 'transport', $config, $source];
         $builder = new ProcessBuilder($args);
         $process = $builder->getProcess();
 
@@ -92,7 +92,7 @@ class ImportCommand extends DevourCommand {
       }
       else {
         $stream = $importer->transport($source);
-        $args = array('php', $script_path, 'parse', $config, $source, $stream->getMetadata('uri'));
+        $args = ['php', $script_path, 'parse', $config, $source, $stream->getMetadata('uri')];
       }
 
       $builder = new ProcessBuilder($args);
@@ -126,7 +126,7 @@ class ImportCommand extends DevourCommand {
 
       // Gather the error messages rather than throwing an exception so that all
       // processes can finish.
-      $this->errors[] = array('message' => $output, 'code' => $process->getExitCode());
+      $this->errors[] = ['message' => $output, 'code' => $process->getExitCode()];
     }
     else {
       print $process->getOutput();

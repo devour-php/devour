@@ -30,11 +30,11 @@ class DatabaseTest extends DevourTestCase {
     // Test table escape.
     $this->transporter = new Database($this->connection, '~my_table');
 
-    $this->data = array(
-      array('a' => 'a1','b' => 'b1','c' => 'c1'),
-      array('a' => 'a2','b' => 'b2','c' => 'c2'),
-      array('a' => 'a3','b' => 'b3','c' => 'c3'),
-    );
+    $this->data = [
+      ['a' => 'a1','b' => 'b1','c' => 'c1'],
+      ['a' => 'a2','b' => 'b2','c' => 'c2'],
+      ['a' => 'a3','b' => 'b3','c' => 'c3'],
+    ];
 
     $statement = $this->connection->prepare("INSERT INTO my_table (a,b,c) VALUES (:a,:b,:c)");
 
@@ -80,7 +80,7 @@ class DatabaseTest extends DevourTestCase {
    * @covers \Devour\Transporter\Database::fromConfiguration
    */
   public function testFactory() {
-    $transporter = Database::fromConfiguration(array('dsn' => 'sqlite::memory:'));
+    $transporter = Database::fromConfiguration(['dsn' => 'sqlite::memory:']);
     $this->assertInstanceof('Devour\Transporter\Database', $transporter);
   }
 
@@ -89,7 +89,7 @@ class DatabaseTest extends DevourTestCase {
    * @expectedExceptionMessage The field "dsn" is required.
    */
   public function testFactoryNoDsn() {
-    $transporter = Database::fromConfiguration(array());
+    $transporter = Database::fromConfiguration([]);
   }
 
 }

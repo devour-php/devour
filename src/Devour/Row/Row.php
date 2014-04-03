@@ -13,7 +13,7 @@ class Row implements RowInterface {
 
   protected $table;
 
-  protected $data = array();
+  protected $data = [];
 
   /**
    * {@inheritdoc}

@@ -14,7 +14,7 @@ use Devour\Table\Table;
  */
 abstract class DevourTestCase extends \PHPUnit_Framework_TestCase {
 
-  protected function getStubTable(array $rows = array()) {
+  protected function getStubTable(array $rows = []) {
     $table = new Table();
     foreach ($rows as $row) {
       $table->getNewRow()->setData($row);

@@ -27,12 +27,12 @@ class CsvTest extends DevourTestCase {
   public function setUp() {
     $this->csv = new Csv();
 
-    $this->csvData = array(
-      array('one', 'two', 'three'),
-      array('a1', 'b1', 'c1'),
-      array('a2', 'b2', 'c2'),
-      array('a3', 'b3', 'c3'),
-    );
+    $this->csvData = [
+      ['one', 'two', 'three'],
+      ['a1', 'b1', 'c1'],
+      ['a2', 'b2', 'c2'],
+      ['a3', 'b3', 'c3'],
+    ];
 
     // Create a copy.
     $csv_data = $this->csvData;
@@ -105,7 +105,7 @@ class CsvTest extends DevourTestCase {
    * @depends testParse
    */
   public function testFactory() {
-    $parser = Csv::fromConfiguration(array('has_header' => TRUE));
+    $parser = Csv::fromConfiguration(['has_header' => TRUE]);
     $this->assertInstanceOf(get_class($this->csv), $parser);
   }
 

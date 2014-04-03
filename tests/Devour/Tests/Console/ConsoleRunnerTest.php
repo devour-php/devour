@@ -30,7 +30,7 @@ class ConsoleRunnerTest extends DevourTestCase {
   protected $app;
 
   public function setUp() {
-    $this->input = new ArrayInput(array());
+    $this->input = new ArrayInput([]);
     $this->output = new StreamOutput(fopen('php://memory', 'w', false));
     ConsoleRunner::runApplication($this->input, $this->output, FALSE);
     $this->app = ConsoleRunner::getApplication();
@@ -48,7 +48,7 @@ class ConsoleRunnerTest extends DevourTestCase {
   }
 
   public function testProfile() {
-    $input = new ArrayInput(array('--profile' => TRUE));
+    $input = new ArrayInput(['--profile' => TRUE]);
     $this->app->run($input, $this->output);
     rewind($this->output->getStream());
     $display = stream_get_contents($this->output->getStream());
@@ -56,28 +56,28 @@ class ConsoleRunnerTest extends DevourTestCase {
   }
 
   public function testFromConfig() {
-    $configuration = array(
-      'importer' => array(
+    $configuration = [
+      'importer' => [
         'class' => 'Devour\Importer\Importer',
-      ),
-      'transporter' => array(
+      ],
+      'transporter' => [
         'class' => 'Devour\Transporter\File',
-      ),
-      'parser' => array(
+      ],
+      'parser' => [
         'class' => 'Devour\Parser\Csv',
-      ),
-      'processor' => array(
+      ],
+      'processor' => [
         'class' => 'Devour\Tests\Processor\ProcessorStub',
-      ),
-    );
+      ],
+    ];
 
     $dumper = new Dumper();
     file_put_contents(static::FILE, $dumper->dump($configuration));
-    $input = new ArrayInput(array('--config' => static::FILE));
+    $input = new ArrayInput(['--config' => static::FILE]);
     $this->app->run($input, $this->output);
 
     file_put_contents(static::FILE_2, $dumper->dump($configuration));
-    $input = new ArrayInput(array());
+    $input = new ArrayInput([]);
     $this->app->run($input, $this->output);
 
     $this->assertSame(static::FILE_2, $this->app->getImporterConfigurationFile());
@@ -85,7 +85,7 @@ class ConsoleRunnerTest extends DevourTestCase {
     $this->assertInstanceOf('Devour\Transporter\File', $importer->getTransporter());
 
     // Throws exception.
-    $input = new ArrayInput(array('--config' => 'crappy.yml'));
+    $input = new ArrayInput(['--config' => 'crappy.yml']);
     $this->app->run($input, $this->output);
     rewind($this->output->getStream());
     $display = stream_get_contents($this->output->getStream());
@@ -94,7 +94,7 @@ class ConsoleRunnerTest extends DevourTestCase {
   }
 
   public function testBootstrap() {
-    $input = new ArrayInput(array('--bootstrap' => 'boop.php'));
+    $input = new ArrayInput(['--bootstrap' => 'boop.php']);
     $this->app->run($input, $this->output);
     // Check for exception.
     rewind($this->output->getStream());
@@ -104,7 +104,7 @@ class ConsoleRunnerTest extends DevourTestCase {
 
     // Test valid bootstrap.
     file_put_contents(static::FILE, "<?php\n");
-    $input = new ArrayInput(array('--bootstrap' => static::FILE));
+    $input = new ArrayInput(['--bootstrap' => static::FILE]);
     $this->app->run($input, $this->output);
   }
 

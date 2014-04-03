@@ -125,13 +125,13 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
-    foreach (array('dsn', 'table') as $field) {
+    foreach (['dsn', 'table'] as $field) {
       if (empty($configuration[$field])) {
         throw new ConfigurationException(sprintf('The field "%s" is required.', $field));
       }
     }
 
-    $configuration += array('username' => NULL, 'password' => NULL, 'unique' => NULL);
+    $configuration += ['username' => NULL, 'password' => NULL, 'unique' => NULL];
     $connection = new \PDO($configuration['dsn'], $configuration['username'], $configuration['password']);
 
     return new static($connection, $configuration['table'], $configuration['unique']);
@@ -142,7 +142,7 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
    */
   protected function processRow(RowInterface $row) {
 
-    $item = array();
+    $item = [];
 
     foreach ($this->map as $source_field => $target_field) {
       $item[$target_field] = $row->get($source_field);
@@ -208,7 +208,7 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
   protected function prepareSaveStatement() {
     $fields = implode(',', $this->columns);
 
-    $placeholders = array();
+    $placeholders = [];
     foreach ($this->columns as $column) {
       $placeholders[] = ':' . $column;
     }
@@ -225,7 +225,7 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
    *   The prepared statement.
    */
   protected function prepareUniqueStatement() {
-    $clauses = array();
+    $clauses = [];
     foreach ($this->uniqueColumns as $column) {
       $clauses[] = "$column = :$column";
     }
@@ -243,7 +243,7 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
    *   The prepared statement.
    */
   protected function prepareUpdateStatement() {
-    $clauses = array();
+    $clauses = [];
     foreach ($this->uniqueColumns as $column) {
       $clauses[] = "$column = :$column";
     }
@@ -251,7 +251,7 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
     $clauses = implode(' AND ', $clauses);
 
     // Fields to update.
-    $fields = array();
+    $fields = [];
     foreach (array_diff($this->columns, $this->uniqueColumns) as $field) {
       $fields[] = "$field = :$field";
     }

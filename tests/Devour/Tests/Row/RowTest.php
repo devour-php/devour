@@ -35,7 +35,7 @@ class RowTest extends DevourTestCase {
     // Test get, set and fluidity at once.
     $this->assertSame(1234, $row->set('exists', 1234)->get('exists'));
 
-    $this->assertSame(array('beep', 'boop'), $row->setData(array('beep', 'boop'))->getData());
+    $this->assertSame(['beep', 'boop'], $row->setData(['beep', 'boop'])->getData());
   }
 
 }
