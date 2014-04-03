@@ -25,8 +25,11 @@ class Table extends \SplQueue implements TableInterface {
    * Constructs a Table object.
    */
   public function __construct() {
-    // Default to delete to save memory when possible.
-    $this->setIteratorMode(self::IT_MODE_FIFO | self::IT_MODE_DELETE);
+    // Default to delete to save memory when possible. HHVM < 3.0 has a bug
+    // regarding setIteratorMode().
+    if (!defined('HHVM_VERSION')) {
+      $this->setIteratorMode(self::IT_MODE_FIFO | self::IT_MODE_DELETE);
+    }
   }
 
   /**
