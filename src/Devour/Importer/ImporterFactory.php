@@ -65,7 +65,8 @@ class ImporterFactory {
 
     $config = array_replace_recursive(static::defaultConfiguration(), $config);
 
-    $builder = ImporterBuilder::get($config['importer']['configuration'], $config['importer']['class'])
+    $builder = ImporterBuilder::get()
+      ->setImporter($config['importer']['class'], $config['importer']['configuration'])
       ->setTransporter($config['transporter']['class'], $config['transporter']['configuration'])
       ->setProcessor($config['processor']['class'], $config['processor']['configuration'])
       ->setTableClass($config['table']['class']);
