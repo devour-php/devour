@@ -120,7 +120,7 @@ class ImporterBuilder {
    *   \Devour\Common\ConfigurableInterface, this configuration will be passed
    *   in on creation. Defaults to an empty array.
    *
-   * @return self
+   * @return $this
    *   The builder to use for chaining.
    */
   public function setImporter($importer, array $configuration = []) {
@@ -138,12 +138,14 @@ class ImporterBuilder {
    *   \Devour\Common\ConfigurableInterface, this configuration will be passed
    *   in on creation. Defaults to an empty array.
    *
-   * @return self
+   * @return $this
    *   The builder to use for chaining.
    */
   public function setTransporter($transporter, array $configuration = []) {
     $transporter = $this->buildClient($transporter, $configuration);
-    $this->recordCommand(static::PRIMARY, __FUNCTION__, $transporter);
+    $this->commands->insert(function() use ($transporter) {
+      $this->importer->setTransporter($transporter);
+    }, static::PRIMARY);
 
     return $this;
   }
@@ -158,12 +160,14 @@ class ImporterBuilder {
    *   \Devour\Common\ConfigurableInterface, this configuration will be passed
    *   in on creation. Defaults to an empty array.
    *
-   * @return self
+   * @return $this
    *   The builder to use for chaining.
    */
   public function setParser($parser, array $configuration = []) {
     $parser = $this->buildClient($parser, $configuration);
-    $this->recordCommand(static::PRIMARY, __FUNCTION__, $parser);
+    $this->commands->insert(function() use ($parser) {
+      $this->importer->setParser($parser);
+    }, static::PRIMARY);
 
     return $this;
   }
@@ -178,12 +182,14 @@ class ImporterBuilder {
    *   \Devour\Common\ConfigurableInterface, this configuration will be passed
    *   in on creation. Defaults to an empty array.
    *
-   * @return self
+   * @return $this
    *   The builder to use for chaining.
    */
   public function setProcessor($processor, array $configuration = []) {
     $processor = $this->buildClient($processor, $configuration);
-    $this->recordCommand(static::PRIMARY, __FUNCTION__, $processor);
+    $this->commands->insert(function() use ($processor) {
+      $this->importer->setProcessor($processor);
+    }, static::PRIMARY);
 
     return $this;
   }
@@ -194,13 +200,19 @@ class ImporterBuilder {
    * @param int $limit
    *   The number of items to parse during one batch.
    *
-   * @return self
+   * @return $this
    *   The builder to use for chaining.
    *
    * @see \Devour\Common\ProgressInterface
    */
   public function setProcessLimit($limit) {
-    $this->recordCommand(static::SECONDARY, __FUNCTION__, $limit);
+    $this->commands->insert(function() use ($limit) {
+      foreach ($this->clients as $client) {
+        if ($client instanceof ProgressInterface) {
+          $client->setProcessLimit($limit);
+        }
+      }
+    }, static::SECONDARY);
 
     return $this;
   }
@@ -215,7 +227,7 @@ class ImporterBuilder {
    *   \Devour\Common\ConfigurableInterface, this configuration will be passed
    *   in on creation. Defaults to an empty array.
    *
-   * @return self
+   * @return $this
    *   The builder to use for chaining.
    *
    * @see \Devour\Table\HasTableFactoryInterface
@@ -223,7 +235,16 @@ class ImporterBuilder {
    */
   public function setTableFactory($factory, array $configuration = []) {
     $factory = $this->buildClient($factory, $configuration);
-    $this->recordCommand(static::SECONDARY, __FUNCTION__, $factory);
+
+    $command = function() use ($factory) {
+      foreach ($this->clients as $client) {
+        if ($client instanceof HasTableFactoryInterface) {
+          $client->setTableFactory($factory);
+        }
+      }
+    };
+
+    $this->commands->insert($command, static::SECONDARY);
 
     return $this;
   }
@@ -234,14 +255,20 @@ class ImporterBuilder {
    * @param string $table_class
    *   The table class the factory will use.
    *
-   * @return self
+   * @return $this
    *   The builder to use for chaining.
    *
    * @see \Devour\Table\TableFactoryInterface
    * @see \Devour\Table\TableInterface
    */
   public function setTableClass($table_class) {
-    $this->recordCommand(static::TERTIARY, __FUNCTION__, $table_class);
+    $this->commands->insert(function() use ($table_class) {
+      foreach ($this->clients as $client) {
+        if ($client instanceof HasTableFactoryInterface) {
+          $client->getTableFactory()->setTableClass($table_class);
+        }
+      }
+    }, static::TERTIARY);
 
     return $this;
   }
@@ -256,7 +283,7 @@ class ImporterBuilder {
    *   \Devour\Common\ConfigurableInterface, this configuration will be passed
    *   in on creation. Defaults to an empty array.
    *
-   * @return self
+   * @return $this
    *   The builder to use for chaining.
    *
    * @see \Devour\Table\TableFactoryInterface
@@ -264,7 +291,14 @@ class ImporterBuilder {
    */
   public function setMap($map, array $configuration = []) {
     $map = $this->buildClient($map, $configuration);
-    $this->recordCommand(static::TERTIARY, __FUNCTION__, $map);
+
+    $callback = function() use ($map) {
+      $processor = $this->importer->getProcessor();
+      if ($processor instanceof MappableInterface) {
+        $processor->setMap($map);
+      }
+    };
+    $this->commands->insert($callback, static::TERTIARY);
 
     return $this;
   }
@@ -279,14 +313,32 @@ class ImporterBuilder {
    *   \Devour\Common\ConfigurableInterface, this configuration will be passed
    *   in on creation. Defaults to an empty array.
    *
-   * @return self
+   * @return $this
    *   The builder to use for chaining.
    */
   public function setLogger($logger, array $configuration = []) {
     $logger = $this->buildClient($logger, $configuration);
-    $this->recordCommand(static::TERTIARY, __FUNCTION__, $logger);
+
+    $callback = function() use ($logger) {
+      call_user_func_array([$this, 'doSetLogger'], [$logger]);
+    };
+    $this->commands->insert($callback, static::TERTIARY);
 
     return $this;
+  }
+
+  /**
+   * Sets a logger on all client objects.
+   *
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger to set.
+   */
+  protected function doSetLogger(LoggerInterface $logger) {
+    foreach ($this->clients as $client) {
+      if ($client instanceof LoggerAwareInterface) {
+        $client->setLogger($logger);
+      }
+    }
   }
 
   /**
@@ -336,136 +388,8 @@ class ImporterBuilder {
    */
   protected function replayCommands() {
     foreach ($this->commands as $command) {
-      $method = 'do' . ucfirst($command['method']);
-      call_user_func_array([$this, $method], $command['arguments']);
+      $command();
     }
-  }
-
-  /**
-   * Sets the transporter.
-   *
-   * @param \Devour\Transporter\TransporterInterface $transporter
-   *   The transporter to set.
-   */
-  protected function doSetTransporter(TransporterInterface $transporter) {
-    $this->importer->setTransporter($transporter);
-  }
-
-  /**
-   * Sets the parser.
-   *
-   * @param \Devour\Parser\ParserInterface $parser
-   *   The parser to set.
-   */
-  protected function doSetParser(ParserInterface $parser) {
-    $this->importer->setParser($parser);
-  }
-
-  /**
-   * Sets the processor.
-   *
-   * @param \Devour\Processor\ProcessorInterface $processor
-   *   The processor to set.
-   */
-  protected function doSetProcessor(ProcessorInterface $processor) {
-    $this->importer->setProcessor($processor);
-  }
-
-  /**
-   * Sets the process limit on objects that support it.
-   *
-   * @var int $limit
-   *   The process limit.
-   */
-  protected function doSetProcessLimit($limit) {
-    foreach ($this->clients as $client) {
-      if ($client instanceof ProgressInterface) {
-        $client->setProcessLimit($limit);
-      }
-    }
-  }
-
-  /**
-   * Sets the table factory on all client objects that support it.
-   *
-   * @param \Devour\Table\TableFactoryInterface $factory
-   *   The table factory.
-   */
-  protected function doSetTableFactory(TableFactoryInterface $factory) {
-    $transporter = $this->importer->getTransporter();
-    $parser = $this->importer->getParser();
-
-    if ($transporter instanceof HasTableFactoryInterface) {
-      $transporter->setTableFactory($factory);
-    }
-    if ($parser instanceof HasTableFactoryInterface) {
-      $parser->setTableFactory($factory);
-    }
-  }
-
-  /**
-   * Sets the table class on the table factory.
-   *
-   * @param string $table_class
-   *   The table class.
-   */
-  protected function doSetTableClass($table_class) {
-    $transporter = $this->importer->getTransporter();
-    $parser = $this->importer->getParser();
-
-    if ($transporter instanceof HasTableFactoryInterface) {
-      $transporter->getTableFactory()->setTableClass($table_class);
-    }
-    if ($parser instanceof HasTableFactoryInterface) {
-      $parser->getTableFactory()->setTableClass($table_class);
-    }
-  }
-
-  /**
-   * Sets the map instance on the table factory.
-   *
-   * @param \Devour\Map\MapInterface $map
-   *   The map to use for this importer.
-   */
-  protected function doSetMap(MapInterface $map) {
-    $processor = $this->importer->getProcessor();
-    if ($processor instanceof MappableInterface) {
-      $processor->setMap($map);
-    }
-  }
-
-  /**
-   * Sets the logger instance on any clients.
-   *
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The logger object.
-   */
-  protected function doSetLogger(LoggerInterface $logger) {
-    foreach ($this->clients as $client) {
-      if ($client instanceof LoggerAwareInterface) {
-        $client->setLogger($logger);
-      }
-    }
-  }
-
-  /**
-   * Records a single command.
-   *
-   * These will be replayed on build.
-   *
-   * @param int $priority
-   *   The priority of this command. The higher the priority, the sooner it will
-   *   be executed.
-   * @param string $method
-   *   The method name to call when replaying the command.
-   * @param mixed $args
-   *   The rest of the arguments will be used as arguments to $method.
-   */
-  protected function recordCommand($priority, $method) {
-    $args = func_get_args();
-    array_shift($args);
-    array_shift($args);
-    $this->commands->insert(['method' => $method, 'arguments' => $args], $priority);
   }
 
   /**

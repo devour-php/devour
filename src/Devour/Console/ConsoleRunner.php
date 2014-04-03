@@ -60,8 +60,8 @@ EOF;
    */
   public function __construct() {
     if (function_exists('ini_set')) {
-      ini_set('xdebug.show_exception_trace', FALSE);
-      ini_set('xdebug.scream', FALSE);
+      ini_set('xdebug.show_exception_trace', '0');
+      ini_set('xdebug.scream', '0');
     }
     if (function_exists('date_default_timezone_set') && function_exists('date_default_timezone_get')) {
       date_default_timezone_set(@date_default_timezone_get());
