@@ -26,7 +26,7 @@ class Table extends \SplQueue implements TableInterface {
    */
   public function __construct() {
     // Default to delete to save memory when possible.
-    $this->setIteratorMode(\SplDoublyLinkedList::IT_MODE_FIFO | \SplDoublyLinkedList::IT_MODE_DELETE);
+    $this->setIteratorMode(self::IT_MODE_FIFO | self::IT_MODE_DELETE);
   }
 
   /**
