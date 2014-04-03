@@ -84,12 +84,4 @@ class DatabaseTest extends DevourTestCase {
     $this->assertInstanceof('Devour\Transporter\Database', $transporter);
   }
 
-  /**
-   * @expectedException \Devour\Common\Exception\ConfigurationException
-   * @expectedExceptionMessage The field "dsn" is required.
-   */
-  public function testFactoryNoDsn() {
-    $transporter = Database::fromConfiguration([]);
-  }
-
 }

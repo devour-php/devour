@@ -8,11 +8,11 @@
 namespace Devour\Transporter;
 
 use Devour\Common\ConfigurableInterface;
-use Devour\Common\Exception\ConfigurationException;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\HasTableFactoryTrait;
 use Devour\Transporter\TransporterInterface;
+use Devour\Util\Configuration;
 use FuseSource\Stomp\Stomp as StompConnection;
 
 /**
@@ -84,13 +84,8 @@ class Stomp implements TransporterInterface, HasTableFactoryInterface, Configura
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
-    foreach (['broker'] as $field) {
-      if (empty($configuration[$field])) {
-        throw new ConfigurationException(sprintf('The field "%s" is required.', $field));
-      }
-    }
-
-    $configuration += ['username' => NULL, 'password' => NULL];
+    $defaults = ['username' => NULL, 'password' => NULL];
+    $configuration = Configuration::validate($configuration, $defaults, ['broker']);
     $connection = new StompConnection($configuration['broker']);
 
     return new static($connection);

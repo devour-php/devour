@@ -115,20 +115,4 @@ class PdoTest extends DevourTestCase {
     $processor = PdoProcessor::fromConfiguration(['dsn' => 'sqlite::memory:', 'table' => 'my_table']);
   }
 
-  /**
-   * @expectedException \Devour\Common\Exception\ConfigurationException
-   * @expectedExceptionMessage The field "dsn" is required.
-   */
-  public function testFactoryNoDsn() {
-    $processor = PdoProcessor::fromConfiguration([]);
-  }
-
-  /**
-   * @expectedException \Devour\Common\Exception\ConfigurationException
-   * @expectedExceptionMessage The field "table" is required.
-   */
-  public function testFactoryNoTable() {
-    $processor = PdoProcessor::fromConfiguration(['dsn' => 'sqlite::memory:']);
-  }
-
 }

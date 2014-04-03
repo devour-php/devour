@@ -8,12 +8,12 @@
 namespace Devour\Transporter;
 
 use Devour\Common\ConfigurableInterface;
-use Devour\Common\Exception\ConfigurationException;
 use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\HasTableFactoryTrait;
 use Devour\Transporter\TransporterInterface;
+use Devour\Util\Configuration;
 
 /**
  * Returns rows from a database.
@@ -106,13 +106,8 @@ class Database implements TransporterInterface, HasTableFactoryInterface, Config
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
-    foreach (['dsn'] as $field) {
-      if (empty($configuration[$field])) {
-        throw new ConfigurationException(sprintf('The field "%s" is required.', $field));
-      }
-    }
-
-    $configuration += ['username' => NULL, 'password' => NULL];
+    $defaults = ['username' => NULL, 'password' => NULL];
+    $configuration = Configuration::validate($configuration,$defaults, ['dsn']);
     $connection = new \PDO($configuration['dsn'], $configuration['username'], $configuration['password']);
 
     return new static($connection);

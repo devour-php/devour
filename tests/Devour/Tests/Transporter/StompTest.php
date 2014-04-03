@@ -56,12 +56,4 @@ class StompTest extends DevourTestCase {
     $this->assertInstanceOf('Devour\Transporter\Stomp', $stomp);
   }
 
-  /**
-   * @expectedException \Devour\Common\Exception\ConfigurationException
-   * @expectedExceptionMessage The field "broker" is required.
-   */
-  public function testFromConfigurationException() {
-    $stomp = Stomp::fromConfiguration([]);
-  }
-
 }

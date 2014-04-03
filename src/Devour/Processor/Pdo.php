@@ -9,10 +9,10 @@ namespace Devour\Processor;
 
 use Aura\Sql_Schema\ColumnFactory;
 use Devour\Common\ConfigurableInterface;
-use Devour\Common\Exception\ConfigurationException;
 use Devour\Map\MapInterface;
 use Devour\Processor\MappableInterface;
 use Devour\Row\RowInterface;
+use Devour\Util\Configuration;
 
 /**
  * A simple PDO database processor.
@@ -125,13 +125,10 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
-    foreach (['dsn', 'table'] as $field) {
-      if (empty($configuration[$field])) {
-        throw new ConfigurationException(sprintf('The field "%s" is required.', $field));
-      }
-    }
+    $defaults = ['username' => NULL, 'password' => NULL, 'unique' => NULL];
 
-    $configuration += ['username' => NULL, 'password' => NULL, 'unique' => NULL];
+    $configuration = Configuration::validate($configuration, $defaults, ['dsn', 'table']);
+
     $connection = new \PDO($configuration['dsn'], $configuration['username'], $configuration['password']);
 
     return new static($connection, $configuration['table'], $configuration['unique']);
