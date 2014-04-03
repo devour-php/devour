@@ -67,7 +67,6 @@ class GuzzleTest extends DevourTestCase {
 
   /**
    * @expectedException \RuntimeException
-   * @expectedExceptionMessage cURL error 3: <url> malformed
    */
   public function testBadUrl() {
     $transporter = new Guzzle();
