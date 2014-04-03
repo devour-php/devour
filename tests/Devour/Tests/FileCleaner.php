@@ -43,7 +43,7 @@ class FileCleaner implements \PHPUnit_Framework_TestListener {
     // Remove files first so directories will be empty.
     foreach ($files as $file => $name) {
       if (is_file($file)) {
-        unset($files[$name]);
+        unset($files[$file]);
         unlink($file);
       }
     }
