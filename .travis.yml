@@ -12,7 +12,7 @@ before_script:
 
 script:
   - mkdir -p build/logs
-  - phpunit -c travis.phpunit.xml
+  - vendor/bin/phpunit -c travis.phpunit.xml
 
 after_script:
  - php vendor/bin/coveralls -v --exclude-no-stmt

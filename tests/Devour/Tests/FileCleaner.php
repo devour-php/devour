@@ -55,16 +55,39 @@ class FileCleaner implements \PHPUnit_Framework_TestListener {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function addIncompleteTest(\PHPUnit_Framework_Test $test, \Exception $e, $time) {}
 
+  /**
+   * {@inheritdoc}
+   */
+  public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time) {}
+
+  /**
+   * {@inheritdoc}
+   */
   public function addSkippedTest(\PHPUnit_Framework_Test $test, \Exception $e, $time) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function startTestSuite(\PHPUnit_Framework_TestSuite $suite) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function endTestSuite(\PHPUnit_Framework_TestSuite $suite) {}
 
 }

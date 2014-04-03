@@ -12,14 +12,15 @@
         "aura/sql-schema": "2.*@dev",
         "doctrine/orm": "~2.4",
         "fusesource/stomp-php" : "~2.1",
-        "guzzlehttp/guzzle": "~4.0",
+        "guzzlehttp/guzzle": "~4.0@dev",
+        "phpunit/phpunit": "~4.0",
         "psr/log": "~1.0",
         "simplepie/simplepie": "dev-master",
-        "symfony/console": "2.*",
-        "symfony/event-dispatcher": "2.*",
-        "symfony/finder": "2.*",
-        "symfony/process": "2.*",
-        "symfony/yaml": "2.*"
+        "symfony/console": "~2.0",
+        "symfony/event-dispatcher": "~2.0",
+        "symfony/finder": "~2.0",
+        "symfony/process": "~2.0",
+        "symfony/yaml": "~2.0"
     },
 
     "suggest": {
