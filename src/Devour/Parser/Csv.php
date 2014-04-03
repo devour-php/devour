@@ -11,6 +11,7 @@ use Devour\Common\ConfigurableInterface;
 use Devour\Common\ProgressInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryTrait;
+use Devour\Util\Configuration;
 use GuzzleHttp\Stream\GuzzleStreamWrapper;
 use GuzzleHttp\Stream\PhpStream;
 use GuzzleHttp\Stream\StreamInterface;
@@ -89,9 +90,8 @@ class Csv implements ParserInterface, ProgressInterface, ConfigurableInterface {
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $configuration) {
-    // If we wrap this array, PHPUnit says we didn't cover the last line.
-    // @todo Figure out why.
-    $configuration += ['has_header' => FALSE, 'length' => 0, 'delimiter' => ',', 'enclosure' => '"', 'escape' => '\\'];
+    $defaults = ['has_header' => FALSE, 'length' => 0, 'delimiter' => ',', 'enclosure' => '"', 'escape' => '\\'];
+    $configuration = Configuration::validate($configuration, $defaults);
 
     $parser = new static();
     $parser->setHasHeader((bool) $configuration['has_header'])

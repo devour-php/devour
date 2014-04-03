@@ -81,17 +81,11 @@ class CsvWriterTest extends DevourTestCase {
   /**
    * @covers \Devour\Processor\CsvWriter::fromConfiguration
    *
-   * @expectedException \RuntimeException
-   * @expectedExceptionMessage The directory parameter is required for CsvWriter.
-   *
    * @depends testCsvWriter
    */
   public function testFromConfiguration() {
     $config = ['directory' => static::DIRECTORY];
     $this->assertInstanceOf('Devour\Processor\CsvWriter', CsvWriter::fromConfiguration($config));
-
-    // Throws an exception.
-    CsvWriter::fromConfiguration([]);
   }
 
   /**

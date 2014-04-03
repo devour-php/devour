@@ -12,6 +12,7 @@ use Devour\Common\ConfigurableInterface;
 use Devour\Row\RowInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
+use Devour\Util\Configuration;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -88,11 +89,8 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
    * {@inheritdoc}
    */
   public static function fromConfiguration(array $config) {
-    if (empty($config['directory'])) {
-      throw new \RuntimeException('The directory parameter is required for CsvWriter.');
-    }
-
-    $config += ['header' => NULL, 'mode' => 'a', 'delimeter' => ',', 'enclosure' => '"'];
+    $defaults = ['header' => NULL, 'mode' => 'a', 'delimeter' => ',', 'enclosure' => '"'];
+    $config = Configuration::validate($config, $defaults, ['directory']);
     return new static($config['directory'], $config['header'], $config['mode'], $config['delimeter'], $config['enclosure']);
   }
 
