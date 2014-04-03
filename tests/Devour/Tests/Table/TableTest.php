@@ -63,7 +63,9 @@ class TableTest extends DevourTestCase {
       $this->assertSame(array_shift($this->rows), $row->getData());
     }
 
-    $this->assertTrue($this->table->isEmpty());
+    if (!defined('HHVM_VERSION')) {
+      $this->assertTrue($this->table->isEmpty());
+    }
   }
 
 }

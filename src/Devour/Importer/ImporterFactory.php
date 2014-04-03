@@ -69,12 +69,8 @@ class ImporterFactory {
       ->setImporter($config['importer']['class'], $config['importer']['configuration'])
       ->setTransporter($config['transporter']['class'], $config['transporter']['configuration'])
       ->setProcessor($config['processor']['class'], $config['processor']['configuration'])
+      ->setMap($config['map']['class'], $config['map']['configuration'])
       ->setTableClass($config['table']['class']);
-
-    if (!empty($config['map']['class']) || $config['map']['configuration']) {
-      $config['map'] += ['class' => 'Devour\Map\Map'];
-      $builder->setMap($config['map']['class'], $config['map']['configuration']);
-    }
 
     if ($config['parser']['class']) {
       $builder->setParser($config['parser']['class'], $config['parser']['configuration']);
@@ -111,6 +107,7 @@ class ImporterFactory {
         'class' => 'Devour\Table\Table',
       ],
       'map' => [
+        'class' => 'Devour\Map\Map',
         'configuration' => [],
       ],
     ];
