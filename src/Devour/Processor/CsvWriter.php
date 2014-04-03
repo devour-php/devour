@@ -128,9 +128,7 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
       throw new \RuntimeException(sprintf('Error opening %s.', $filename));
     }
 
-    if ($this->header) {
-      $this->writeHeader($handle, $filename);
-    }
+    $this->writeHeader($handle, $filename);
 
     return $handle;
   }
@@ -144,7 +142,10 @@ class CsvWriter implements ProcessorInterface, ConfigurableInterface, ClearableI
    *   The filename to write to.
    */
   protected function writeHeader($handle, $filename) {
-    if (filesize($filename) === 0 || $this->mode != 'a') {
+    if (empty($this->header)) {
+      return;
+    }
+    if (filesize($filename) === 0 || $this->mode !== 'a') {
       fputcsv($handle, $this->header, $this->delimeter, $this->enclosure);
     }
   }
