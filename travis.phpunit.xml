@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="tests/bootstrap.php"
-         colors="true"
-         stopOnFailure="false"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true">
+<phpunit bootstrap="tests/bootstrap.php" colors="true">
+  <testsuites>
+    <testsuite name="Devour test suite">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
 
-    <testsuites>
-      <testsuite name="Devour test suite">
-        <directory>tests/Devour/Tests</directory>
-      </testsuite>
-    </testsuites>
+  <filter>
+    <whitelist>
+      <directory suffix=".php">src</directory>
+    </whitelist>
+  </filter>
 
-    <filter>
-      <whitelist>
-        <directory suffix=".php">src</directory>
-      </whitelist>
-    </filter>
+  <listeners>
+    <listener file="tests/FileCleaner.php" class="Devour\Tests\FileCleaner" />
+  </listeners>
 
-    <listeners>
-      <listener file="tests/Devour/Tests/FileCleaner.php" class="Devour\Tests\FileCleaner" />
-    </listeners>
-
-    <logging>
-      <log type="coverage-clover" target="build/logs/clover.xml"/>
-    </logging>
+  <logging>
+    <log type="coverage-clover" target="build/logs/clover.xml"/>
+  </logging>
 </phpunit>
