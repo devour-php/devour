@@ -27,9 +27,9 @@
     },
 
     "autoload": {
-        "psr-0": {
-            "Devour": "src/",
-            "Devour\\Tests": "tests/"
+        "psr-4": {
+            "Devour\\": "src/",
+            "Devour\\Tests\\": "tests/"
         }
     }
 }
