@@ -1,5 +1,5 @@
 {
-    "name": "twistor/devour",
+    "name": "devour-php/devour",
     "type": "library",
     "description": "Devour is a PHP library for importing data.",
 
