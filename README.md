@@ -1,9 +1,11 @@
-Devour - Data consumption with PHP.
-===================================
+Devour - Data consumption for PHP.
+==================================
 
-[![Build Status](https://travis-ci.org/devour-php/devour.png?branch=master)](https://travis-ci.org/devour-php/devour)
-[![Coverage Status](https://coveralls.io/repos/devour-php/devour/badge.png?branch=master)](https://coveralls.io/r/devour-php/devour?branch=master)
-[![Dependency Status](https://www.versioneye.com/user/projects/533e14cb7bae4bfc0e0000b7/badge.png)](https://www.versioneye.com/user/projects/533e14cb7bae4bfc0e0000b7)
+[![Author](http://img.shields.io/badge/author-@chrisleppanen-blue.svg?style=flat-square)](https://twitter.com/chrisleppanen)
+[![Build Status](https://img.shields.io/travis/devour-php/devour/master.svg?style=flat-square)](https://travis-ci.org/devour-php/devour)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/devour-php/devour.svg?style=flat-square)](https://scrutinizer-ci.com/g/devour-php/devour/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/g/devour-php/devour.svg?style=flat-square)](https://scrutinizer-ci.com/g/devour-php/devour)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 Devour is a PHP framework for importing data.
 
