@@ -9,16 +9,13 @@
         "php": ">=5.5",
         "psr/log": "~1.0",
         "psr/http-message": "~1.0",
+        "symfony/console": "~2.0",
         "symfony/finder": "~2.0",
         "symfony/process": "~2.0"
     },
 
     "require-dev": {
         "phpunit/phpunit": "~4.0"
-    },
-
-    "suggest": {
-        "symfony/console": "Install the Symfony console component to use the command line interface."
     },
 
     "autoload": {
