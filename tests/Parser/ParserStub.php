@@ -10,7 +10,7 @@ namespace Devour\Tests\Parser;
 use Devour\Parser\ParserInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryTrait;
-use GuzzleHttp\Stream\StreamInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * A minimal parser.

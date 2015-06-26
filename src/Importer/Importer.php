@@ -16,7 +16,7 @@ use Devour\Source\SourceInterface;
 use Devour\Table\HasTableFactoryInterface;
 use Devour\Table\TableInterface;
 use Devour\Transporter\TransporterInterface;
-use GuzzleHttp\Stream\StreamInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerAwareTrait;
 
 /**

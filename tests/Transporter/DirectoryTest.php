@@ -61,7 +61,7 @@ class DirectoryTest extends DevourTestCase {
     foreach (['file_1', 'file_2'] as $key => $file) {
       $stream = $this->directory->transport($source);
       $found[] = $stream->getMetadata('uri');
-      $this->assertInstanceOf('GuzzleHttp\Stream\StreamInterface', $stream);
+      $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $stream);
       // Check progress.
       $this->assertEquals($this->directory->progress($source), ++$key / 2);
     }

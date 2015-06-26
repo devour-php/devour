@@ -10,7 +10,7 @@ namespace Devour\Transporter;
 use Devour\Common\ProgressHelperTrait;
 use Devour\Source\SourceInterface;
 use Devour\Util\FileSystem;
-use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Psr7\Stream;
 
 /**
  * A single file transport.

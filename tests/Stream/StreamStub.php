@@ -7,7 +7,7 @@
 
 namespace Devour\Tests\Stream;
 
-use GuzzleHttp\Stream\Stream;
+use GuzzleHttp\Psr7\Stream;
 
 /**
  * A stub stream implementation.

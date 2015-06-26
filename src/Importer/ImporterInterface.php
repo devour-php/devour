@@ -14,7 +14,7 @@ use Devour\Processor\ProcessorInterface;
 use Devour\Source\SourceInterface;
 use Devour\Table\TableInterface;
 use Devour\Transporter\TransporterInterface;
-use GuzzleHttp\Stream\StreamInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerAwareInterface;
 
 /**
@@ -98,7 +98,7 @@ interface ImporterInterface extends ValidatorInterface, ClearableInterface, Logg
    * @param \Devour\Source\SourceInterface $source
    *   The source to import from.
    *
-   * @return \GuzzleHttp\Stream\StreamInterface|\Devour\Table\TableInterface
+   * @return \Psr\Http\Message\StreamInterface|\Devour\Table\TableInterface
    *   A stream or a table depending on what the transporter returned.
    */
   public function transport(SourceInterface $source);

@@ -17,7 +17,7 @@ class DevourTest extends DevourTestCase {
 
   public function test() {
     Devour::registerDefaults();
-    $this->assertCount(5, Devour::getRegisteredTransporters());
+    $this->assertCount(4, Devour::getRegisteredTransporters());
     $this->assertCount(2, Devour::getRegisteredParsers());
     $this->assertCount(3, Devour::getRegisteredProcessors());
   }

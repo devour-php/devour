@@ -30,7 +30,7 @@ interface TransporterInterface extends ProgressInterface {
    * @param \Devour\Source\SourceInterface $source
    *   A source object.
    *
-   * @return \GuzzleHttp\Stream\StreamInterface|\Devour\Table\TableInterface
+   * @return \Psr\Http\Message\StreamInterface|\Devour\Table\TableInterface
    *   A stream object or table.
    *
    * @throws \RuntimeException

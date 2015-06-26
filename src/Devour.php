@@ -96,7 +96,6 @@ final class Devour {
   public static function registerDefaults() {
     static::registerTransporterClasses([
       'Devour\Transporter\Database',
-      'Devour\Transporter\Guzzle',
       'Devour\Transporter\Stomp',
       'Devour\Transporter\Directory',
       'Devour\Transporter\File',
