@@ -11,15 +11,5 @@ composer.phar
 composer.lock
 composer-test.lock
 vendor/
-
-# Ignore build files
-build/
-phing/build.properties
-report/
-
-# Ignore subsplit working directory
-.subsplit
-
-# Sublime files
-*.sublime-project
-*.sublime-workspace
+coverage.xml
+coverage

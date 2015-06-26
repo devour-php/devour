@@ -6,7 +6,7 @@
     "require": {
         "aura/sqlschema": "~2.0",
         "guzzlehttp/psr7": "~1.0",
-        "php": ">=5.4",
+        "php": ">=5.5",
         "psr/log": "~1.0",
         "psr/http-message": "~1.0",
         "symfony/finder": "~2.0",
