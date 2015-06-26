@@ -9,7 +9,6 @@ namespace Devour\Console;
 
 use Devour\Console\Command\ClearCommand;
 use Devour\Console\Command\ImportCommand;
-use Devour\Devour;
 use Devour\Importer\ImporterFactory;
 use Devour\Importer\ImporterInterface;
 use Devour\Util\FileSystem;
@@ -66,8 +65,6 @@ EOF;
     if (function_exists('date_default_timezone_set') && function_exists('date_default_timezone_get')) {
       date_default_timezone_set(@date_default_timezone_get());
     }
-
-    Devour::registerDefaults();
 
     parent::__construct('Devour', 'DEV');
   }
