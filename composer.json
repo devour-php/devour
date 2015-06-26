@@ -4,26 +4,19 @@
     "description": "Devour is a PHP library for importing data.",
 
     "require": {
+        "aura/sqlschema": "~2.0",
+        "guzzlehttp/streams": "@dev",
         "php": ">=5.4",
-        "guzzlehttp/streams": "@dev"
+        "psr/log": "~1.0",
+        "symfony/process": "~2.0"
     },
 
     "require-dev": {
-        "aura/sql-schema": "2.*@dev",
-        "doctrine/orm": "~2.4",
-        "phpunit/phpunit": "~4.0",
-        "psr/log": "~1.0",
-        "symfony/console": "~2.0",
-        "symfony/event-dispatcher": "~2.0",
-        "symfony/finder": "~2.0",
-        "symfony/process": "~2.0",
-        "symfony/yaml": "~2.0"
+        "phpunit/phpunit": "~4.0"
     },
 
     "suggest": {
-        "doctrine/orm": "Intstall the Doctorine ORM to use the Doctorine processor.",
-        "symfony/console": "Install the Symfony console component to use the command line interface.",
-        "simplepie/simplepie": "Install SimplePie to use the SimplePie parser."
+        "symfony/console": "Install the Symfony console component to use the command line interface."
     },
 
     "autoload": {

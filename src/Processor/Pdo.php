@@ -7,7 +7,7 @@
 
 namespace Devour\Processor;
 
-use Aura\Sql_Schema\ColumnFactory;
+use Aura\SqlSchema\ColumnFactory;
 use Devour\Common\ConfigurableInterface;
 use Devour\Map\MapInterface;
 use Devour\Processor\MappableInterface;
@@ -283,7 +283,7 @@ class Pdo extends ProcessorBase implements ConfigurableInterface, MappableInterf
     $driver = $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
 
     // Calculate the driver class. Why don't they do this for us?
-    $class = '\\Aura\\Sql_Schema\\' . ucfirst($driver) . 'Schema';
+    $class = '\\Aura\\SqlSchema\\' . ucfirst($driver) . 'Schema';
     $schema = new $class($this->connection, new ColumnFactory());
     return array_keys($schema->fetchTableCols($this->table));
   }
